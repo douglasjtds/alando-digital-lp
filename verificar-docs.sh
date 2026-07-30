@@ -29,6 +29,7 @@ check 'CLAUDE.md' 'drive-files/` nunca vai para o build'
 check 'DESIGN-GUIDELINES.md' 'Cinco superfícies, e o quente ocupa área'
 check 'TODOs.md' '24 KB gzip medidos'
 check 'landing-page-structure.md' 'Cinco superfícies'
+check 'COMO-EXECUTAR.md' 'O ciclo de cada fase'
 check 'fase-0-auditoria-e-scaffold.md' 'drive-files/  (pasta nova'
 check 'fase-1-tokens.md' 'CINCO superfícies'
 check 'fase-2-formas-e-assinatura.md' 'FaixaRepetida'
@@ -45,10 +46,16 @@ check 'fase-9-deploy.md' 'LIGUE A INDEXAÇÃO'
 
 echo
 echo "=== duplicatas de download ==="
-dups=$(find . -type f \( -name "*_[0-9].md" -o -name "* [0-9].md" -o -name "*copy*.md" \) -not -path "*/node_modules/*" 2>/dev/null)
+# Procura só onde os arquivos são BAIXADOS. ref-files/ e drive-files/ são material
+# original da cliente e ficam de fora: lá existe "Landing Page copy.md", que é a
+# fonte de verdade de toda a copy da página e NÃO é duplicata de nada.
+dups=$(find . -type f \( -name "*_[0-9].md" -o -name "* [0-9].md" -o -name "*([0-9]).md" \) \
+  -not -path "*/ref-files/*" -not -path "*/drive-files/*" \
+  -not -path "*/node_modules/*" -not -path "*/.git/*" 2>/dev/null)
 if [ -n "$dups" ]; then
   printf "%s\n" "$dups" | sed "s|^|  |"
-  echo "  ^ o arquivo com _1 é o MAIS NOVO. Apague o sem sufixo e renomeie."
+  echo "  ^ o navegador acrescenta _1 ou (1) quando o nome já existia,"
+  echo "    entao esse e o MAIS NOVO. Apague o sem sufixo e renomeie."
 else echo "  nenhuma"; fi
 
 echo

@@ -1,7 +1,8 @@
 # TODOs.md
 ### Sequência de execução: Landing page Alando Digital
 
-> **Como usar.** Cada fase tem um prompt pronto em `instructions/fase-*.md`. Rode **uma fase por vez**, valide o
+> **Como usar.** O passo a passo operacional (comandos, portões, quando parar) está em
+> `instructions/COMO-EXECUTAR.md`. Cada fase tem um prompt pronto em `instructions/fase-*.md`. Rode **uma fase por vez**, valide o
 > critério de pronto, commite você mesmo, e só então avance. O Claude **nunca commita**, ao fim de
 > cada fase ele entrega a mensagem em Conventional Commits. Não cole duas fases juntas: o resultado
 > piora e o review fica impossível.

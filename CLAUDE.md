@@ -12,7 +12,8 @@ Leia, por inteiro, na primeira mensagem de qualquer sessão nova:
 2. `instructions/landing-page-structure.md`, fonte de verdade técnica e de arquitetura
 3. `instructions/AUDITORIA-ETAPA-1.md`, por que a arquitetura não é a do template
 
-Os prompts de cada fase estão na mesma pasta, em `instructions/fase-*.md`.
+Os prompts de cada fase estão na mesma pasta, em `instructions/fase-*.md`, e o runbook de execução
+em `instructions/COMO-EXECUTAR.md`.
 
 Se algo não estiver definido nesses arquivos, **pergunte antes de decidir**. Não invente.
 
