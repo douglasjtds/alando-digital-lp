@@ -5,13 +5,215 @@
    O outro é src/config/brand.ts. Nada de `text-[#102F15]` em componente.
    Auditável com: grep -rE '#[0-9a-fA-F]{3,8}' src/
 
-   OS TOKENS ENTRAM NA FASE 1, não aqui. São nove, e oito são hexes literais do
-   manual da Andressa. A Fase 0 conferiu os seis hexes do PNG "Paleta de cores"
-   pixel a pixel, contra os PNGs do próprio monograma, e todos batem:
-   #102F15, #4C2B08, #B3B793, #AB7743, #676127, #544635.
+   Nove tokens, e OITO são hexes literais do manual da Andressa. A Fase 0 conferiu
+   os seis hexes do PNG "Paleta de cores" pixel a pixel, contra os PNGs do próprio
+   monograma, e todos batem. O único derivado é o `papel`.
 
-   Lista completa, papéis e regras: DESIGN-GUIDELINES.md §3 e fase-1-tokens.md.
-   A escala tipográfica, as famílias de fonte e os utilitários de marca também
-   são da Fase 1. Este arquivo fica deliberadamente vazio até lá, para que o
-   scaffold não antecipe decisão nenhuma.
+   Papéis, tabela de contraste e as regras que ela impõe: DESIGN-GUIDELINES.md §3.
    ========================================================================== */
+
+@theme static {
+  /* --------------------------------------------------------------------
+     A paleta está FECHADA.
+
+     `--color-*: initial` apaga a paleta inteira que o Tailwind traz de fábrica.
+     Não é purismo: sem isso, `bg-red-500` e `text-white` compilam sem erro e a
+     décima cor entra na página sem ninguém notar, que é exatamente o que a regra
+     do CLAUDE.md proíbe. Depois deste reset, só existem os nove tokens abaixo.
+
+     `@theme static` emite todas as variáveis, mesmo as que nenhum utilitário usa
+     ainda: os utilitários de marca no fim deste arquivo leem `var(--color-*)`
+     direto, e o tree-shaking padrão do Tailwind não enxerga esse uso.
+     -------------------------------------------------------------------- */
+  --color-*: initial;
+
+  /* Palavras-chave do CSS, não são cor da marca: precisam voltar depois do reset. */
+  --color-transparent: transparent;
+  --color-current: currentColor;
+  --color-inherit: inherit;
+
+  /* Cor âncora. Títulos sobre claro, CTA primário, faixa escura, footer. */
+  --color-ancora: #102f15;
+  /* Segundo escuro, quente. Hover do CTA, superfície do CtaFinal e do rodapé. */
+  --color-ancora-quente: #4c2b08;
+  /* Superfície clara alternada, e texto de apoio sobre `ancora`. */
+  --color-superficie-2: #b3b793;
+  /* Sublinhado, borda, marcador, número em display. Nunca texto, nunca botão. */
+  --color-acento: #ab7743;
+  /* Texto de acento e anel de foco. Mesmo hex de `ancora-quente`, e não é atalho:
+     o caramelo está em 30,0° de matiz e este marrom em 30,9°, é o acento escurecido. */
+  --color-acento-texto: #4c2b08;
+  /* Corpo de texto sobre `papel`, e superfície média quente de `Resultados`. */
+  --color-tinta: #544635;
+  /* Legendas e apoio sobre `papel`. O oliva do manual, que estava sobrando. */
+  --color-tinta-suave: #676127;
+  /* ÚNICO DERIVADO: `#AB7743` a 8% sobre branco. O manual não tem neutro. */
+  --color-papel: #f7f4ec;
+
+  /* Alias de `superficie-2`, MESMO HEX, para o código ficar legível sem a marca
+     ganhar cor nenhuma. Usado a 6-12% de opacidade: blobs, faixas de repetição,
+     bordas. NUNCA cor de texto, em nenhuma opacidade. */
+  --color-decor: var(--color-superficie-2);
+
+  /* --------------------------------------------------------------------
+     Famílias.
+
+     Os nomes `--font-*-family` são a fronteira white-label: a família chega por
+     `next/font` em layout.tsx e nenhum componente conhece o nome dela. Se a
+     Andressa comprar a licença webfont da `asimilates`, a troca é uma linha lá.
+     -------------------------------------------------------------------- */
+  --font-display:
+    var(--font-display-family), "Playfair Display", Georgia, serif;
+  --font-editorial:
+    var(--font-editorial-family), "Playfair Display", Georgia, serif;
+  --font-ui:
+    var(--font-ui-family), "Montserrat", ui-sans-serif, system-ui, sans-serif;
+}
+
+/* ==========================================================================
+   Base
+   ========================================================================== */
+
+@layer base {
+  html {
+    -webkit-text-size-adjust: 100%;
+  }
+
+  /* Scroll suave NATIVO, e só ele. Nenhuma biblioteca (Lenis, ScrollSmoother):
+     elas reescrevem o scroll do navegador e quebram teclado e leitor de tela.
+     Ver landing-page-structure.md §2.2. */
+  @media (prefers-reduced-motion: no-preference) {
+    html {
+      scroll-behavior: smooth;
+    }
+  }
+
+  body {
+    background-color: var(--color-papel);
+    color: var(--color-tinta);
+    font-family: var(--font-ui);
+    font-size: 1rem;
+    line-height: 1.7;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  /* Sem isto, `strong` cai em 700 sintético por cima do peso que o next/font
+     carregou, e a Montserrat fica encorpada errado. */
+  strong,
+  b {
+    font-weight: 600;
+  }
+
+  /* Foco visível em 100% dos interativos, sem exceção e sem `outline: none`. */
+  :focus-visible {
+    outline: 2px solid var(--color-acento-texto);
+    outline-offset: 3px;
+  }
+}
+
+/* ==========================================================================
+   Escala tipográfica (DESIGN-GUIDELINES.md §4)
+
+   Fluida por `clamp()`: nenhum breakpoint governa tamanho de texto, e o 390px
+   fica coberto pelo piso da escala em vez de por uma media query esquecida.
+   ========================================================================== */
+
+/* h1. Um por página. */
+@utility display-xl {
+  font-family: var(--font-display);
+  font-size: clamp(2.75rem, 7vw, 5rem);
+  line-height: 1.05;
+  letter-spacing: -0.02em;
+}
+
+/* h2 de seção. */
+@utility display-lg {
+  font-family: var(--font-display);
+  font-size: clamp(2rem, 5vw, 3.25rem);
+  line-height: 1.12;
+  letter-spacing: -0.01em;
+}
+
+/* h3, e o número grande de `Resultados`. */
+@utility display-md {
+  font-family: var(--font-display);
+  font-size: clamp(1.5rem, 3.5vw, 2.25rem);
+  line-height: 1.2;
+}
+
+/**
+ * A palavra em itálico dentro do título display.
+ *
+ * EXATAMENTE UMA por título, e é a que carrega o peso do argumento. Duas viram
+ * decoração. A instância itálica da Playfair é carregada à parte, com
+ * `preload: false`: ela aparece em uma palavra por título e não pode competir
+ * com o LCP.
+ */
+@utility editorial {
+  font-family: var(--font-editorial);
+  font-style: italic;
+}
+
+@utility body-lg {
+  font-size: clamp(1.05rem, 1.6vw, 1.25rem);
+  line-height: 1.7;
+}
+
+@utility body {
+  font-size: 1rem;
+  line-height: 1.7;
+}
+
+@utility caption {
+  font-size: 0.875rem;
+  line-height: 1.5;
+}
+
+/* O único elemento em caixa alta da página. */
+@utility eyebrow {
+  font-family: var(--font-ui);
+  font-size: 0.75rem;
+  line-height: 1.5;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+}
+
+/**
+ * O traço tipográfico mais reconhecível do deck: a linha de lead em Montserrat
+ * com tracking largo, que a capa e as páginas de serviço usam muito.
+ *
+ * ⚠️ SÓ PARA LINHA CURTA DE LEAD. Em parágrafo corrido, tracking largo destrói a
+ * legibilidade: a palavra deixa de ser uma unidade visual e a leitura vira
+ * soletração. `eyebrow` e `lead-tracked` são os dois únicos lugares da página com
+ * tracking largo.
+ */
+@utility lead-tracked {
+  font-family: var(--font-ui);
+  font-weight: 400;
+  letter-spacing: 0.14em;
+  line-height: 1.9;
+}
+
+/* ==========================================================================
+   Layout
+   ========================================================================== */
+
+/* Medida de leitura: 60-72 caracteres. Acima disso o olho perde a linha na volta. */
+@utility medida {
+  max-width: 62ch;
+}
+
+/* Padding vertical de seção. O `Section` aplica isto e NUNCA declara margin. */
+@utility secao-y {
+  padding-block: clamp(4rem, 10vw, 8rem);
+}
+
+/* max-w-6xl (1152px) com o padding lateral da marca. A faixa de repetição sangra
+   além dele (full-bleed); o conteúdo, não. */
+@utility container-lp {
+  width: 100%;
+  max-width: 72rem;
+  margin-inline: auto;
+  padding-inline: clamp(1.25rem, 5vw, 3rem);
+}

@@ -145,30 +145,60 @@ Se a Andressa preferir um creme mais fechado, `#F2EDE2` e `#EFEAE0` também pass
 
 ### Tabela de contraste (calculada, não estimada)
 
-Gerada com `node scripts/contraste.mjs --md`.
+Gerada com `node scripts/contraste.mjs --md`, na Fase 1, contra os hexes de `src/config/brand.ts`.
+
+Cobre as **cinco superfícies**, não três: `ancora-quente` e `tinta` deixaram de ser só cor de texto
+na revisão de 29/07, e um fundo que ninguém mediu é onde o erro de contraste se esconde.
 
 | Combinação | Ratio | Veredito |
 |---|---|---|
 | `ancora` sobre `papel` | **13.27:1** | ✅ AAA |
 | `ancora-quente` sobre `papel` | **11.54:1** | ✅ AAA |
+| `superficie-2` sobre `papel` | **1.89:1** | ❌ reprovado |
+| `decor` sobre `papel` | **1.89:1** | ❌ reprovado |
+| `acento` sobre `papel` | **3.50:1** | ⚠️ só texto grande |
 | `acento-texto` sobre `papel` | **11.54:1** | ✅ AAA |
 | `tinta` sobre `papel` | **8.29:1** | ✅ AAA |
 | `tinta-suave` sobre `papel` | **5.76:1** | ✅ AA |
-| `acento` sobre `papel` | **3.50:1** | ⚠️ só texto grande |
-| `decor` sobre `papel` | **1.89:1** | ❌ reprovado, como deve |
 | `ancora` sobre `superficie-2` | **7.02:1** | ✅ AAA |
 | `ancora-quente` sobre `superficie-2` | **6.10:1** | ✅ AA |
-| `acento-texto` sobre `superficie-2` | **6.10:1** | ✅ AA |
-| `tinta` sobre `superficie-2` | **4.39:1** | ⚠️ **só texto grande** |
-| `tinta-suave` sobre `superficie-2` | **3.05:1** | ⚠️ só texto grande |
 | `acento` sobre `superficie-2` | **1.85:1** | ❌ reprovado |
-| `papel` sobre `ancora` | **13.27:1** | ✅ AAA |
+| `acento-texto` sobre `superficie-2` | **6.10:1** | ✅ AA |
+| `tinta` sobre `superficie-2` | **4.39:1** | ⚠️ só texto grande |
+| `tinta-suave` sobre `superficie-2` | **3.05:1** | ⚠️ só texto grande |
+| `papel` sobre `superficie-2` | **1.89:1** | ❌ reprovado |
+| `ancora-quente` sobre `ancora` | **1.15:1** | ❌ reprovado |
 | `superficie-2` sobre `ancora` | **7.02:1** | ✅ AAA |
+| `decor` sobre `ancora` | **7.02:1** | ✅ AAA |
 | `acento` sobre `ancora` | **3.79:1** | ⚠️ só texto grande |
-| `tinta` sobre `ancora` | **1.60:1** | ❌ reprovado |
 | `acento-texto` sobre `ancora` | **1.15:1** | ❌ reprovado |
+| `tinta` sobre `ancora` | **1.60:1** | ❌ reprovado |
+| `tinta-suave` sobre `ancora` | **2.30:1** | ❌ reprovado |
+| `papel` sobre `ancora` | **13.27:1** | ✅ AAA |
+| `ancora` sobre `ancora-quente` | **1.15:1** | ❌ reprovado |
+| `superficie-2` sobre `ancora-quente` | **6.10:1** | ✅ AA |
+| `decor` sobre `ancora-quente` | **6.10:1** | ✅ AA |
+| `acento` sobre `ancora-quente` | **3.29:1** | ⚠️ só texto grande |
+| `tinta` sobre `ancora-quente` | **1.39:1** | ❌ reprovado |
+| `tinta-suave` sobre `ancora-quente` | **2.00:1** | ❌ reprovado |
+| `papel` sobre `ancora-quente` | **11.54:1** | ✅ AAA |
+| `ancora` sobre `tinta` | **1.60:1** | ❌ reprovado |
+| `ancora-quente` sobre `tinta` | **1.39:1** | ❌ reprovado |
+| `superficie-2` sobre `tinta` | **4.39:1** | ⚠️ só texto grande |
+| `decor` sobre `tinta` | **4.39:1** | ⚠️ só texto grande |
+| `acento` sobre `tinta` | **2.37:1** | ❌ reprovado |
+| `acento-texto` sobre `tinta` | **1.39:1** | ❌ reprovado |
+| `tinta-suave` sobre `tinta` | **1.44:1** | ❌ reprovado |
+| `papel` sobre `tinta` | **8.29:1** | ✅ AAA |
 
-**Exigências do sistema: as cinco passam, e o `decor` reprova como deve.**
+**Exigências do sistema: as cinco passam, e o `decor` reprova como deve** (`decor` sobre `papel`,
+1,89:1, é a verificação que o script faz explicitamente no fim da rodada).
+
+⚠️ **As linhas de `decor` são informativas, e nelas a regra vence o número.** Sobre `ancora` e sobre
+`ancora-quente` ele calcula 7,02 e 6,10, ou seja, "aprovado", e mesmo assim **`decor` nunca é cor de
+texto, em nenhuma opacidade**: ele é o sage num papel decorativo, e cor decorativa que aparece
+aprovada em texto vira cor de texto por acidente na terceira seção. Quem quer sage legível sobre
+escuro pede `superficie-2`, que é o mesmo hex com o nome do papel certo.
 
 ### Quatro consequências, todas decididas pelo cálculo
 

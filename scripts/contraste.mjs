@@ -21,8 +21,7 @@ import { argv } from "node:process";
 
 const args = argv.slice(2);
 const markdown = args.includes("--md");
-const caminho =
-  args.find((a) => !a.startsWith("--")) ?? "src/config/brand.ts";
+const caminho = args.find((a) => !a.startsWith("--")) ?? "src/config/brand.ts";
 
 /* ── Cálculo ──────────────────────────────────────────────────────────────── */
 
@@ -54,13 +53,17 @@ function veredito(r) {
 
 const fonte = await readFile(caminho, "utf8").catch(() => {
   console.error(`Não consegui ler ${caminho}.`);
-  console.error("Rode a partir da raiz do projeto, ou passe o caminho do brand.ts.");
+  console.error(
+    "Rode a partir da raiz do projeto, ou passe o caminho do brand.ts.",
+  );
   process.exit(1);
 });
 
 const bloco = fonte.match(/export const colors = \{([\s\S]*?)\n\} as const;/);
 if (!bloco) {
-  console.error("Não encontrei `export const colors = { ... } as const;` no arquivo.");
+  console.error(
+    "Não encontrei `export const colors = { ... } as const;` no arquivo.",
+  );
   process.exit(1);
 }
 
@@ -73,7 +76,9 @@ for (const [, nome, hex] of bloco[1].matchAll(
 
 const nomes = Object.keys(cores);
 if (nomes.length === 0) {
-  console.error("Bloco `colors` encontrado, mas sem nenhum par nome/hex legível.");
+  console.error(
+    "Bloco `colors` encontrado, mas sem nenhum par nome/hex legível.",
+  );
   process.exit(1);
 }
 
@@ -82,15 +87,27 @@ if (nomes.length === 0) {
 /**
  * Superfícies reais da página. Não interessa o produto cartesiano inteiro: interessa
  * saber o que pode virar texto sobre cada fundo que a página de fato usa.
+ *
+ * São CINCO, revisadas em 29/07 (DESIGN-GUIDELINES.md §3): `ancora-quente` e `tinta`
+ * deixaram de ser só cor de texto e viraram superfície, que foi a correção do "muito
+ * verde". O `creme` que estava nesta lista nunca existiu como token e saiu.
+ * O `acento` não entra: nenhum texto normal passa nele.
  */
-const superficies = ["papel", "creme", "superficie-2", "ancora"].filter(
-  (s) => s in cores,
-);
+const superficies = [
+  "papel",
+  "superficie-2",
+  "ancora",
+  "ancora-quente",
+  "tinta",
+].filter((s) => s in cores);
 
 const pares = [];
 for (const fundo of superficies) {
   for (const frente of nomes) {
     if (frente === fundo) continue;
+    // `decor` e `superficie-2` são o mesmo hex em papéis diferentes: o par entre
+    // eles daria 1.00:1 e não informa nada.
+    if (cores[frente] === cores[fundo]) continue;
     pares.push([frente, fundo, razao(cores[frente], cores[fundo])]);
   }
 }

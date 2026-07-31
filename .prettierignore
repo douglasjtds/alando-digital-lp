@@ -1,0 +1,20 @@
+# O `npm run format` roda `prettier --write .` na raiz inteira. Sem esta lista ele
+# reescreve os documentos do projeto: converte `*itálico*` em `_itálico_`, realinha
+# todas as tabelas e alarga linha por linha. O diff fica com centenas de linhas de
+# ruído em cima das fontes de verdade, e o `verificar-docs.sh` passa a comparar
+# arquivos que ninguém editou de propósito.
+#
+# Documento é conteúdo, não código: quem formata é quem escreve.
+/instructions
+/CLAUDE.md
+/README.md
+/public/**/*.md
+
+# Material da cliente. Nem tocar.
+/ref-files
+/drive-files
+
+# Gerado
+/.next
+/node_modules
+package-lock.json

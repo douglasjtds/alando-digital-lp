@@ -113,7 +113,9 @@ if (pendentes.length > 0) {
   console.error(
     `\n  ${pendentes.length} de ${FOTOS.length} entradas ainda são marcadores.`,
   );
-  console.error("  Preencha o campo `de` de cada foto com o arquivo original.\n");
+  console.error(
+    "  Preencha o campo `de` de cada foto com o arquivo original.\n",
+  );
   process.exit(1);
 }
 
