@@ -110,6 +110,10 @@ export type Superficie = (typeof superficies)[number];
  * pictogramas. Consequência registrada: `Servicos` fica SEM ícone, e nenhum
  * conjunto genérico é desenhado, que é o clichê da DESIGN-GUIDELINES.md §2.5.
  */
+export const whatsapp = {
+  phone: "+55 19 99140-2819",
+} as const;
+
 export const marca = {
   monograma: {
     /** Tinta escura `#102F15`. Vai sobre `papel` e sobre `superficie-2`. */

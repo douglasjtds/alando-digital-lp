@@ -67,6 +67,13 @@ export default function RootLayout({
       className={`${display.variable} ${editorial.variable} ${ui.variable}`}
     >
       <body>
+        <a
+          href="#conteudo"
+          className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-50 focus:px-4 focus:py-2 focus:bg-ancora focus:text-papel focus:rounded"
+        >
+          Pular para o conteúdo
+        </a>
+
         {/* As quatro máscaras, definidas UMA vez e reusadas por `id` em todas as
             rotas. Fora do fluxo, `aria-hidden`, custo de render zero. */}
         <OrganicClipPaths />

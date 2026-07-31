@@ -18,6 +18,16 @@
  */
 
 export const content = {
+  header: {
+    pularParaConteudo: "Pular para o conteúdo",
+    nav: {
+      servicos: "Serviços",
+      processo: "Processo",
+      sobre: "Sobre",
+      duvidas: "Dúvidas",
+    },
+  },
+
   hero: {
     eyebrow: "Branding e comunicação · <<A CONFIRMAR: cidade>>",
     h1: "Criando e gerenciando marcas de forma artesanal.",
@@ -25,6 +35,8 @@ export const content = {
     subtitulo:
       "Porque nenhuma marca deveria ser tratada como só mais um cliente.",
     ctaLabel: "Quero conversar com a Alando",
+    fotoAlt:
+      "Andressa Lando, fundadora e estrategista de marketing da Alando Digital.",
   },
 
   /**
