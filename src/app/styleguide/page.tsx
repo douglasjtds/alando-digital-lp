@@ -1,14 +1,20 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 
+import { FaixaRepetida } from "@/components/ui/FaixaRepetida";
+import { MASCARAS } from "@/components/ui/OrganicClipPaths";
 import {
   colors,
   fonts,
+  larguraDoMonograma,
+  marca,
   papeis,
   superficies,
   type Superficie,
   type TokenDeCor,
 } from "@/config/brand";
 import { formatarRazao, razaoDeContraste, veredito } from "@/lib/contrast";
+import { partirNoItalico } from "@/lib/italico";
 
 /**
  * /styleguide: a página que prova que o sistema fecha.
@@ -51,17 +57,30 @@ function Cod({ children }: { children: React.ReactNode }) {
   return <code className="font-mono">{children}</code>;
 }
 
+/**
+ * O container mora AQUI dentro, não no `<main>`.
+ *
+ * É o que a landing-page-structure.md §7 pede e o que a Fase 5 vai repetir: a
+ * faixa de repetição sangra além do container (full-bleed) e o conteúdo, não.
+ * Com `container-lp` no `<main>`, a faixa seria cortada em 72rem e o
+ * full-bleed nunca seria testado de verdade.
+ */
 function Secao({
   titulo,
   children,
+  sangrar = false,
 }: {
   titulo: string;
   children: React.ReactNode;
+  /** `true` entrega os filhos em largura de página, sem container. */
+  sangrar?: boolean;
 }) {
   return (
     <section className="border-tinta-suave/20 border-t py-16">
-      <h2 className="display-md text-ancora mb-8">{titulo}</h2>
-      {children}
+      <div className="container-lp">
+        <h2 className="display-md text-ancora mb-8">{titulo}</h2>
+      </div>
+      {sangrar ? children : <div className="container-lp">{children}</div>}
     </section>
   );
 }
@@ -256,6 +275,259 @@ function TesteDeAcentos() {
   );
 }
 
+/* ── §4 A assinatura estrutural ───────────────────────────────────────────── */
+
+/**
+ * As duas faixas de demonstração.
+ *
+ * ⚠️ Estas strings NÃO são a fonte de verdade de nada: são as faixas reais do
+ * deck (p. 16 e p. 24), usadas aqui só para o sistema ser validado antes de
+ * existir copy. Quem preenche `texto`, `repeticoes` e a palavra em itálico de
+ * verdade é o `content.ts`, na Fase 4. Nenhum componente conhece copy.
+ */
+const FAIXAS_DEMO = [
+  {
+    id: "faixa-demo-clara",
+    texto: "Muito além dos números",
+    palavraItalica: "números",
+    repeticoes: 6,
+    direcao: "direita",
+    variante: "claro",
+  },
+  {
+    id: "faixa-demo-escura",
+    texto: "Vamos construir isso juntos?",
+    palavraItalica: "juntos?",
+    repeticoes: 5,
+    direcao: "esquerda",
+    variante: "escuro",
+  },
+] as const;
+
+/** Os três casos do `partirNoItalico`, incluindo o que tem que falhar. */
+const CASOS_DE_ITALICO = [
+  {
+    texto: "Criando e gerenciando marcas de forma artesanal.",
+    palavra: "artesanal",
+    espera: "casa: a palavra existe e está isolada",
+  },
+  {
+    texto: "Criando e gerenciando marcas de forma artesanal.",
+    palavra: "arte",
+    espera: "NÃO casa: 'arte' está dentro de 'artesanal', e fronteira é regra",
+  },
+  {
+    texto: "Vamos construir isso juntos?",
+    palavra: "juntos?",
+    espera: "casa: pontuação faz parte da palavra grifada",
+  },
+] as const;
+
+function Assinatura() {
+  return (
+    <>
+      <div className="container-lp">
+        <p className="body medida text-tinta mb-10">
+          O device está em ~15 das 24 páginas do deck. A primeira cópia carrega
+          o <Cod>&lt;h2&gt;</Cod> e alinha com o conteúdo da seção; as demais
+          são <Cod>aria-hidden</Cod> e sangram além da borda da página. Role a
+          página: as duas derivam em <strong>sentidos opostos</strong>.
+        </p>
+      </div>
+
+      <div className="space-y-16">
+        {FAIXAS_DEMO.map((faixa) => (
+          <div
+            key={faixa.id}
+            className={faixa.variante === "escuro" ? "bg-ancora py-12" : "py-4"}
+          >
+            <FaixaRepetida {...faixa} />
+            <p
+              className={`caption container-lp mt-4 ${
+                faixa.variante === "escuro"
+                  ? "text-superficie-2"
+                  : "text-tinta-suave"
+              }`}
+            >
+              variante <strong>{faixa.variante}</strong> · deriva para a{" "}
+              <strong>{faixa.direcao}</strong> · {faixa.repeticoes} cópias, das
+              quais {faixa.repeticoes - 1} são <Cod>aria-hidden</Cod>
+            </p>
+          </div>
+        ))}
+      </div>
+
+      <div className="container-lp mt-12 space-y-8">
+        <div>
+          <p className="eyebrow text-tinta-suave">
+            a palavra em itálico · exatamente uma por título
+          </p>
+          <ul className="mt-3 space-y-3">
+            {CASOS_DE_ITALICO.map(({ texto, palavra, espera }) => {
+              const partes = partirNoItalico(texto, palavra);
+              return (
+                <li key={`${texto}-${palavra}`}>
+                  <p className="display-md text-ancora">
+                    {partes ? (
+                      <>
+                        {partes[0]}
+                        <span className="editorial">{partes[1]}</span>
+                        {partes[2]}
+                      </>
+                    ) : (
+                      texto
+                    )}
+                  </p>
+                  <p className="caption text-tinta-suave">
+                    <Cod>{palavra}</Cod> · {espera}
+                  </p>
+                </li>
+              );
+            })}
+          </ul>
+        </div>
+
+        <div className="border-acento border-l-4 pl-6">
+          <p className="body medida text-tinta">
+            <strong>Em `prefers-reduced-motion`</strong> a animação não chega a
+            ser declarada, então o trilho fica em <Cod>translate3d(0,0,0)</Cod>:
+            estático, alinhado, e <strong>100% visível</strong>. Não é{" "}
+            <Cod>animation-duration: 0s</Cod> de propósito: em timeline de
+            progresso, duração zero cola o elemento no último keyframe e a faixa
+            ficaria deslocada para sempre.
+          </p>
+        </div>
+      </div>
+    </>
+  );
+}
+
+/* ── §5 As quatro máscaras ────────────────────────────────────────────────── */
+
+function Mascaras() {
+  return (
+    <>
+      <p className="body medida text-tinta mb-8">
+        Crista de montanha aplicada a uma faixa vertical deslocada, as duas
+        fontes de forma do material. Em <Cod>objectBoundingBox</Cod>, então a
+        mesma forma serve a qualquer proporção. O teste é de longe: se duas se
+        confundirem, ou se alguma parecer <Cod>border-radius</Cod>, está errado.
+      </p>
+
+      {(["retrato", "paisagem"] as const).map((formato) => (
+        <div key={formato} className="mb-10">
+          <p className="eyebrow text-tinta-suave mb-4">
+            {formato} ·{" "}
+            {formato === "retrato"
+              ? "as duas primeiras têm topo limpo: é onde está a cabeça"
+              : "a serra vai para o topo quando não há cabeça a proteger"}
+          </p>
+          <ul className="grid grid-cols-2 gap-4 lg:grid-cols-4">
+            {MASCARAS.map(({ id, nota }) => (
+              <li key={id}>
+                <div
+                  className={`bg-ancora ${
+                    formato === "retrato" ? "aspect-[4/5]" : "aspect-[3/2]"
+                  }`}
+                  style={{ clipPath: `url(#${id})` }}
+                  aria-hidden="true"
+                />
+                <p className="caption text-ancora mt-2">
+                  <Cod>{id}</Cod>
+                </p>
+                <p className="caption text-tinta-suave">{nota}</p>
+              </li>
+            ))}
+          </ul>
+        </div>
+      ))}
+    </>
+  );
+}
+
+/* ── §6 Monograma ─────────────────────────────────────────────────────────── */
+
+function Monograma() {
+  const usos = [
+    { rotulo: "header", altura: marca.alturas.header },
+    { rotulo: "footer", altura: marca.alturas.footer },
+  ];
+
+  const fundos = [
+    { nome: "papel", src: marca.monograma.escuro, classe: "bg-papel" },
+    {
+      nome: "superficie-2",
+      src: marca.monograma.escuro,
+      classe: "bg-superficie-2",
+    },
+    { nome: "ancora", src: marca.monograma.claro, classe: "bg-ancora" },
+    {
+      nome: "ancora-quente",
+      src: marca.monograma.claro,
+      classe: "bg-ancora-quente",
+    },
+    { nome: "tinta", src: marca.monograma.claro, classe: "bg-tinta" },
+  ];
+
+  return (
+    <>
+      <p className="body medida text-tinta mb-8">
+        Não existe SVG da marca, e não vamos pedir: o deck da própria Alando
+        traz o lockup como raster de 588×343, menor que os PNGs de 1080 que
+        temos. O <Cod>next/image</Cod> serve cerca de 2 KB num monograma de
+        32px. A marca é <strong>retrato</strong> ({marca.monograma.largura}×
+        {marca.monograma.altura}), então quem consome dimensiona pela altura.
+      </p>
+
+      <ul className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        {fundos.map(({ nome, src, classe }) => (
+          <li
+            key={nome}
+            className={`border-tinta-suave/20 flex items-end gap-6 border p-6 ${classe}`}
+          >
+            {usos.map(({ rotulo, altura }) => (
+              <div key={rotulo} className="flex flex-col items-center gap-2">
+                <Image
+                  src={src}
+                  alt=""
+                  width={larguraDoMonograma(altura)}
+                  height={altura}
+                  aria-hidden="true"
+                />
+                <span
+                  className={`caption ${
+                    nome === "papel" || nome === "superficie-2"
+                      ? "text-ancora"
+                      : "text-papel"
+                  }`}
+                >
+                  {rotulo} · {altura}px
+                </span>
+              </div>
+            ))}
+            <span
+              className={`eyebrow ml-auto ${
+                nome === "papel" || nome === "superficie-2"
+                  ? "text-ancora"
+                  : "text-papel"
+              }`}
+            >
+              {nome}
+            </span>
+          </li>
+        ))}
+      </ul>
+
+      <p className="caption medida text-tinta-suave mt-6">
+        Não existem ícones proprietários: <Cod>ref-files/Ícones /</Cod> são 16
+        PNGs deste mesmo monograma, preenchido e em contorno, nas oito cores.
+        Nenhum conjunto de ícones foi desenhado, e essa é a decisão certa: ícone
+        genérico é o clichê que a §2.5 proíbe.
+      </p>
+    </>
+  );
+}
+
 /* ── Página ───────────────────────────────────────────────────────────────── */
 
 export default function Styleguide() {
@@ -272,9 +544,11 @@ export default function Styleguide() {
   const decorNoPapel = razaoDeContraste(colors.decor, colors.papel);
 
   return (
-    <main className="container-lp py-16">
-      <header>
-        <p className="eyebrow text-tinta-suave">Sistema de design · Fase 1</p>
+    <main className="py-16">
+      <header className="container-lp">
+        <p className="eyebrow text-tinta-suave">
+          Sistema de design · Fases 1 e 2
+        </p>
         <h1 className="display-lg text-ancora mt-2">
           Styleguide da <span className="editorial">Alando</span> Digital
         </h1>
@@ -392,6 +666,21 @@ export default function Styleguide() {
             secao-y renderizado, para conferir o respiro a olho
           </p>
         </div>
+      </Secao>
+
+      <Secao
+        titulo="A assinatura estrutural: a faixa de palavra repetida"
+        sangrar
+      >
+        <Assinatura />
+      </Secao>
+
+      <Secao titulo="As quatro máscaras orgânicas">
+        <Mascaras />
+      </Secao>
+
+      <Secao titulo="Monograma">
+        <Monograma />
       </Secao>
     </main>
   );

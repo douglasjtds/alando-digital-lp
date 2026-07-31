@@ -92,6 +92,45 @@ export const superficies = [
 export type Superficie = (typeof superficies)[number];
 
 /**
+ * A marca em arquivo.
+ *
+ * Gerados por `node scripts/preparar-marca.mjs` a partir de `ref-files/Ícones /`,
+ * recortados na moldura transparente e sem metadados. **Não existe SVG**, e não
+ * vamos pedir: o deck da própria Alando coloca o lockup como raster de 588×343,
+ * menor que os PNGs de 1080 que temos (AUDITORIA-FASE-0.md §3.1). O `next/image`
+ * gera as variantes e serve cerca de 2 KB num monograma de 32px.
+ *
+ * O monograma NÃO é quadrado (447×512, retrato). Quem consome dimensiona pela
+ * ALTURA e deixa a largura sair da proporção: header 32px, footer 40px. Esticar
+ * ou rotacionar a marca está fora, sempre.
+ *
+ * ⚠️ Não existem ícones proprietários. `ref-files/Ícones /` são 16 PNGs deste
+ * mesmo monograma, em versão preenchida e em contorno, nas oito cores da paleta.
+ * As páginas de serviço do deck usam rótulos tipográficos em caixa alta, não
+ * pictogramas. Consequência registrada: `Servicos` fica SEM ícone, e nenhum
+ * conjunto genérico é desenhado, que é o clichê da DESIGN-GUIDELINES.md §2.5.
+ */
+export const marca = {
+  monograma: {
+    /** Tinta escura `#102F15`. Vai sobre `papel` e sobre `superficie-2`. */
+    escuro: "/brand/monograma-escuro.png",
+    /** Versão negativa, branca. Vai sobre `ancora`, `ancora-quente` e `tinta`. */
+    claro: "/brand/monograma-claro.png",
+    /** Dimensões intrínsecas do arquivo, para o `next/image` não ter CLS. */
+    largura: 447,
+    altura: 512,
+  },
+  /** As alturas de uso, em px. Alvo de toque de 44px é do link, não da imagem. */
+  alturas: { header: 32, footer: 40 },
+} as const;
+
+/** Largura correspondente a uma altura de uso, mantendo a proporção da marca. */
+export function larguraDoMonograma(altura: number): number {
+  const { largura, altura: alturaOriginal } = marca.monograma;
+  return Math.round((altura * largura) / alturaOriginal);
+}
+
+/**
  * As famílias, e por que são estas.
  *
  * A `asimilates` do deck não foi entregue e não é o lettering do logo (Fase 0, §1.2),

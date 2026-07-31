@@ -75,6 +75,27 @@
    ========================================================================== */
 
 @layer base {
+  /* --------------------------------------------------------------------
+     As medidas do container, extraídas para variáveis.
+
+     Não é gosto por variável: a `FaixaRepetida` sangra além do container e
+     precisa refazer a MESMA conta para alinhar a instância legível com o
+     conteúdo da seção. Duas cópias da fórmula divergem na primeira vez que
+     alguém mexe no padding, e divergem em silêncio.
+
+     `--inicio-lp` é o recuo esquerdo do conteúdo do `container-lp` medido a
+     partir da borda da página. O `100%` dentro dele resolve no elemento que
+     USA a variável (substituição textual), então ele vale em qualquer
+     elemento full-bleed.
+     -------------------------------------------------------------------- */
+  :root {
+    --largura-lp: 72rem;
+    --padding-lp: clamp(1.25rem, 5vw, 3rem);
+    --inicio-lp: calc(
+      max(0px, (100% - var(--largura-lp)) / 2) + var(--padding-lp)
+    );
+  }
+
   html {
     -webkit-text-size-adjust: 100%;
   }
@@ -213,7 +234,116 @@
    além dele (full-bleed); o conteúdo, não. */
 @utility container-lp {
   width: 100%;
-  max-width: 72rem;
+  max-width: var(--largura-lp);
   margin-inline: auto;
-  padding-inline: clamp(1.25rem, 5vw, 3rem);
+  padding-inline: var(--padding-lp);
+}
+
+/* ==========================================================================
+   A ASSINATURA ESTRUTURAL: a faixa de palavra repetida
+   (DESIGN-GUIDELINES.md §6, AUDITORIA-ETAPA-1.md §5.3)
+
+   Não é ornamento: é o sistema de titulação da Alando. O device está em ~15 das
+   24 páginas do deck, e é assim que a marca escreve um <h2>. O componente é
+   src/components/ui/FaixaRepetida.tsx; o que mora aqui é o mecanismo.
+
+   ⚠️ DESVIO REGISTRADO: a §6 e a §8 especificam `animation-timeline: scroll()`.
+   Aqui é `view()`, aprovado pelo Douglas em 31/07. Motivo: `scroll()` usa o
+   progresso do DOCUMENTO, então uma faixa visível durante 15% do scroll só
+   percorre 15% da amplitude, e o gesto mais presente da página ficaria
+   imperceptível no miolo. `view()` dá a cada faixa a própria linha do tempo,
+   e é o mesmo padrão que a §8 já manda usar no parallax da foto.
+   Custo idêntico: CSS puro, 0 KB, sem listener, sem rAF, sem biblioteca.
+   ========================================================================== */
+
+@layer components {
+  /**
+   * O envelope full-bleed, e quem PUBLICA a linha do tempo.
+   *
+   * ⚠️ `overflow-x: clip`, nunca `hidden`. É a armadilha nº 1 da §8: `hidden`
+   * transforma o elemento em scroll container, a `view()` do filho passa a ser
+   * medida contra ele em vez da viewport, e o progresso trava em 50%. O `clip`
+   * corta igual e não cria scroll container. E `clip` no eixo x convive com
+   * `visible` no y, coisa que `hidden` não faz (viraria `auto`).
+   */
+  .faixa {
+    position: relative;
+    width: 100%;
+    overflow-x: clip;
+    view-timeline-name: --faixa;
+    view-timeline-axis: block;
+  }
+
+  /**
+   * O trilho: a linha única de repetições, cortada pela borda da página.
+   *
+   * `--inicio-lp` alinha a PRIMEIRA cópia (a instância legível, que carrega o
+   * <h2> semântico) com o conteúdo da seção. As repetições seguem para a
+   * direita e sangram além da viewport, onde o `clip` as corta.
+   *
+   * `--faixa-sentido` (1 ou -1) vem do componente e é o que alterna a direção
+   * a cada seção. `--faixa-deriva` é a amplitude, modesta de propósito: o
+   * objetivo é textura, não corrida. No pior caso a excursão é ±32px no
+   * desktop (onde o padding lateral já é 48px) e ±12px em 390px (padding 20px),
+   * então a instância legível nunca chega perto da borda.
+   */
+  .faixa-trilho {
+    --faixa-deriva: clamp(0.75rem, 2.5vw, 2rem);
+    --faixa-sentido: 1;
+    display: flex;
+    width: max-content;
+    column-gap: 0.4ch;
+    white-space: nowrap;
+    padding-inline-start: var(--inicio-lp);
+  }
+
+  /**
+   * Repouso = `translate3d(0, …)`, ou seja, alinhado ao container.
+   *
+   * Isso é de propósito: é o estado de quem tem `prefers-reduced-motion`, e o
+   * de todo navegador sem `animation-timeline`. A degradação é silenciosa e
+   * fica CERTA, não fica deslocada.
+   */
+  @keyframes faixa-deriva {
+    from {
+      transform: translate3d(
+        calc(var(--faixa-deriva) * var(--faixa-sentido) * -1),
+        0,
+        0
+      );
+    }
+    to {
+      transform: translate3d(
+        calc(var(--faixa-deriva) * var(--faixa-sentido)),
+        0,
+        0
+      );
+    }
+  }
+
+  /**
+   * Os dois portões, e a ordem importa.
+   *
+   * Onde `animation-timeline` não existe, o `@supports` não casa e a faixa fica
+   * parada. Onde a pessoa pediu menos movimento, a animação NUNCA CHEGA A SER
+   * DECLARADA, o que é mais forte que `animation: none` e imune à armadilha da
+   * §8: em timeline de progresso, zerar a duração não para nada, cola o
+   * elemento no último keyframe e a faixa ficaria deslocada para sempre.
+   *
+   * ⚠️ LONGHANDS, nunca o shorthand `animation`. O shorthand reescreve
+   * `animation-duration` para `0s`, e numa timeline de progresso a duração
+   * precisa ser `auto`. Com `0s` a animação congela e parece que "só não
+   * funcionou": erro silencioso, e dos caros de achar.
+   */
+  @supports (animation-timeline: view()) {
+    @media (prefers-reduced-motion: no-preference) {
+      .faixa-trilho {
+        animation-name: faixa-deriva;
+        animation-duration: auto;
+        animation-timing-function: linear;
+        animation-fill-mode: both;
+        animation-timeline: --faixa;
+      }
+    }
+  }
 }

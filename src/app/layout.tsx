@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import { Montserrat, Playfair_Display } from "next/font/google";
 
+import { OrganicClipPaths } from "@/components/ui/OrganicClipPaths";
+
 import "./globals.css";
 
 /**
@@ -64,7 +66,12 @@ export default function RootLayout({
       lang="pt-BR"
       className={`${display.variable} ${editorial.variable} ${ui.variable}`}
     >
-      <body>{children}</body>
+      <body>
+        {/* As quatro máscaras, definidas UMA vez e reusadas por `id` em todas as
+            rotas. Fora do fluxo, `aria-hidden`, custo de render zero. */}
+        <OrganicClipPaths />
+        {children}
+      </body>
     </html>
   );
 }

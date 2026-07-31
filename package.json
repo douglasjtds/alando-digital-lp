@@ -10,6 +10,7 @@
     "lint": "eslint",
     "typecheck": "tsc --noEmit",
     "contraste": "node scripts/contraste.mjs",
+    "marca": "node scripts/preparar-marca.mjs",
     "format": "prettier --write .",
     "format:check": "prettier --check ."
   },
