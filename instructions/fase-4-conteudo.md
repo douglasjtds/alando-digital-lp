@@ -30,7 +30,9 @@ O QUE ENTRA, seção por seção:
 
 2. FaixaClientes, exibir: false até os logos chegarem
    titulo: Marcas que confiam em nós
-   <<A CONFIRMAR: lista de logos autorizados, em SVG>>
+   A Fase 0 confirmou que NÃO existe logo de cliente no material, e que as capas dos
+   PDFs de drive-files/ não servem de fonte: não há arte vetorial nelas.
+   <<A CONFIRMAR: logos de clientes autorizados, em SVG exportado do Canva>>
 
 3. Manifesto
    h2:      Antes de falar sobre redes sociais…

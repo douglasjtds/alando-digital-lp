@@ -93,10 +93,12 @@ O risco aqui é **acima da média**, por três motivos específicos desta marca:
    sem vértice agudo. Máscaras = crista de montanha aplicada a uma faixa deslocada. Nunca
    `border-radius`, nunca círculo, nunca card retangular com sombra.
 
-3. **Fotografia real, nunca banco de imagem.** ✅ **Resolvido em 29/07: existe ensaio profissional
-   da Andressa**, mais fotos de captação do trabalho real da equipe, em `drive-files/`. Este é o
-   antídoto mais forte contra cara de template, e agora ele existe de fato. **Use.** Nenhuma pessoa
-   nesta página pode ser banco de imagem, ilustração vetorial ou silhueta.
+3. **Fotografia real, nunca banco de imagem.** O acervo foi auditado na Fase 0 e está definido:
+   **duas fotos da Andressa** (`drive-files/Dêssa/`) e **nove fotos de captação** do trabalho real
+   (`drive-files/Fotos captações/`), todas aprovadas pelo Douglas em 31/07. As de captação são o
+   material mais forte que a página tem, porque mostram o trabalho acontecendo, coisa que banco de
+   imagem não tem. **Use.** Nenhuma pessoa nesta página pode ser banco de imagem, ilustração
+   vetorial ou silhueta. Inventário completo, resoluções e restrições em `AUDITORIA-FASE-0.md` §4.
 
 4. **Uma única animação coreografada.** A entrada do `Manifesto`. Todo o resto é reveal discreto
    ou textura de scroll. Ver §8.
@@ -277,22 +279,25 @@ Extraídas das fontes embutidas no PDF de apresentação:
 |---|---|---|
 | **Montserrat** | OFL / Google Fonts ✅ | **Usar** via `next/font/google`, subsets `latin` + `latin-ext` |
 | **Playfair Display** | OFL / Google Fonts ✅ | **Usar** via `next/font/google`, subsets `latin` + `latin-ext` |
-| **asimilates** | ⚠️ **Personal Use Only.** UICreative, © 2023. Licença comercial vendida em uicreative.net / MyFonts, com EULAs separadas para desktop e webfont | **Não vai para a web como está.** Decisão depende de `ref-files/`, ver abaixo |
+| **asimilates** | ⚠️ Personal Use Only. UICreative, © 2023. **E o arquivo não foi entregue** | ✅ **Resolvido na Fase 0: fica fora** |
 
-**A distinção que decide:**
+### ✅ A questão da `asimilates`, fechada na Fase 0
 
-- **Se `asimilates` for só o lettering do logo**, entregue como SVG com paths vetorizados: nenhum
-  arquivo de fonte vai para o servidor, e não há problema de webfont. Fica pendente confirmar com a
-  Andressa que ela tinha licença ao desenhar o logo: questão dela com a fundição, anterior a este
-  projeto, não bloqueia o site.
-- **Se `asimilates` for a display prevista para títulos:** ou a Andressa compra a **licença
-  webfont** (a troca depois é uma linha em `layout.tsx`), ou substituímos.
+Auditei `ref-files/Fontes/`: **a `asimilates` não está lá.** E a pergunta que decidia tudo tem
+resposta dupla, verificada no material:
 
-**Substituta, se preciso: Playfair Display.** Mesma anatomia (serifada display de contraste alto),
-já está no material, já carrega os títulos do deck, é OFL, zero família nova. Alternativas com mais
-distinção: **Prata**, **Bodoni Moda**, **Instrument Serif**, todas OFL.
+- **Ela não é o lettering do logo.** O wordmark "ALANDO DIGITAL" está numa sans geométrica fina em
+  caixa alta, e a `asimilates` é serifada display de contraste alto. Anatomias opostas.
+- **Ela é uma display do deck**, nos subtítulos em serifada inclinada das páginas 4, 17 e 22.
 
-`<<A CONFIRMAR: licença da asimilates e se ela é usada além do logo>>`
+**Decisão: display e editorial ficam em Playfair Display.** Mesma anatomia (serifada display de
+contraste alto), já está no material, já carrega os títulos do deck, é OFL, zero família nova. Se
+um dia a Andressa comprar a **licença webfont** da UICreative e mandar o arquivo, a troca é uma
+linha em `layout.tsx`. Alternativas, se ela quiser mais distinção: **Prata**, **Bodoni Moda**,
+**Instrument Serif**, todas OFL.
+
+> Pendência menor, que não bloqueia: a sans do lockup não foi identificada com certeza. Não
+> importa para o site, porque o logo é entregue como imagem. Ver `AUDITORIA-FASE-0.md` §1.3.
 
 > Toda troca precisa ser comunicada à Andressa. Ela vai abrir o site ao lado do manual e comparar;
 > descobrir a diferença sozinha é muito pior do que ser avisada.
@@ -341,27 +346,47 @@ lead, nunca em parágrafo corrido**, onde tracking largo destrói a legibilidade
 
 ---
 
-## 5. Ícones da marca
+## 5. A marca em arquivo: monograma e lockups
 
-⚠️ **Não verificado.** Não achei conjunto de ícones proprietários no PDF de apresentação, as
-páginas de serviço usam **rótulos tipográficos em caixa alta**, não pictogramas.
-`<<A CONFIRMAR: existem ícones proprietários em ref-files/?>>`
+✅ **Auditado na Fase 0.** Detalhe completo em `AUDITORIA-FASE-0.md` §2 e §3.
 
-**Se não existirem:** esta seção deixa de existir e a animação-assinatura padrão (`DrawIcons`) fica
-sem material. A assinatura de movimento passa a ser a da §8, o que já está previsto e é o plano
-principal. **Não inventar um conjunto genérico**: seria o clichê que a §2.5 proíbe.
+### Não existem ícones proprietários
 
-**Se existirem:**
-- Precisam ser SVG com `stroke`, não `fill`, condição obrigatória para animação de desenho.
-- Cor: `ancora` sobre fundos claros, `superficie-2` sobre a faixa escura.
-- Tamanho mínimo 48px.
-- Não usar como bullet decorativo em outros lugares.
+O que a pasta `ref-files/Ícones /` guarda **não são ícones**: são 16 PNGs do **monograma**, em
+versão preenchida e em versão de contorno, nas oito cores da paleta. As páginas de serviço do deck
+usam **rótulos tipográficos em caixa alta**, não pictogramas.
+
+**Consequência:** a animação-assinatura padrão (`DrawIcons`) fica sem material e sai de cena. A
+assinatura de movimento é a da §8, que já era o plano principal. **Não inventar um conjunto
+genérico de ícones**: seria o clichê que a §2.5 proíbe.
+
+### O que existe, e como usar
+
+| Pasta | Conteúdo | Uso |
+|---|---|---|
+| `ref-files/Ícones /1-8` | monograma **preenchido**, 8 cores, PNG 1080 com alfa | header, footer, marca d'água |
+| `ref-files/Ícones /9-16` | monograma **em contorno**, 8 cores | recurso gráfico estático |
+| `ref-files/Logos/1-8` | lockup **horizontal** com tagline | og-image, onde houver largura |
+| `ref-files/Logos/9-16` | monograma isolado (duplica `Ícones /1-8`) | header, footer |
+| `ref-files/Logos/17-24` | lockup **vertical** com tagline | `CtaFinal`, rodapé em mobile |
+
+As oito cores são exatamente a paleta, e incluem **branco**, ou seja, a **versão negativa existe**,
+que é o que o `CtaFinal` e o rodapé escuros precisam.
+
+### ⚠️ Não existe SVG, e a especificação mudou por causa disso
+
+**Monograma: PNG 1080 com alfa, servido por `next/image`.** Header a 32px, footer a 40px. Nunca
+esticado, nunca rotacionado, nunca sobre fundo de baixo contraste.
+
+Isto substitui a exigência anterior de SVG, e a troca é segura: o `next/image` gera as variantes e
+serve cerca de 2 KB num monograma de 32px. **Não há SVG a pedir:** o próprio deck da Alando coloca
+o lockup como raster de 588×343, menor que os PNGs de 1080 que temos.
+
+**O que o PNG não entrega é traçado para animação de desenho**, e essa é a única perda. Decisão do
+Douglas em 31/07: **não vetorizamos**, e a Fase 7 fica nos três gestos da §8.
 
 **Ícones de interface** (chevron do FAQ, WhatsApp, seta) são **outra coisa**: Lucide, peso 1.5px,
-nunca no mesmo bloco visual que os da marca.
-
-**Monograma:** SVG, header a 32px, footer a 40px. Versão clara e escura. Nunca esticado, nunca
-rotacionado, nunca sobre fundo de baixo contraste.
+nunca no mesmo bloco visual que a marca.
 
 ---
 
@@ -595,58 +620,71 @@ CSS, custa alguns KB. Se o barato resolver, o caro não tem argumento.
 
 ## 9. Fotografia: direção e uso definido
 
-### Inventário atual
+### Inventário, auditado na Fase 0
 
-`ref-files/` continua não auditado. `drive-files/` chegou em 29/07 e mudou o quadro:
+Detalhe completo, com resoluções, EXIF e pesos, em `AUDITORIA-FASE-0.md` §4.
 
-| Origem | Descrição | Destino provável | Observação |
+| Origem | Descrição | Destino | Observação |
 |---|---|---|---|
-| PNG da paleta | Montanha na neblina, floresta de outono | fundo de `CtaFinal` ou textura | Bonita, mas é o vocabulário mais copiado que existe hoje. Usar com parcimônia |
+| `drive-files/Dêssa/` | **2 fotos da Andressa**, 1023×1537 | `Hero`, `Sobre`, `og-image` | Aprovadas em 31/07. Fundo de parede clara com plantas, luz quente. **Resolução sem folga**, ver abaixo |
+| `drive-files/Fotos captações/` | **9 fotos do trabalho acontecendo**, iPhone | `Servicos`, `Sobre` | Aprovadas. Só 2 em resolução de trabalho (HEIC). O motivo se repete nas nove |
+| PNG da paleta | Montanha na neblina, floresta de outono | `CtaFinal`, **uma vez só** | É o vocabulário mais copiado que existe hoje. Uma aparição é atmosfera, duas é banco de imagem |
 | PDF, p. 4-15 | Prints de feed de clientes | `Resultados` | Terceiros identificáveis. **Autorização obrigatória** |
-| `drive-files/` | **Ensaio profissional da Andressa** | `Hero`, `Sobre`, `og-image` | ✅ **Confirmado.** Era a pendência de maior impacto do projeto |
-| `drive-files/` | Fotos de captação e bastidores | `Servicos` | Material do trabalho real deles, muito melhor que banco de imagem |
-| `drive-files/` | PDFs de diagnóstico e identidade de clientes | `Servicos` (thumbnail) | ⚠️ **Referência. Não podem ser publicados.** Regra abaixo |
+| `drive-files/Identidades visuais/` | Capas de identidade visual de clientes | `Servicos` (thumbnail) | ⚠️ **Referência. Não podem ser publicados.** Regra abaixo |
 
-`<<A CONFIRMAR: inventário completo de ref-files/>>`
-
-### Como o ensaio muda três decisões
+### As três decisões que o acervo define
 
 **1. O herói ganha a composição forte, e vira o LCP.** A foto da Andressa entra na máscara orgânica
-em 55/45, com o rosto no terço superior. Consequência de performance: **essa imagem passa a ser o
-elemento de LCP da página**. Só ela leva `priority`, e o `sizes` precisa estar certo, senão o
-navegador baixa a versão desktop no celular. Alvo: **≤ 120 KB** no recorte final. Retrato
-profissional em alta resolução estoura isso com facilidade.
+em 55/45, com o rosto no terço superior. **Essa imagem passa a ser o elemento de LCP da página**:
+só ela leva `priority`, e o `sizes` precisa estar certo, senão o navegador baixa a versão desktop
+no celular. Alvo: **≤ 120 KB** no recorte final.
 
-**2. A `og-image` muda de conceito.** Estava especificada como monograma sobre fundo `ancora`.
-Com ensaio disponível, o preview vira **rosto + marca**, que é muito mais forte no lugar onde a
-página de fato circula: o card de link no WhatsApp e no Instagram. Vale testar as duas e comparar.
+> ⚠️ **A restrição que decide o enquadramento: não há folga de resolução.** O original tem
+> 1023×1537 e não existe maior. Na composição 55/45 sobre `max-w-6xl`, a coluna da imagem dá cerca
+> de **518 CSS px**, o que pede **1036 px** para cobrir 2x. **Nada de corte apertado no rosto:**
+> qualquer recorte que amplie a face derruba a densidade abaixo de 2x e deixa macio justamente o
+> elemento de LCP. O enquadramento trabalha com a máscara, não contra ela.
 
-**3. A paisagem da montanha é rebaixada.** Ela era o plano B para o herói. Agora tem **uma única
-aparição na página inteira**, no `CtaFinal`. Uma vez é atmosfera; duas é banco de imagem.
+**2. A `og-image` pode ser rosto + marca.** Estava especificada como monograma sobre fundo
+`ancora`. Com foto disponível, vale testar o preview com **rosto + marca**, que costuma ser mais
+forte no lugar onde a página de fato circula: o card de link no WhatsApp e no Instagram. Testar as
+duas e comparar.
 
-### ⚠️ Dois riscos que o ensaio traz junto
+**3. A paisagem da montanha é rebaixada.** Ela era o plano B para o herói. Tem **uma única
+aparição na página inteira**, no `CtaFinal`.
 
-**A unificação cromática ficou mais difícil, não mais fácil.** Ensaio profissional costuma vir com
-tratamento próprio do fotógrafo, e frequentemente em fundo claro de estúdio. Se ele chegar nesse
-registro, vai brigar com uma página de verde escuro e terroso, e o resultado lê como colagem. O
-ajuste (dessaturar na direção de `decor`, aquecer levemente) é feito olhando a **página montada**,
-nunca a foto isolada. Se o ensaio for de estúdio branco, me avise: muda o enquadramento e a máscara.
+### ⚠️ Três cuidados de execução
 
-**A equipe.** A copy afirma, com todas as letras, que a Alando *"nunca foi construída para depender
-de uma única pessoa"*. Se a seção `Sobre` trouxer só o rosto da fundadora, **a imagem contradiz o
-texto que está do lado dela**. As fotos de captação resolvem isso melhor do que uma foto posada de
-equipe: mostram gente trabalhando junto, que é exatamente o que o parágrafo afirma.
+**Unificação cromática.** Boa notícia da auditoria: as fotos da Andressa **não são de estúdio
+branco**, são parede clara com plantas e luz quente, então já estão perto da paleta e o ajuste
+tende a ser pequeno. O risco real está nas de captação, que vieram de sessões diferentes (loja,
+cafeteria, cozinha, área externa) e têm temperaturas incompatíveis entre si. Dessaturar na direção
+de `decor` e aquecer levemente, sempre olhando a **página montada**, nunca a foto isolada.
+
+**Metadados são obrigação, não capricho.** Toda foto passa pelo `scripts/processar-fotos.mjs`, que
+usa `sharp` sem `withMetadata()` e escreve JPEG. Isso remove o EXIF das fotos de iPhone (que
+carregam data e aparelho) e a credencial C2PA das duas da Andressa, num passo só. **Nenhuma imagem
+vai para `public/` sem passar por ali.**
+
+**A equipe, e a repetição do motivo.** A copy afirma que a Alando *"nunca foi construída para
+depender de uma única pessoa"*. Se `Sobre` trouxer só o rosto da fundadora, **a imagem contradiz o
+texto ao lado dela**, e as fotos de captação são o que resolve. Só que as nove repetem o mesmo
+enquadramento (mão segurando a câmera, tela mostrando a cena): usar duas em seções vizinhas lê como
+padrão. **Distribuir entre seções distantes e variar o recorte dentro da máscara.**
 
 ### Regras
 
 - **A pessoa nunca é recorte flutuante.** Fica ancorada dentro de uma máscara orgânica. Recorte
   boiando na tela lê como banner barato.
-- **Consistência cromática:** prints de feed e ensaio vêm de contextos visuais completamente
-  diferentes. Sem tratamento unificado (dessaturação na direção de `decor`, temperatura levemente
-  quente) a página lê como colagem. Ajustar olhando a **página montada**, não a foto isolada.
+- **Consistência cromática:** prints de feed, retratos e fotos de captação vêm de contextos visuais
+  completamente diferentes. Sem tratamento unificado (dessaturação na direção de `decor`,
+  temperatura levemente quente) a página lê como colagem. Ajustar olhando a **página montada**, não
+  a foto isolada.
 - Toda foto de conteúdo com `alt` descritivo real. `alt=""` só em decorativo.
 - **AVIF com fallback WebP** via `next/image`, `sizes` correto, `priority` **só** no herói.
-- Nenhuma imagem acima de ~200 KB.
+- Nenhuma imagem acima de ~200 KB, e o herói até **120 KB**.
+- **Nenhuma imagem entra em `public/` sem passar pelo `scripts/processar-fotos.mjs`**, que é o que
+  remove metadados.
 
 ### O que não fazer
 

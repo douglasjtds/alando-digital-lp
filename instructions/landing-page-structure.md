@@ -209,9 +209,13 @@ blur após 40px de scroll. Âncoras: `#servicos`, `#processo`, `#sobre`, `#duvid
 | subtítulo | *Porque nenhuma marca deveria ser tratada como só mais um cliente.* |
 | CTA único | **Quero conversar com a Alando** |
 
-**Layout 55/45**, nunca 50/50. Foto: `<<A CONFIRMAR: não há ensaio da Andressa>>`. Enquanto não
-houver, usar a paisagem da paleta com máscara orgânica: **e registrar como provisório**, porque
-paisagem genérica é o vocabulário mais copiado que existe hoje.
+**Layout 55/45**, nunca 50/50. Foto: uma das duas de `drive-files/Dêssa/`, aprovadas em 31/07,
+dentro de máscara orgânica.
+
+⚠️ **O original tem 1023×1537 e não existe maior.** A coluna da imagem em 55/45 sobre `max-w-6xl`
+dá cerca de 518 CSS px, que pede 1036 px para cobrir 2x. **Sem corte apertado no rosto:** a foto
+entra perto do quadro cheio, senão o elemento de LCP da página fica macio. Ver
+`DESIGN-GUIDELINES.md` §9.
 
 **Não incluir** o parágrafo longo da copy ("Na Alando, acreditamos que um bom posicionamento começa
 muito antes do primeiro post…"). Ele desce inteiro, sem alteração de texto, para o `Manifesto`.
@@ -230,7 +234,17 @@ SVG, monocromáticos em `ancora`, altura óptica equalizada (não por bounding b
 sage o logo precisa de `ancora`, não de `tinta` (4,39:1).
 
 **Nasce desligada** (`exibir: false`). Liga quando os logos autorizados chegarem.
-`<<A CONFIRMAR: lista de logos autorizados, em SVG>>`
+
+⚠️ **Adiada por decisão de 31/07, e o motivo é material.** Não existe arquivo de logo de cliente
+no projeto, e as capas dos manuais de identidade visual **não servem de fonte**: a Fase 0 abriu os
+10 PDFs e não há **nenhum** operador de curva ou linha nas capas. O nome do cliente ali é texto
+vivo, na fonte da marca dele, e o resto é raster avulso. Extrair daria um conjunto misto, e esta
+seção exige SVG monocromático com altura óptica equalizada.
+
+O pedido certo é fácil de atender: **a Andressa desenhou essas identidades e tem os arquivos-fonte,
+e o Canva exporta SVG.**
+
+`<<A CONFIRMAR: logos de clientes autorizados, em SVG exportado do Canva>>`
 
 Sem carrossel automático. Se não couberem, quebra em duas linhas.
 
@@ -310,6 +324,10 @@ Cinco serviços, direto da copy, **e a copy diz qual é o centro**: *"Gestão de
 
 Cada serviço mantém a linha de fechamento da copy quando existir (ex.: *"Ideal para empresas que
 estão começando ou passando por um reposicionamento."*).
+
+> ⛔ **A landing não exibe preço.** Decisão do Douglas em 31/07. O deck traz "A partir de R$ 2400"
+> na p. 17, e o número **não vai para a página**, em nenhuma seção e em nenhuma forma, nem como
+> faixa de investimento. Fica registrado aqui para ninguém reabrir o assunto ao ler o PDF.
 
 Depois dos cinco, o bloco **"Mais do que contratar um serviço…"** fecha a seção: é o diferencial,
 e é onde a tese volta.
@@ -393,14 +411,14 @@ por isso que dizemos que", ela cita o slogan explicitamente e precisa citá-lo c
 Branding, MBA pela ESPM. E o parágrafo sobre a equipe, que é importante: *"nunca foi construída
 para depender de uma única pessoa."*
 
-Layout 5/7, invertendo o herói. Máscara orgânica **diferente** da do herói. `medida` no texto.
+Layout 5/7, invertendo o herói. Foto: **a segunda** de `drive-files/Dêssa/`, com máscara orgânica
+**diferente** da do herói. `medida` no texto.
 
-✅ **Ensaio profissional confirmado em 29/07.** Máscara orgânica **diferente** da do herói.
-
-⚠️ **Mas atenção ao parágrafo da equipe.** A copy diz que a Alando *"nunca foi construída para
-depender de uma única pessoa"*. Só o rosto da fundadora aqui faz a imagem contradizer o texto ao
-lado dela. As fotos de captação de `drive-files/` resolvem melhor que uma foto posada de equipe:
-mostram gente trabalhando junto, que é o que o parágrafo afirma.
+⚠️ **Atenção ao parágrafo da equipe.** A copy diz que a Alando *"nunca foi construída para depender
+de uma única pessoa"*. Só o rosto da fundadora aqui faz a imagem contradizer o texto ao lado dela.
+As fotos de captação de `drive-files/Fotos captações/` resolvem isso: mostram o trabalho
+acontecendo, que é o que o parágrafo afirma. Como as nove repetem o mesmo enquadramento, usar aqui
+uma que não apareça em `Servicos`.
 
 Nada de trajetória inventada. Inventar credencial é a mesma classe de erro que inventar depoimento.
 
@@ -628,19 +646,20 @@ outro orçamento. Dizer isso no começo evita a conversa ruim no terceiro mês.
 
 ## 10. Informações que faltam: bloqueiam o desenvolvimento
 
-Lista completa e organizada em `AUDITORIA-ETAPA-1.md` §10. Resumo do que trava o quê:
+Lista completa e organizada em `AUDITORIA-FASE-0.md` §9. Resumo do que trava o quê:
 
 | Falta | Trava |
 |---|---|
 | Número de WhatsApp | **Toda a conversão.** Botões ficam desabilitados |
 | Domínio | `metadataBase`, canonical, indexação |
 | Cidade | `title`, `description`, footer, JSON-LD, busca local |
-| Fotos da Andressa / equipe | `Hero`, `Sobre`, e a regra anti-template nº 3 |
-| Licença da `asimilates` | Decisão tipográfica da Fase 1 |
-| Ícones proprietários existem? | Desenho da assinatura de movimento (Fase 2) |
-| Logos autorizados | `FaixaClientes` |
+| Logos de clientes autorizados, em SVG | `FaixaClientes` |
 | Autorização dos números de caso | `Resultados` |
+| Autorização de imagem nas fotos de captação, inclusive da criança | `Servicos` |
+| Autorização de cada cliente cujo material vire thumbnail | `Servicos` |
 | Processo real + prazos | `Processo` |
 | Objeções reais | `Faq` |
 | Copy do fechamento | `CtaFinal` |
-| ✅ nada pendente aqui: a linha de fechamento já foi resolvida | |
+
+**Resolvido na Fase 0, e fora da lista:** fotos da Andressa e da equipe, licença da `asimilates`,
+existência de ícones proprietários, logo e monograma, e preço na página.

@@ -33,6 +33,8 @@ REGRA DO LCP, a mais fácil de quebrar:
   para aparecer. Se o chunk demorar ou falhar, a dobra tem que estar completa.
 
 FAIXACLIENTES
+>>> A Fase 0 confirmou que não existe logo de cliente no material, então esta seção
+>>> NASCE E FICA DESLIGADA. Monte o componente, deixe exibir: false, e siga.
 - Faixa fina sobre `superficie-2` (sage)
 - Logos SVG monocromáticos em `ancora` (sobre sage, `tinta` dá só 4,39:1),
   altura ÓPTICA equalizada (não por bounding

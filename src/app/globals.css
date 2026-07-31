@@ -1,0 +1,17 @@
+@import "tailwindcss";
+
+/* ==========================================================================
+   ⚠️ ESTE ARQUIVO É UM DOS DOIS ÚNICOS LUGARES DO PROJETO ONDE PODE EXISTIR HEX.
+   O outro é src/config/brand.ts. Nada de `text-[#102F15]` em componente.
+   Auditável com: grep -rE '#[0-9a-fA-F]{3,8}' src/
+
+   OS TOKENS ENTRAM NA FASE 1, não aqui. São nove, e oito são hexes literais do
+   manual da Andressa. A Fase 0 conferiu os seis hexes do PNG "Paleta de cores"
+   pixel a pixel, contra os PNGs do próprio monograma, e todos batem:
+   #102F15, #4C2B08, #B3B793, #AB7743, #676127, #544635.
+
+   Lista completa, papéis e regras: DESIGN-GUIDELINES.md §3 e fase-1-tokens.md.
+   A escala tipográfica, as famílias de fonte e os utilitários de marca também
+   são da Fase 1. Este arquivo fica deliberadamente vazio até lá, para que o
+   scaffold não antecipe decisão nenhuma.
+   ========================================================================== */

@@ -5,14 +5,24 @@
 ```
 Prepare o pipeline de imagens. Os originais estão em ref-files/.
 
-1. INVENTÁRIO PRIMEIRO
-   Originais em ref-files/ e drive-files/. Antes de processar, me confirme:
-   - Ensaio profissional da Andressa (confirmado): quantas fotos, quais enquadramentos,
-     e em que registro foi feito? Se for fundo claro de estúdio, ME AVISE ANTES de
-     processar: briga com uma página de verde escuro e o resultado lê como colagem
-   - Fotos de captação/bastidores: quantas, que situações?
-   - Logos de clientes em SVG?
-   - Quais fotos têm terceiros identificáveis?
+1. O INVENTÁRIO JÁ ESTÁ FEITO: leia AUDITORIA-FASE-0.md §2, §3 e §4 antes de processar.
+   Resumo do que existe e já está aprovado:
+
+   - 2 fotos da Andressa em drive-files/Dêssa/, 1023x1537. Fundo de parede clara com
+     plantas, luz quente, JÁ PERTO DA PALETA. Uma vai para o Hero, outra para o Sobre.
+     >>> RESTRIÇÃO DURA: 1023x1537 é o que existe e não há original maior. A coluna da
+     >>> imagem em 55/45 pede 1036px para cobrir 2x. NADA DE CORTE APERTADO NO ROSTO,
+     >>> senão o elemento de LCP da página fica macio. Trabalhe perto do quadro cheio.
+   - 9 fotos de captação em drive-files/Fotos captações/, de iPhone. Só 2 estão em
+     resolução de trabalho (as .heic). O sharp aqui é 0.34.5 e lê HEIF direto.
+     >>> As nove repetem o mesmo enquadramento (mão + câmera + tela). Distribua entre
+     >>> seções DISTANTES e varie o recorte, senão lê como padrão.
+   - Logos e monograma: ref-files/Logos/ e ref-files/Ícones /, PNG 1080 com alfa, em
+     8 cores, com versão NEGATIVA (branca). Não existe SVG, e não vamos pedir.
+   - Logos de clientes: NÃO EXISTEM, e as capas dos PDFs não servem. FaixaClientes
+     nasce desligada.
+   - Terceiros identificáveis: uma mulher em 2ED70A8D e UMA CRIANÇA em 499E4759.
+     Ambas dependem de autorização. A criança é o caso mais restritivo.
 
 2. OS PDFs DE CLIENTE: regra especial, leia com atenção
    drive-files/ tem diagnósticos de marca e identidades visuais de OUTROS CLIENTES
@@ -41,12 +51,19 @@ Prepare o pipeline de imagens. Os originais estão em ref-files/.
    muito melhor que qualquer banco de imagem), portfolio-*, og-image.
 
 4. TRATAMENTO CROMÁTICO UNIFICADO
-   Este projeto tem um problema específico: prints de feed de cliente e (se houver)
-   ensaio da Andressa vêm de contextos visuais completamente diferentes. Sem tratamento
-   unificado a página lê como colagem.
+   Prints de feed de cliente, os dois retratos e as nove de captação vêm de contextos
+   visuais completamente diferentes. Sem tratamento unificado a página lê como colagem.
+
+   Os retratos já estão perto da paleta e pedem pouco. O risco real está nas de
+   captação: loja, cafeteria, cozinha e área externa têm temperaturas incompatíveis
+   entre si.
 
    Dessature na direção da cor `decor` (#B3B793) e aqueça levemente a temperatura.
    Ajuste olhando a PÁGINA MONTADA, não a foto isolada. Me mostre um antes/depois.
+
+   >>> METADADOS: o processar-fotos.mjs usa sharp sem withMetadata() e escreve JPEG,
+   >>> o que remove o EXIF das fotos de iPhone e a credencial C2PA dos dois retratos
+   >>> num passo só. NENHUMA imagem entra em public/ sem passar por ali.
 
 5. RECORTES
    Herói em 4:5, rosto no terço superior.
@@ -58,9 +75,10 @@ Prepare o pipeline de imagens. Os originais estão em ref-files/.
    duas é banco de imagem.
 
 7. GERAR
-   favicon.ico, apple-touch-icon.png e og-image.jpg (1200x630). Com o ensaio disponível,
-   gere DUAS versões para comparar: (a) monograma sobre fundo `ancora`, (b) rosto da
-   Andressa + marca: é o preview no WhatsApp, que é onde a página mais circula).
+   favicon.ico, apple-touch-icon.png e og-image.jpg (1200x630). O favicon e o
+   apple-touch-icon saem do monograma (ref-files/Ícones /, escolha a cor pelo fundo).
+   Para a og-image, gere DUAS versões para comparar: (a) monograma sobre fundo `ancora`,
+   (b) rosto da Andressa + marca, que é o preview no WhatsApp, onde a página circula.
 
 Formato AVIF com fallback WebP. Reporte o peso final de cada arquivo.
 Nenhuma imagem acima de ~200KB.

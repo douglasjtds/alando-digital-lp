@@ -137,12 +137,14 @@ outra, e não perde a conversa original.
 Três tipos de parada, com donos diferentes.
 
 **Volte para MIM (aqui no chat) se:**
-- a Fase 0 contradisser a `AUDITORIA-ETAPA-1.md`, principalmente sobre a licença da **asimilates**
-  (a decisão tipográfica inteira depende disso)
-- o ensaio da Andressa for em fundo claro de estúdio (muda enquadramento e tratamento)
-- não existir nenhuma foto de captação com mais de uma pessoa (o parágrafo da equipe fica sem
-  imagem que o sustente)
 - a Fase 8 acusar algo estrutural
+- a página montada mostrar que as fotos brigam entre si depois do tratamento cromático
+- qualquer decisão da Fase 0 precisar ser reaberta
+
+> ✅ **Os três motivos de parada originais desta lista morreram na Fase 0:** a licença da
+> `asimilates` está resolvida (não foi entregue, o display é Playfair), os retratos **não** são de
+> estúdio branco, e o parágrafo da equipe tem as nove fotos de captação para se apoiar. Ver
+> `AUDITORIA-FASE-0.md`.
 
 **Volte para a ANDRESSA se faltar:**
 

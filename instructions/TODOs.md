@@ -14,8 +14,8 @@
 | Fase | Prompt | Objetivo | Bloqueada por |
 |---|---|---|---|
 | 0 | `fase-0-auditoria-e-scaffold.md` | Auditar `ref-files/` e subir o scaffold | - |
-| 1 | `fase-1-tokens.md` | Tokens de cor e base tipográfica | Fase 0 (licença de fonte) |
-| 2 | `fase-2-formas-e-assinatura.md` | Máscaras orgânicas + `FaixaRepetida` | Fase 0 (ícones existem?) |
+| 1 | `fase-1-tokens.md` | Tokens de cor e base tipográfica | ✅ desbloqueada (Playfair + Montserrat, ambas OFL) |
+| 2 | `fase-2-formas-e-assinatura.md` | Máscaras orgânicas + `FaixaRepetida` | ✅ desbloqueada (não há ícones, e a §8 já era o plano) |
 | 3 | `fase-3-assets.md` | Pipeline de imagens | ✅ desbloqueada (material em `drive-files/`) |
 | 4 | `fase-4-conteudo.md` | `content.ts` completo | Copy pendente de 3 seções |
 | 5A | `fase-5a-header-hero-clientes.md` | Header, Hero, FaixaClientes | - |
@@ -71,19 +71,20 @@ os CTAs abrindo a conversa com a mensagem certa, **zero `<<A CONFIRMAR>>`**.
 
 ## Pendências que travam fases inteiras
 
-Sem estas, algumas fases não fecham. Lista completa em `AUDITORIA-ETAPA-1.md` §10.
+Sem estas, algumas fases não fecham. Lista completa em `AUDITORIA-FASE-0.md` §9.
 
 | Pendência | Trava |
 |---|---|
 | Número de WhatsApp | Fase 4 e a conversão inteira |
 | Domínio | Fase 6, Fase 9 |
 | Cidade | Fase 4, Fase 6 |
-| ✅ Ensaio profissional da Andressa: confirmado | |
 | Autorização dos clientes para thumbnails de portfólio | Fase 3, Fase 5B |
-| Licença da `asimilates` | Fase 1 |
-| Ícones proprietários existem? | Fase 2, Fase 7 |
+| Autorização de imagem nas fotos de captação, inclusive da criança | Fase 3, Fase 5B |
 | Copy de `Processo`, `Faq`, `CtaFinal` | Fase 4, Fase 5C, Fase 5D |
-| Logos + autorização dos números de caso | Fase 5A, Fase 5C |
+| Logos de clientes em SVG + autorização dos números de caso | Fase 5A, Fase 5C |
+
+**Resolvido na Fase 0:** fotos da Andressa e da equipe, licença da `asimilates`, existência de
+ícones proprietários, logo e monograma, e preço na página.
 
 
 Fases 5 a 8 podem rodar com os marcadores no lugar. **A Fase 9 não.**

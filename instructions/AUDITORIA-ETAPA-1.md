@@ -7,6 +7,14 @@
 
 ---
 
+> ## ✅ Auditado na Fase 0, em 30/07. Leia `AUDITORIA-FASE-0.md` antes deste arquivo.
+>
+> Os três itens "não verificado" desta seção foram verificados no material real, e **três
+> conclusões deste documento caíram**: não existe ensaio profissional da Andressa, não existem
+> ícones proprietários, e não existe nenhum SVG. As decisões do Douglas sobre cada um estão em
+> `AUDITORIA-FASE-0.md` §0. O texto abaixo fica como registro de por que a auditoria não pôde ser
+> feita antes, e a §1 continua válida: a engenharia reversa da tipografia acertou.
+
 ## 0. O que eu NÃO consegui auditar: leia primeiro
 
 **`ref-files/` não chegou até mim.** O caminho `/Users/douglasjtds/src/freelas/buy-my-code/alando-digital-lp/ref-files`
@@ -19,11 +27,11 @@ tipografia foi extraído por engenharia reversa do PDF (fontes embutidas), não 
 Segundo a regra da própria skill, *"diga quando não pôde verificar; 'não verificado' é uma
 resposta, 'provavelmente ok' não é"*, três itens ficam **não verificados**:
 
-| Item | Status |
-|---|---|
-| Licença dos arquivos de fonte (`.txt`, `LICENSE`, `README` da pasta) | ❌ não verificado |
-| Ícones proprietários, existem? SVG editável? stroke ou fill? | ❌ não verificado |
-| Inventário de fotos: quantas, quantas sessões, terceiros identificáveis | ❌ não verificado |
+| Item | Status na Etapa 1 | Resultado da Fase 0 |
+|---|---|---|
+| Licença dos arquivos de fonte | ❌ não verificado | ✅ Montserrat e Playfair são OFL. A `asimilates` **não foi entregue** e fica fora |
+| Ícones proprietários, existem? SVG? stroke ou fill? | ❌ não verificado | ✅ **Não existem ícones.** Existe o monograma, em PNG, versão preenchida e em contorno |
+| Inventário de fotos | ❌ não verificado | ✅ 2 da Andressa e 9 de captação, todas aprovadas. **Não é ensaio profissional** |
 
 **Duas saídas, escolha uma:**
 
@@ -113,12 +121,15 @@ O acervo que chegou é **fotografia de terceiros**: prints de feed de clientes (
 Dra. Ana Luisa, Dra. Juliana, Luciano Fernandes, Daoravida, NaCasa, Vizzent, Appré) e fotografia de
 paisagem: montanha na neblina, floresta de outono, que é o mesmo registro do PNG da paleta.
 
-**✅ Resolvido em 29/07: existe ensaio profissional da Andressa**, mais fotos de captação do
-trabalho real da equipe, na pasta `drive-files/`. Era a pendência de maior impacto do projeto, e
-ela caiu. O texto abaixo fica registrado porque explica **por que** era crítica, e porque duas
-coisas continuam valendo mesmo com o ensaio na mão: a unificação cromática ficou mais difícil (ver
-`DESIGN-GUIDELINES.md` §9) e o parágrafo sobre a equipe precisa de imagem que não seja só a
-fundadora.
+**⚠️ Corrigido na Fase 0: não existe ensaio profissional.** Eu havia registrado aqui, em 29/07,
+que ele existia. A auditoria do material mostrou outra coisa: `drive-files/Dêssa/` tem **duas
+imagens produzidas com `gpt-image`**, e `drive-files/Fotos captações/` tem **nove fotos de iPhone**
+do trabalho acontecendo. **O Douglas decidiu em 31/07 usar as duas coisas**, e o inventário
+completo está em `AUDITORIA-FASE-0.md` §4.
+
+O texto abaixo fica registrado porque explica **por que** a questão da fotografia era crítica, e
+porque duas coisas continuam valendo: a unificação cromática (ver `DESIGN-GUIDELINES.md` §9) e o
+parágrafo sobre a equipe, que precisa de imagem que não seja só a fundadora.
 
 **No material original que eu recebi, não havia nenhuma foto da Andressa nem da equipe.**
 
@@ -479,6 +490,9 @@ escrever **só** o que falta, na voz dela, e te mando para aprovar antes de entr
 
 ## 10. Pendências: o bloco para levar à Andressa
 
+> ⚠️ **Bloco reescrito em 31/07, depois da Fase 0.** A lista viva é esta. A versão anterior
+> tratava fotos, fontes e ícones como pendências, e as três estão resolvidas.
+
 ```
 BLOQUEIA O DESENVOLVIMENTO
  1. Número de WhatsApp (com DDD), e confirmar que WhatsApp é mesmo o canal.
@@ -486,40 +500,43 @@ BLOQUEIA O DESENVOLVIMENTO
     de escopo por decisão de arquitetura, mas link para Calendly é possível.
  2. Domínio final. Enquanto não houver, a página sobe com noindex.
  3. Cidade / região de atuação.
- 4. ✅ RESOLVIDO: ensaio profissional da Andressa, em drive-files/.
-    Resta uma pergunta menor: o ensaio é em fundo claro de estúdio? Se for,
-    muda enquadramento e tratamento (ver DESIGN-GUIDELINES §9).
- 5. Licença de fonte: a Andressa tem licença comercial da asimilates? Ela é usada
-    só no logo ou também em títulos?
- 6. Ícones proprietários existem? Em SVG?
-
-MATERIAL RECEBIDO EM 29/07 (drive-files/): precisa de triagem, não bloqueia mais
- A. Fotos da Andressa e da equipe.  → resolve a pendência 4
- B. Fotos de captação e bastidores. → material real para Servicos
- C. PDFs de diagnóstico e identidade visual de clientes.
-    ⚠️ REFERÊNCIA. Não podem ser publicados. Nenhum vai para public/.
-    Se virarem thumbnail de portfólio: autorização escrita de cada cliente,
-    tamanho em que nada seja legível, e metadados removidos.
 
 BLOQUEIA SEÇÕES ESPECÍFICAS
- 7. Logos de clientes autorizados, em SVG.                 → FaixaClientes
- 8. Autorização escrita para os números de caso do deck.   → Resultados
- 9. Autorização de imagem dos profissionais citados.       → Resultados
-10. O processo real, passo a passo, com prazos reais.      → Processo
-11. As 5 a 7 objeções que ela mais ouve.                   → Faq
-12. Depoimentos reais autorizados, se existirem.           → (seção nova, opcional)
+ 4. Logos de clientes autorizados, em SVG exportado do Canva.  → FaixaClientes
+    (as capas dos PDFs NÃO servem: não há arte vetorial nelas)
+ 5. Autorização escrita para os números de caso do deck.       → Resultados
+ 6. Autorização de imagem dos profissionais citados.           → Resultados
+ 7. Autorização de imagem das pessoas nas fotos de captação,
+    inclusive a criança que aparece na tela de uma delas.      → Servicos
+ 8. Autorização de cada cliente cujo material de identidade
+    visual vire thumbnail de portfólio.                        → Servicos
+ 9. O processo real, passo a passo, com prazos reais.          → Processo
+10. As 5 a 7 objeções que ela mais ouve.                       → Faq
+11. Copy do fechamento.                                        → CtaFinal
+12. Depoimentos reais autorizados, se existirem.               → (opcional)
 
 CONFIRMAÇÕES DE COPY (você, não ela)
 13. ✅ RESOLVIDO: o slogan é "Criando", e a linha de fechamento de "Nossa história"
     passa a dizer "criamos e gerenciamos". Uma palavra, aprovada.
     ⚠️ AVISAR A ANDRESSA: o documento de copy dela tem o tagline antigo em dois pontos.
+    A Fase 0 confirmou pelo lockup impresso: o tagline do logo diz "CRIANDO".
 14. Mover o parágrafo do herói para o Manifesto?
-15. Qual lista de serviços é a atual?
+15. Qual lista de serviços é a atual: a da copy (5) ou a do PDF (6)? Não bloqueia.
+
+RESOLVIDO NA FASE 0
+ ✅ Fotos da Andressa: 2 em drive-files/Dêssa/, aprovadas em 31/07.
+ ✅ Fotos de captação: 9, aprovadas. Fundo NÃO é estúdio branco.
+ ✅ Licença de fonte: a asimilates não foi entregue e não é o lettering do logo.
+    Display fica em Playfair Display.
+ ✅ Ícones proprietários: não existem. Existe o monograma, em fill e em contorno.
+ ✅ Logo e monograma: PNG 1080 via next/image. Não existe SVG, e nem o deck tem.
+ ✅ Preço: a landing não exibe.
 
 INFORMAÇÃO SECUNDÁRIA
 16. Instagram confirmado (@alandodigital). Tem LinkedIn? Outras redes?
 17. Ano de fundação: 2022 (a copy diz que a história com marcas começa em 2017).
 18. "mais de 50 marcas", do PDF. Vale usar na página? Confirmar que segue válido.
+19. Qual é a fonte do lettering do logo? Curiosidade de manual, não bloqueia.
 ```
 
 ---

@@ -28,7 +28,8 @@ SOBRE
 - Layout 5/7, INVERTENDO o herói (que é 55/45 no outro sentido)
 - Máscara orgânica DIFERENTE da do herói
 - medida (62ch) no texto
-- USE o ensaio profissional da Andressa (drive-files/), com máscara DIFERENTE da do herói
+- USE a SEGUNDA foto da Andressa (drive-files/Dêssa/), a que NÃO foi para o herói,
+  com máscara DIFERENTE da do herói
 
   >>> ATENÇÃO AO PARÁGRAFO DA EQUIPE. A copy afirma que a Alando "nunca foi construída
   >>> para depender de uma única pessoa". Se esta seção trouxer só o rosto da fundadora,
