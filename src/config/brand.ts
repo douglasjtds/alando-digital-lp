@@ -111,7 +111,7 @@ export type Superficie = (typeof superficies)[number];
  * conjunto genérico é desenhado, que é o clichê da DESIGN-GUIDELINES.md §2.5.
  */
 export const whatsapp = {
-  phone: "+55 19 99140-2819",
+  phone: "5519991402819",
 } as const;
 
 export const marca = {
