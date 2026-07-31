@@ -94,12 +94,13 @@ export const content = {
     {
       titulo: "Identidade Visual",
       corpo: "A identidade visual é muito mais do que um logotipo bonito. Ela é a primeira impressão que as pessoas terão sobre a sua empresa.\n\nPor isso, antes de pensar em cores, tipografia ou símbolos, buscamos entender quem é a sua marca, quais sensações ela deve transmitir e como deseja ser lembrada. O resultado é uma identidade que representa sua essência e acompanha o crescimento do seu negócio.",
-      fechamento: "Ideal para empresas que estão começando ou passando por um reposicionamento.",
+      fechamento: "Ideal para empresas que estão começando ou passando por um reposicionamento",
       destaque: false,
     },
     {
       titulo: "Estruturação de Perfil",
       corpo: "Antes de publicar conteúdo, existe um perfil inteiro que precisa comunicar confiança.\n\nAnalisamos cada detalhe do seu Instagram para que ele deixe claro quem é a sua empresa, o que ela faz e por que alguém deveria escolher você. Ajustamos biografia, destaques, identidade visual, organização das informações e toda a experiência de quem chega ao seu perfil pela primeira vez.\n\nPorque, muitas vezes, o cliente decide se continua navegando ou fecha o Instagram em poucos segundos.",
+      fechamento: "",
       destaque: false,
     },
     {
@@ -110,11 +111,13 @@ export const content = {
     {
       titulo: "Captação e edição de vídeos",
       corpo: "Sabemos que aparecer na câmera nem sempre é fácil.\n\nPor isso, nossa equipe conduz toda a gravação de forma leve e natural, criando um ambiente em que você se sinta confortável para falar sobre aquilo que faz todos os dias.\n\nTambém pensamos em cada cena, enquadramento e roteiro para que os vídeos reflitam a essência da sua marca, e não apenas acompanhem tendências.\n\nDepois da gravação, todo o material passa pela edição para transformar boas imagens em conteúdos estratégicos.",
+      fechamento: "",
       destaque: false,
     },
     {
       titulo: "Landing Pages",
       corpo: "Uma boa campanha merece uma página que continue a conversa iniciada no anúncio.\n\nDesenvolvemos landing pages pensadas para apresentar sua empresa, transmitir confiança e conduzir o visitante até a ação que realmente importa, seja solicitar um orçamento, preencher um formulário ou realizar uma compra.\n\nAssim como todo o nosso trabalho, cada página é construída de forma personalizada, respeitando a identidade e o posicionamento da sua marca.",
+      fechamento: "",
       destaque: false,
     },
   ],
