@@ -8,8 +8,10 @@ import { WhatsappCta } from "@/components/ui/WhatsappCta";
 export function Hero() {
   const partes = partirNoItalico(content.hero.h1, content.hero.h1PalavraItalica);
 
+  /* `id="inicio"` é o alvo do IntersectionObserver do `StickyMobileCta`
+     (§5.12), e não decoração de âncora: sem ele a barra nunca aparece. */
   return (
-    <section className="bg-papel pt-20 pb-12 md:pt-32 md:pb-20">
+    <section id="inicio" className="bg-papel pt-20 pb-12 md:pt-32 md:pb-20">
       <div className="container-lp">
         <div className="grid grid-cols-1 md:grid-cols-[1fr_1.222fr] gap-8 md:gap-12 lg:gap-16 items-start">
           <div className="flex flex-col gap-8">

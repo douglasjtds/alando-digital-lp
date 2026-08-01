@@ -59,7 +59,7 @@ export function Sobre() {
   return (
     <section
       id="sobre"
-      className="bg-papel secao-y"
+      className="bg-papel secao-y scroll-mt-24"
       aria-labelledby="faixa-sobre"
     >
       <div className="container-lp">

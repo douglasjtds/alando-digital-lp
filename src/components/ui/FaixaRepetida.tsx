@@ -1,5 +1,6 @@
 import { cn } from "@/lib/cn";
 import { partirNoItalico } from "@/lib/italico";
+import { renderizarPendencia } from "@/lib/pendencia";
 
 /**
  * O COMPONENTE-ASSINATURA da página.
@@ -100,7 +101,17 @@ export function FaixaRepetida({
       >
         {/* A ÚNICA instância semântica. Um <h2> de verdade, dentro da linha.
             É o que impede a accessibility tree de ouvir "quem somos quem somos
-            quem somos quem somos", que é falha grave e não estética. */}
+            quem somos quem somos", que é falha grave e não estética.
+
+            ⚠️ A instância legível passa por `renderizarPendencia`, porque
+            título de seção também pode ser pendência: o `CtaFinal` é feito só
+            disso hoje, e sem isto o marcador saía como texto cru, contra a
+            regra do CLAUDE.md de que ele apareça REALÇADO. Não é um caminho
+            alternativo: em título confirmado a função devolve a própria string.
+            As variantes das duas funções têm os mesmos dois nomes de propósito,
+            então a superfície escura leva o marcador legível junto. As cópias
+            decorativas seguem com o texto cru: a 10-15% de opacidade e
+            `aria-hidden`, ninguém as lê. */}
         <h2 id={id} className={cn("display-lg", cores.legivel)}>
           {partes ? (
             <>
@@ -109,7 +120,7 @@ export function FaixaRepetida({
               {partes[2]}
             </>
           ) : (
-            texto
+            renderizarPendencia(texto, variante)
           )}
         </h2>
 

@@ -90,7 +90,18 @@
      -------------------------------------------------------------------- */
   :root {
     --largura-lp: 72rem;
-    --padding-lp: clamp(1.25rem, 5vw, 3rem);
+    /**
+     * ⚠️ O `max()` com a área segura entrou junto com o `viewportFit: "cover"`
+     * do `layout.tsx`. Sem ele, em paisagem num aparelho com recorte, o
+     * conteúdo da borda pode ficar por baixo do notch: em iPhone deitado o
+     * inset lateral chega a ~59px e o `5vw` do clamp trava em 48px. Em retrato
+     * os dois insets são 0 e nada muda, então a conta comum segue idêntica.
+     */
+    --padding-lp: max(
+      clamp(1.25rem, 5vw, 3rem),
+      env(safe-area-inset-left, 0px),
+      env(safe-area-inset-right, 0px)
+    );
     --inicio-lp: calc(
       max(0px, (100% - var(--largura-lp)) / 2) + var(--padding-lp)
     );
@@ -295,6 +306,32 @@
     column-gap: 0.4ch;
     white-space: nowrap;
     padding-inline-start: var(--inicio-lp);
+  }
+
+  /**
+   * A instância LEGÍVEL quebra linha. As cópias decorativas, não.
+   *
+   * ⚠️ Defeito da Fase 2/5B, achado no review da 5D e MEDIDO no navegador: o
+   * trilho é `nowrap` com `width: max-content` e o `.faixa` corta com
+   * `overflow-x: clip`, e nada disso sabe distinguir a instância semântica da
+   * textura. Em 390px o `<h2>` do `Manifesto` ("Antes de falar sobre redes
+   * sociais…") ia até x=531 numa viewport de 390 e aparecia como "Antes de
+   * falar sobre re", cortado no meio da palavra, na seção-assinatura da página
+   * e no breakpoint que é o caso principal do projeto.
+   *
+   * O `max-width` é a largura útil do container a partir de onde o trilho
+   * começa: `min(100vw, --largura-lp)` menos os dois paddings do container e o
+   * recuo do próprio trilho. Onde o título cabe (todos os outros hoje), a
+   * regra não muda nada, porque `normal` só quebra quando falta largura.
+   *
+   * Efeito colateral aceito: num título que quebre em duas linhas, as cópias
+   * decorativas ficam empurradas para fora da tela e a textura some NAQUELA
+   * faixa. Título legível vale mais que textura, e em telas largas, onde a
+   * faixa é lida como faixa, nada disso acontece.
+   */
+  .faixa-trilho > h2 {
+    white-space: normal;
+    max-width: calc(min(100vw, var(--largura-lp)) - 3 * var(--padding-lp));
   }
 
   /**

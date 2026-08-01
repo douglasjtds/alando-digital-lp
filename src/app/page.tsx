@@ -7,6 +7,10 @@ import { Servicos } from "@/components/sections/Servicos";
 import { Resultados } from "@/components/sections/Resultados";
 import { Processo } from "@/components/sections/Processo";
 import { Sobre } from "@/components/sections/Sobre";
+import { Faq } from "@/components/sections/Faq";
+import { CtaFinal } from "@/components/sections/CtaFinal";
+import { Footer } from "@/components/layout/Footer";
+import { StickyMobileCta } from "@/components/layout/StickyMobileCta";
 
 export default function Home() {
   return (
@@ -23,8 +27,11 @@ export default function Home() {
         <Resultados />
         <Processo />
         <Sobre />
-        {/* Fase 5D: Faq, CtaFinal, Footer, StickyMobileCta */}
+        <Faq />
+        <CtaFinal />
       </main>
+      <Footer />
+      <StickyMobileCta />
     </>
   );
 }

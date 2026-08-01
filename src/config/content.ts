@@ -274,6 +274,25 @@ export const content = {
   /**
    * FAQ. Copy inexistente. As objeções são conhecimento tácito da Andressa e
    * são melhores que qualquer lista genérica.
+   *
+   * ⚠️ UM item, não cinco slots vazios. A §5.9 pede 5 a 7 perguntas, e a Fase 5D
+   * montou a estrutura com o único par que existe: um marcador de pergunta e um
+   * de resposta. Repetir o marcador sete vezes para "ver o layout cheio" daria
+   * uma falsa impressão de seção pronta, e a §5.9 é explícita: o que falta é a
+   * lista real de objeções dela.
+   *
+   * `resposta` deixou de ser string vazia na Fase 5D: com ela vazia, o
+   * `<details>` abria em nada e a pendência sumia justamente no lugar onde
+   * alguém iria procurá-la.
+   *
+   * ⚠️ Quando as perguntas chegarem, elas e o JSON-LD `FAQPage` da Fase 6
+   * precisam bater PALAVRA POR PALAVRA. Se divergirem, o Google detecta e passa
+   * a ignorar o markup inteiro (landing-page-structure.md §7).
+   *
+   * ⚠️⚠️ `titulo` NÃO É COPY DA ANDRESSA, e é o TERCEIRO caso do arquivo, junto
+   * com `momentos.titulo` e `servicosTitulo`. A copy não tem seção de dúvidas
+   * nenhuma, então "Dúvidas" veio da âncora `#duvidas` da estrutura (§7). Fica
+   * na mesma lista de decisões de copy esperando o Douglas.
    */
   faq: {
     titulo: "Dúvidas",
@@ -281,7 +300,8 @@ export const content = {
       {
         pergunta:
           "<<A CONFIRMAR: as 5-7 objeções que a Andressa mais ouve>>",
-        resposta: "",
+        resposta:
+          "<<A CONFIRMAR: a resposta de cada objeção, em prosa, 2 a 4 frases, com as palavras dela>>",
       },
     ],
     faixaRepeticoes: 6,
@@ -291,16 +311,50 @@ export const content = {
    * CTA Final. Copy do título e rótulo do botão pendentes. O rótulo deve ser
    * diferente do herói: no herói a pessoa decide se vale a pena; aqui ela já
    * decidiu.
+   *
+   * ⚠️ O título precisa nomear a ÚLTIMA objeção, que numa agência raramente é o
+   * serviço: costuma ser "será que eu preciso disso agora" ou "será que dá para
+   * começar pequeno" (§5.10). Material da própria marca para inspirar, no deck
+   * p. 24: "Será um prazer fazer parte da próxima fase da sua marca." e "Vamos
+   * construir isso juntos?". Não transcrevi nenhuma das duas para cá: escolher
+   * uma seria decidir a copy do fechamento no lugar do Douglas.
+   *
+   * ⚠️ `faixaRepeticoes` em 1 enquanto o título for marcador: a faixa rende só
+   * a instância legível, sem cópias. **Sobe para 6 junto com o título real**, e
+   * é a única mudança necessária para a seção ganhar a titulação da marca.
    */
   ctaFinal: {
     titulo: "<<A CONFIRMAR: copy do fechamento>>",
     ctaLabel: "<<A CONFIRMAR: rótulo do botão diferente do herói>>",
     ctaOrigem: "cta-final",
+    faixaRepeticoes: 1,
   },
 
+  /**
+   * Footer.
+   *
+   * `nome` é o nome da marca, que o lockup já traz impresso, e `instagram` é o
+   * perfil confirmado. O resto é pendência, incluindo o crédito de
+   * desenvolvimento: colocar nome e link de quem fez o site é decisão da cliente
+   * sobre o rodapé dela, não do desenvolvedor sobre si mesmo.
+   *
+   * ⚠️ `direitos` é fórmula jurídica padrão de rodapé, não copy da Andressa.
+   * Não é dado da cliente (não é prazo, preço nem depoimento), mas também não
+   * saiu do documento dela: se ela quiser outra formulação, ou nenhuma, é uma
+   * linha.
+   *
+   * `instagramRotulo` é nome acessível, não copy: o texto visível é só
+   * "@alandodigital", e quem usa leitor de tela não tem como saber de que rede
+   * é o link. Mesma natureza dos `fotoAlt` deste arquivo.
+   */
   footer: {
+    nome: "Alando Digital",
     cidade: "<<A CONFIRMAR: cidade>>",
     instagram: "@alandodigital",
+    instagramRotulo: "Alando Digital no Instagram",
+    cnpj: "<<A CONFIRMAR: CNPJ, se ela quiser exibir>>",
+    direitos: "Todos os direitos reservados.",
+    credito: "<<A CONFIRMAR: crédito do desenvolvimento, nome e link>>",
   },
 } as const;
 

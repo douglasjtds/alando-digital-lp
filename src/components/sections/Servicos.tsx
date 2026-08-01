@@ -14,7 +14,7 @@ export function Servicos() {
   return (
     <section
       id="servicos"
-      className="bg-papel secao-y"
+      className="bg-papel secao-y scroll-mt-24"
       aria-labelledby="faixa-servicos"
     >
       <div className="container-lp">

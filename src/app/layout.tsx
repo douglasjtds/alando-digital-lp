@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Montserrat, Playfair_Display } from "next/font/google";
 
 import { OrganicClipPaths } from "@/components/ui/OrganicClipPaths";
@@ -45,6 +45,22 @@ const ui = Montserrat({
   display: "swap",
   variable: "--font-ui-family",
 });
+
+/**
+ * `viewportFit: "cover"` existe por causa de uma linha só do `StickyMobileCta`.
+ *
+ * Sem ele o iOS não expõe a área segura, `env(safe-area-inset-bottom)` resolve
+ * em 0, e a barra fixa fica atrás da barra de gestos do iPhone: o CTA que mais
+ * converte, parcialmente coberto, sem nada acusar erro no DevTools.
+ *
+ * O efeito colateral, em paisagem num aparelho com recorte, é a página poder
+ * chegar embaixo do notch. Quem cobre isso é o `--padding-lp` do `globals.css`,
+ * que soma `env(safe-area-inset-left/right)` ao clamp: a conta do clamp sozinha
+ * NÃO bastava, porque em iPhone deitado ela trava em 48px e o inset passa disso.
+ */
+export const viewport: Viewport = {
+  viewportFit: "cover",
+};
 
 /**
  * A metadata definitiva (title com cidade, description, openGraph, canonical,

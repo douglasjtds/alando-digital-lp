@@ -41,7 +41,7 @@ export function Processo() {
   return (
     <section
       id="processo"
-      className="bg-tinta secao-y"
+      className="bg-tinta secao-y scroll-mt-24"
       aria-labelledby="faixa-processo"
     >
       <div className="container-lp">

@@ -3,14 +3,10 @@
 import { trackCtaWhatsapp } from "@/lib/analytics";
 import { linkDoCta } from "@/lib/whatsapp";
 import { cn } from "@/lib/cn";
+import { renderizarPendencia } from "@/lib/pendencia";
 import { type CtaOrigem } from "@/config/content";
 
-type Variante =
-  | "primario"
-  | "secundario"
-  | "compacto"
-  | "invertido"
-  | "sage";
+type Variante = "primario" | "secundario" | "compacto" | "sage";
 
 const ESTILOS: Record<Variante, string> = {
   primario:
@@ -19,22 +15,40 @@ const ESTILOS: Record<Variante, string> = {
     "border border-ancora text-ancora hover:bg-ancora/5 active:bg-ancora/10",
   compacto:
     "bg-ancora text-papel hover:bg-ancora-quente hover:translate-y-[-1px] active:translate-y-[0px] px-3 py-2 text-sm",
-  invertido:
-    "bg-papel text-ancora hover:bg-papel/90 active:bg-papel/80",
   /**
-   * O CTA das superfícies ESCURAS que não são o `CtaFinal`.
+   * O CTA de TODA superfície escura, `Processo` e `CtaFinal` inclusive.
    *
    * Existe porque `primario` fica ilegível ali: `ancora` sobre `tinta` dá
-   * 1,60:1, então o botão desaparece dentro do fundo da seção. E `invertido`
-   * (fundo `papel`) está reservado ao `CtaFinal` pela §10, que o define como o
-   * único botão claro da página.
+   * 1,60:1, então o botão desaparece dentro do fundo da seção.
    *
-   * O par vem da §3, que já o especifica para fundo escuro: fundo
-   * `superficie-2` + texto `ancora`, 7,02:1 dentro do botão e 4,39:1 na
-   * fronteira com `tinta`. Sage é hex do manual, e o `CtaFinal` continua sendo
-   * o único botão em `papel`.
+   * O par vem da §3: fundo `superficie-2` + texto `ancora`, 7,02:1 dentro do
+   * botão, 4,39:1 na fronteira com `tinta` e 6,10:1 na fronteira com
+   * `ancora-quente`. Sage é hex do manual.
+   *
+   * ⚠️ A variante `invertido` (fundo `papel`) saiu na Fase 5D. Ela existia só
+   * para o `CtaFinal`, e o Douglas decidiu em 01/08 que ali vai sage, seguindo
+   * a revisão de 29/07 da §3. Botão claro sem dono é convite para alguém usar e
+   * gastar o efeito que a §10 protegia.
    */
   sage: "bg-superficie-2 text-ancora hover:bg-superficie-2/90 hover:translate-y-[-1px] active:translate-y-[0px]",
+};
+
+/**
+ * A superfície do BOTÃO, para o marcador de pendência ser legível dentro dele.
+ *
+ * ⚠️ Rótulo pendente existe: o `CtaFinal` tem
+ * `<<A CONFIRMAR: rótulo do botão diferente do herói>>`. Sem passar por
+ * `renderizarPendencia`, ele saía como texto normal dentro do botão, e era o
+ * único marcador da página inteira sem realce, ou seja, o mais fácil de chegar
+ * em produção sem ninguém ver. Como o telefone já está confirmado, o portão do
+ * "estado pendente" da §6 não pega este caso: ele cobre destinatário faltando,
+ * não copy faltando.
+ */
+const SUPERFICIE_DO_MARCADOR: Record<Variante, "claro" | "escuro"> = {
+  primario: "escuro",
+  compacto: "escuro",
+  secundario: "claro",
+  sage: "claro",
 };
 
 interface WhatsappCtaProps {
@@ -52,6 +66,11 @@ export function WhatsappCta({
 }: WhatsappCtaProps) {
   const link = linkDoCta(origem);
   const isDisabled = !link;
+
+  /* `label` continua `string`: o `aria-label` precisa de texto, e um marcador
+     no nome acessível é honesto, some junto com a copy. O que muda é só o que
+     aparece dentro do botão. */
+  const rotulo = renderizarPendencia(label, SUPERFICIE_DO_MARCADOR[variante]);
 
   const handleClick = () => {
     if (!isDisabled) {
@@ -85,7 +104,7 @@ export function WhatsappCta({
         title="Número de WhatsApp pendente"
         aria-label={`${label} (indisponível)`}
       >
-        {label}
+        {rotulo}
       </button>
     );
   }
@@ -99,7 +118,7 @@ export function WhatsappCta({
       aria-label={`${label} (abre WhatsApp)`}
       onClick={handleClick}
     >
-      {label}
+      {rotulo}
     </a>
   );
 }

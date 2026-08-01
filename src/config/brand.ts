@@ -114,6 +114,22 @@ export const whatsapp = {
   phone: "5519991402819",
 } as const;
 
+/**
+ * Os perfis, em URL completa.
+ *
+ * Mora aqui, e não no componente, por causa da fronteira white-label da
+ * `landing-page-structure.md` §3: URL de perfil é infraestrutura de contato,
+ * como o telefone acima. O handle exibido ("@alandodigital") continua no
+ * `content.ts`, porque aquilo é texto na tela.
+ *
+ * ⚠️ O `sameAs` do `Organization` no JSON-LD da Fase 6 lê ESTA constante. Se a
+ * URL fosse montada dentro do `Footer`, existiriam duas construções da mesma
+ * coisa em dois arquivos, e elas divergem na primeira troca.
+ */
+export const redes = {
+  instagram: "https://www.instagram.com/alandodigital",
+} as const;
+
 export const marca = {
   monograma: {
     /** Tinta escura `#102F15`. Vai sobre `papel` e sobre `superficie-2`. */
