@@ -11,13 +11,13 @@ export function Momentos() {
       <div className="container-lp">
         <FaixaRepetida
           id="faixa-momentos"
-          texto="Momentos"
+          texto={content.momentos.titulo}
           repeticoes={content.momentos.faixaRepeticoes}
           direcao="esquerda"
           className="mb-12 md:mb-16"
         />
 
-        <div className="max-w-prose-tight mx-auto mb-12">
+        <div className="medida mx-auto mb-12">
           <p className="body-lg text-tinta text-center mb-12">
             {content.momentos.intro}
           </p>
@@ -62,7 +62,7 @@ export function Momentos() {
           </div>
         </div>
 
-        <div className="max-w-prose-tight mx-auto">
+        <div className="medida mx-auto">
           <p className="text-center text-tinta-suave text-sm leading-relaxed">
             {content.momentos.fecha}
           </p>

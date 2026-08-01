@@ -23,7 +23,7 @@ export function Manifesto() {
           className="mb-12 md:mb-16"
         />
 
-        <div className="max-w-prose-tight mx-auto mb-8">
+        <div className="medida mx-auto mb-8">
           <p className="body-lg text-superficie-2 mb-6">
             {content.manifesto.corpo[0]}
           </p>

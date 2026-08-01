@@ -1,7 +1,31 @@
 import React from "react";
 import { cn } from "@/lib/cn";
 
-export function renderizarPendencia(texto: string): React.ReactNode {
+/**
+ * A superfície onde o marcador é aplicado.
+ *
+ * ⚠️ A variante escura não é conveniência, é correção de contraste. O marcador
+ * original pinta o texto em `acento-texto`, que sobre `papel` dá
+ * 11,54:1, mas sobre `tinta` dá **1,39:1** e sobre `ancora-quente` **1,00:1**:
+ * ou seja, invisível justamente nas duas seções que são feitas quase só de
+ * marcador (`Processo` e `Resultados`). Pendência que ninguém consegue ler
+ * derrota o propósito inteiro do marcador, que é alguém ver e substituir.
+ *
+ * No escuro o texto passa a `papel`, que rende 8,29:1 sobre `tinta` e 11,54:1
+ * sobre `ancora-quente`, e o `acento` fica só no fundo e no sublinhado, papéis
+ * decorativos onde contraste de texto não se aplica.
+ */
+type Variante = "claro" | "escuro";
+
+const ESTILOS: Record<Variante, string> = {
+  claro: "text-acento-texto bg-acento/15",
+  escuro: "text-papel bg-acento/30",
+};
+
+export function renderizarPendencia(
+  texto: string,
+  variante: Variante = "claro",
+): React.ReactNode {
   const regex = /<<([^>]*)>>/g;
   const partes: (string | React.ReactNode)[] = [];
   let ultimoIndice = 0;
@@ -20,8 +44,9 @@ export function renderizarPendencia(texto: string): React.ReactNode {
       <span
         key={`pendencia-${match.index}`}
         className={cn(
-          "font-medium text-acento-texto underline decoration-dashed",
-          "bg-acento/15 px-1"
+          "font-medium underline decoration-dashed",
+          ESTILOS[variante],
+          "px-1"
         )}
         title={pendencia}
       >

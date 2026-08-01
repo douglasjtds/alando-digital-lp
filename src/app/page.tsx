@@ -4,6 +4,9 @@ import { FaixaClientes } from "@/components/sections/FaixaClientes";
 import { Manifesto } from "@/components/sections/Manifesto";
 import { Momentos } from "@/components/sections/Momentos";
 import { Servicos } from "@/components/sections/Servicos";
+import { Resultados } from "@/components/sections/Resultados";
+import { Processo } from "@/components/sections/Processo";
+import { Sobre } from "@/components/sections/Sobre";
 
 export default function Home() {
   return (
@@ -15,7 +18,12 @@ export default function Home() {
         <Manifesto />
         <Momentos />
         <Servicos />
-        {/* Fases 5C-5D: Resultados, Processo, Sobre, FAQ, CtaFinal, Footer, StickyMobileCta */}
+        {/* `Resultados` não renderiza: `exibir: false` e nenhum número
+            autorizado. Seção desligada é estado final legítimo. */}
+        <Resultados />
+        <Processo />
+        <Sobre />
+        {/* Fase 5D: Faq, CtaFinal, Footer, StickyMobileCta */}
       </main>
     </>
   );
