@@ -413,6 +413,12 @@ Footer
 StickyMobileCta
 ```
 
+> ⚠️ **A linha 10 envelheceu duas vezes, e fica como estava porque este arquivo é registro
+> datado.** A faixa do `CtaFinal` passou de `ancora` para `ancora-quente` na revisão de 29/07
+> (o "muito verde" da Andressa), e o botão passou de `papel` para `superficie-2`, confirmado
+> pelo Douglas em 01/08. O estado atual está em `DESIGN-GUIDELINES.md` §3 e §10 e em
+> `landing-page-structure.md` §5.10.
+
 ### Por que o Manifesto vem ANTES dos Momentos
 
 O catálogo é explícito: `ParaQuem` vem antes de `Metodo` *"porque ninguém se interessa por método

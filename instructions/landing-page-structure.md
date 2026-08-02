@@ -441,8 +441,13 @@ gostar do conteúdo.
 ### 5.10: `CtaFinal`
 
 Faixa full-bleed em **`ancora-quente` `#4C2B08`** (marrom escuro), não em verde: é o fechamento
-quente do arco, e foi a mudança que respondeu ao "muito verde" da Andressa. CTA **invertido**
-(fundo `papel`, texto `ancora`): o único botão claro da página.
+quente do arco, e foi a mudança que respondeu ao "muito verde" da Andressa. CTA em
+**`superficie-2`, texto `ancora`** (7,02:1 dentro do botão, 6,10:1 contra o fundo da seção).
+
+> ⚠️ **Corrigido em 01/08, na Fase 5D.** Esta linha pedia "CTA invertido (fundo `papel`, texto
+> `ancora`): o único botão claro da página", e era o texto anterior à revisão de 29/07 da
+> `DESIGN-GUIDELINES.md` §3, que já tinha trocado para sage com o motivo escrito. Decidido pelo
+> Douglas: fica sage, e a variante `invertido` saiu do `WhatsappCta`.
 
 ⚠️ **Copy inexistente.** O título precisa nomear a **última objeção**, que numa agência raramente é
 o serviço, costuma ser *"será que eu preciso disso agora"* ou *"será que dá para começar pequeno"*.

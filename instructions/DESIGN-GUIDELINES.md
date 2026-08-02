@@ -263,6 +263,11 @@ No `CtaFinal` (agora fundo `ancora-quente`), inverte para **fundo `superficie-2`
 (sage sobre marrom escuro dá 6,10:1 no fundo, e ancora sobre sage dá 7,02:1 no botão). Sage é hex do
 manual e faz o trabalho que eu tinha dado ao `papel`.
 
+> ✅ **Esta é a versão que vale, confirmada pelo Douglas em 01/08.** A §10, a §5.10 da estrutura e
+> o prompt da Fase 5D tinham ficado com o texto anterior (`papel`, "o único botão claro da
+> página"), e os três foram corrigidos. **Não existe mais botão em `papel` na página**, e a
+> variante `invertido` saiu do `WhatsappCta`.
+
 ### Os PDFs de cliente: a regra é diferente de todas as outras
 
 `drive-files/` tem diagnósticos de marca e manuais de identidade visual de **outros clientes da
@@ -737,7 +742,15 @@ Todo elemento interativo precisa de `default`, `hover`, `focus-visible`, `active
   Hover: `ancora-quente` + `translateY(-1px)`. **Sem sombra colorida, sem gradiente, sem borda
   muito arredondada**, os três são assinatura de template.
 - **CTA secundário:** borda 1px `ancora`, texto `ancora`, fundo transparente.
-- **CTA do `CtaFinal`:** invertido: fundo `papel`, texto `ancora`. É o único botão claro da página.
+- **CTA do `CtaFinal`:** fundo `superficie-2`, texto `ancora`. 7,02:1 dentro do botão e 6,10:1
+  contra o `ancora-quente` da seção.
+  > ⚠️ **Corrigido em 01/08, na Fase 5D.** Esta linha dizia "invertido: fundo `papel`, texto
+  > `ancora`. É o único botão claro da página", que é o texto anterior à revisão de 29/07: a
+  > §3 já dizia *"Sage é hex do manual e faz o trabalho que eu tinha dado ao `papel`"*, e
+  > ninguém tinha propagado para cá. As duas combinações passam em contraste, então a decisão
+  > era de identidade, e o Douglas fechou em sage. **Não existe mais botão em `papel`**: a
+  > variante `invertido` saiu do `WhatsappCta`, porque botão claro sem dono é convite para
+  > alguém usar e gastar o efeito que esta linha protegia.
 - **Link em texto:** sublinhado com `text-underline-offset: 4px`, `text-decoration-color: acento`.
 - **FAQ:** `<details>`/`<summary>` nativo. **Não usar accordion de shadcn/Radix**, o nativo é
   acessível de graça, custa 0 KB, e mantém o conteúdo no HTML para o crawler, que é a razão de o

@@ -18,7 +18,10 @@ FAQ
 CTAFINAL
 - Faixa FULL-BLEED em `ancora`: o momento mais escuro da página, fechando o arco que
   começou no fundo claro
-- CTA INVERTIDO: fundo `papel`, texto `ancora`. É o único botão claro da página inteira
+- CTA em `superficie-2` com texto `ancora` (7,02:1 no botão, 6,10:1 contra a seção).
+  CORRIGIDO EM 01/08: este prompt pedia fundo `papel`, seguindo a §10, e as duas eram
+  texto anterior à revisão de 29/07 da §3, que já trocara para sage. A variante
+  `invertido` não existe mais no `WhatsappCta`
 - Rótulo DIFERENTE do herói: no herói a pessoa decide se vale a pena; aqui ela já decidiu
   e está começando
 - Sem sombra colorida, sem gradiente, sem borda muito arredondada
