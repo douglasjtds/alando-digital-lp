@@ -15,9 +15,46 @@
  * "cuidamos" por "criamos", porque a frase cita o slogan explicitamente.
  * Nenhuma outra ocorrência de "cuidar" muda. Registrado em
  * `landing-page-structure.md` §5.8.
+ *
+ * A cidade NÃO é escrita aqui: ela vem de `brand.local`, porque aparece também no
+ * `title`, na `description` e no `PostalAddress` do JSON-LD, que não são copy.
+ * Ver o comentário de `local` em `brand.ts`.
  */
 
+import { local } from "./brand";
+
 export const content = {
+  /**
+   * O texto que aparece FORA da página: aba do navegador, resultado de busca,
+   * card de link no WhatsApp e no Instagram, e o `description` do JSON-LD.
+   *
+   * Mora aqui e não no `layout.tsx` pelo mesmo motivo de todo o resto: é texto na
+   * tela de alguém, e a fronteira white-label diz que texto vive no `content.ts`.
+   *
+   * ⚠️ NÃO SAIU DIRETO DO `Landing Page copy.md`, e por isso vai para o bloco de
+   * aprovação do Douglas. As duas metades são palavras dela, mas a junção é
+   * minha:
+   *
+   * - `descricao` começa na linha da capa do deck ("Estratégia, posicionamento e
+   *   comunicação para marcas que desejam ser lembradas") e termina no slogan
+   *   confirmado, mais a cidade. 158 caracteres, dentro da faixa de 150-160.
+   * - `titulo` tem 52 caracteres, teto de 60.
+   *
+   * ⚠️ A cidade entra por interpolação, e o marcador NÃO entra aqui mesmo quando
+   * ela estiver pendente. Decisão do Douglas em 02/08: `title` e `og:title` são
+   * consumidos por máquina e pelo card de link, mesma natureza do JSON-LD, onde a
+   * regra assimétrica já manda omitir. O marcador continua visível no corpo.
+   *
+   * `ogAlt` é `alt` de imagem, obrigação de acessibilidade, não copy da cliente.
+   */
+  seo: {
+    titulo: `Alando Digital, Branding e comunicação em ${local.cidade}`,
+    descricao: `Estratégia, posicionamento e comunicação para marcas que desejam ser lembradas. A Alando Digital cria e gerencia marcas de forma artesanal, em ${local.cidadeUf}.`,
+    /** O `description` do nó `Organization`. É a bio da marca, literal. */
+    bio: "Estratégia, posicionamento e comunicação para marcas que desejam ser lembradas.",
+    ogAlt: "Alando Digital, criando e gerenciando marcas de forma artesanal.",
+  },
+
   header: {
     pularParaConteudo: "Pular para o conteúdo",
     nav: {
@@ -29,7 +66,7 @@ export const content = {
   },
 
   hero: {
-    eyebrow: "Branding e comunicação · <<A CONFIRMAR: cidade>>",
+    eyebrow: `Branding e comunicação · ${local.cidadeUf}`,
     h1: "Criando e gerenciando marcas de forma artesanal.",
     h1PalavraItalica: "artesanal",
     subtitulo:
@@ -347,9 +384,30 @@ export const content = {
    * "@alandodigital", e quem usa leitor de tela não tem como saber de que rede
    * é o link. Mesma natureza dos `fotoAlt` deste arquivo.
    */
+  /**
+   * A página 404.
+   *
+   * ⚠️ TEXTO QUE EU ESCREVI, não copy da Andressa, e por isso vai para o bloco de
+   * aprovação junto com o `seo` acima. É da mesma natureza dos `fotoAlt` e do
+   * `direitos` deste arquivo: texto de interface que a página precisa ter e que o
+   * documento dela não cobre.
+   *
+   * Escrito curto e sem piada de propósito. "Ops!", "parece que você se perdeu" e
+   * o 404 gigante em display são o clichê de 404 que a §2.5 proíbe em outro
+   * contexto e que não fica melhor aqui. A página diz o que houve e devolve a
+   * pessoa para o único lugar que existe.
+   */
+  naoEncontrada: {
+    titulo: "Esta página não existe.",
+    palavraItalica: "não",
+    texto:
+      "O endereço pode ter mudado, ou o link que trouxe você até aqui pode estar incompleto.",
+    voltar: "Voltar para o início",
+  },
+
   footer: {
     nome: "Alando Digital",
-    cidade: "<<A CONFIRMAR: cidade>>",
+    cidade: local.cidadeUf,
     instagram: "@alandodigital",
     instagramRotulo: "Alando Digital no Instagram",
     cnpj: "<<A CONFIRMAR: CNPJ, se ela quiser exibir>>",

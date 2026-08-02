@@ -130,6 +130,45 @@ export const redes = {
   instagram: "https://www.instagram.com/alandodigital",
 } as const;
 
+/**
+ * Onde a Alando fica. Confirmado pelo Douglas em 02/08.
+ *
+ * Mora aqui pelo mesmo motivo do `whatsapp` e do `redes` acima: a cidade não é
+ * texto de uma seção, é dado do negócio, e ela aparece em CINCO lugares (eyebrow
+ * do herói, rodapé, `title`, `description` e o `PostalAddress` do JSON-LD).
+ * Escrita cinco vezes, ela diverge na primeira troca, e o comentário do `Footer`
+ * já avisava: "um lugar só resolvido não resolve".
+ *
+ * `cidade` e `uf` ficam separados porque o schema.org exige `addressLocality` e
+ * `addressRegion` em campos distintos. `cidadeUf` é a forma exibida.
+ *
+ * ⚠️ O Douglas escreveu "Indaiatuba - SP". Aqui vai com vírgula, que é a regra 4
+ * do CLAUDE.md e o estilo dos documentos. O dado é o mesmo; se ele preferir o
+ * hífen, muda esta linha e mais nada.
+ */
+export const local = {
+  cidade: "Indaiatuba",
+  uf: "SP",
+  cidadeUf: "Indaiatuba, SP",
+} as const;
+
+/**
+ * O domínio final.
+ *
+ * ⚠️ VAZIO DE PROPÓSITO, e a string vazia é o sinal: enquanto ela estiver assim,
+ * `lib/site-url.ts` cai para a URL da Vercel ou para o localhost, marca
+ * `canonicalPendente` e a página inteira pede `noindex`.
+ *
+ * Preview de Vercel indexado compete com o domínio real no índice do Google e é
+ * trabalhoso de tirar depois. `<<A CONFIRMAR: domínio final>>`
+ *
+ * **Ligar a indexação junto com o domínio é o esquecimento mais comum do deploy**
+ * (landing-page-structure.md §7). Preencher esta linha é o que liga.
+ */
+export const site = {
+  url: "",
+} as const;
+
 export const marca = {
   monograma: {
     /** Tinta escura `#102F15`. Vai sobre `papel` e sobre `superficie-2`. */
@@ -142,6 +181,29 @@ export const marca = {
   },
   /** As alturas de uso, em px. Alvo de toque de 44px é do link, não da imagem. */
   alturas: { header: 32, footer: 40 },
+} as const;
+
+/**
+ * As duas `og-image`, geradas por `node scripts/processar-fotos.mjs`.
+ *
+ * ⚠️ As dimensões são declaradas porque o `og:image:width`/`height` é o que
+ * alguns raspadores usam para reservar o espaço do card ANTES de baixar o
+ * arquivo. Declarar 1200×630 num arquivo que não tem esse tamanho é o tipo de
+ * erro que não aparece em teste nenhum e estraga o preview em um cliente só.
+ *
+ * As duas foram refeitas na Fase 6: a `marca` era um retângulo inteiramente
+ * preto e a `rosto` cortava o rosto da Andressa na altura da boca. O bloco `OG`
+ * do `processar-fotos.mjs` documenta as três causas.
+ *
+ * `padrao` é a que a metadata usa hoje. A §9 pede que as duas sejam comparadas
+ * no card real do WhatsApp antes de fechar; a troca é esta linha.
+ */
+export const og = {
+  largura: 1200,
+  altura: 630,
+  marca: "/og-image.jpg",
+  rosto: "/og-image-dessa.jpg",
+  padrao: "/og-image.jpg",
 } as const;
 
 /** Largura correspondente a uma altura de uso, mantendo a proporção da marca. */

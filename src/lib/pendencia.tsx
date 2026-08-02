@@ -1,5 +1,6 @@
 import React from "react";
 import { cn } from "@/lib/cn";
+import { marcadorGlobal } from "@/lib/pendencias";
 
 /**
  * A superfície onde o marcador é aplicado.
@@ -26,7 +27,10 @@ export function renderizarPendencia(
   texto: string,
   variante: Variante = "claro",
 ): React.ReactNode {
-  const regex = /<<([^>]*)>>/g;
+  /* O padrão vem do `pendencias.ts`, que é o lado puro da mesma regra: o que
+     conta como marcador aqui tem que ser exatamente o que é omitido do JSON-LD.
+     Instância nova a cada chamada, porque regex global guarda `lastIndex`. */
+  const regex = marcadorGlobal();
   const partes: (string | React.ReactNode)[] = [];
   let ultimoIndice = 0;
   let encontrou = false;

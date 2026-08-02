@@ -2,6 +2,9 @@ import type { Metadata, Viewport } from "next";
 import { Montserrat, Playfair_Display } from "next/font/google";
 
 import { OrganicClipPaths } from "@/components/ui/OrganicClipPaths";
+import { og } from "@/config/brand";
+import { content } from "@/config/content";
+import { canonicalPendente, siteUrl } from "@/lib/site-url";
 
 import "./globals.css";
 
@@ -63,15 +66,70 @@ export const viewport: Viewport = {
 };
 
 /**
- * A metadata definitiva (title com cidade, description, openGraph, canonical,
- * noindex enquanto não houver domínio) é da Fase 6. O que está aqui é o mínimo
- * para o scaffold subir sem inventar dado nenhum da cliente.
+ * A metadata, e os três pontos dela que não são óbvios.
+ *
+ * ── 1. O texto não está aqui ─────────────────────────────────────────────────
+ *
+ * `title` e `description` vêm de `content.seo`. São texto que alguém lê (aba do
+ * navegador, resultado de busca, card de link), então valem a mesma regra do
+ * resto: copy mora no `content.ts`. O comentário de lá registra que a junção das
+ * duas frases é minha e precisa do aval do Douglas.
+ *
+ * ── 2. O marcador de pendência NÃO entra no title ────────────────────────────
+ *
+ * Decisão do Douglas em 02/08. A regra assimétrica da §7 diz que o marcador
+ * aparece na PÁGINA e é omitido dos DADOS ESTRUTURADOS, e `title`/`og:title` são
+ * do segundo grupo: aba do navegador, SERP e card de link são consumo de máquina
+ * e de terceiro, não a tela onde alguém vai ver o realce e corrigir. O marcador
+ * continua visível no eyebrow do herói e no rodapé.
+ *
+ * ── 3. `noindex` enquanto o domínio for provisório ───────────────────────────
+ *
+ * Não é excesso de zelo: preview de Vercel indexado compete com o domínio real no
+ * índice do Google, e sair do índice depois dá muito mais trabalho do que nunca
+ * entrar. O interruptor é um só, `brand.site.url`, e a razão de ser um só está no
+ * `lib/site-url.ts`.
+ *
+ * ⚠️ **Ligar a indexação junto com o domínio é o esquecimento mais comum do
+ * deploy** (landing-page-structure.md §7). A Fase 9 não fecha sem isso.
  */
 export const metadata: Metadata = {
-  title: "Alando Digital",
-  description:
-    "Estratégia, posicionamento e comunicação para marcas que desejam ser lembradas.",
-  robots: { index: false, follow: false },
+  metadataBase: new URL(siteUrl),
+  title: content.seo.titulo,
+  description: content.seo.descricao,
+  alternates: { canonical: "/" },
+  openGraph: {
+    type: "website",
+    locale: "pt_BR",
+    siteName: content.footer.nome,
+    title: content.seo.titulo,
+    description: content.seo.descricao,
+    url: "/",
+    images: [
+      {
+        url: og.padrao,
+        /* Dimensões REAIS do arquivo, não as nominais: alguns raspadores usam
+           estes números para montar o card antes de baixar a imagem. Ver o
+           comentário de `og` em `brand.ts`. */
+        width: og.largura,
+        height: og.altura,
+        alt: content.seo.ogAlt,
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: content.seo.titulo,
+    description: content.seo.descricao,
+    images: [og.padrao],
+  },
+  icons: {
+    icon: "/favicon.ico",
+    apple: "/apple-touch-icon.png",
+  },
+  robots: canonicalPendente
+    ? { index: false, follow: false }
+    : { index: true, follow: true },
 };
 
 export default function RootLayout({

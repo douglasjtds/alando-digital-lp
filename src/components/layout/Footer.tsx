@@ -15,8 +15,10 @@ import { renderizarPendencia } from "@/lib/pendencia";
  *
  * ── A cidade não é detalhe de rodapé ─────────────────────────────────────────
  *
- * ⚠️ Ela pesa em busca local, e é a mesma pendência que aparece no eyebrow do
- * herói, no `title` e no JSON-LD da Fase 6. Um lugar só resolvido não resolve.
+ * ✅ Confirmada na Fase 6: Indaiatuba, SP. Ela pesa em busca local e aparece em
+ * cinco lugares (aqui, no eyebrow do herói, no `title`, na `description` e no
+ * `PostalAddress` do JSON-LD), então mora em `brand.local` e não em cinco
+ * literais. Um lugar só resolvido não resolve.
  *
  * ── O crédito de desenvolvimento ─────────────────────────────────────────────
  *
