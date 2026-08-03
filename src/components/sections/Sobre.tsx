@@ -1,6 +1,7 @@
 import Image from "next/image";
 import { content } from "@/config/content";
 import { FaixaRepetida } from "@/components/ui/FaixaRepetida";
+import { Revelar } from "@/components/motion/Revelar";
 
 /**
  * "Sobre": humanizar. A proximidade tem que ser SENTIDA, não afirmada.
@@ -63,26 +64,31 @@ export function Sobre() {
       aria-labelledby="faixa-sobre"
     >
       <div className="container-lp">
-        <FaixaRepetida
-          id="faixa-sobre"
-          texto={content.sobre.historia.titulo}
-          palavraItalica={content.sobre.historia.palavraItalica}
-          repeticoes={content.sobre.sobreFaixaRepeticoes}
-          direcao="direita"
-          className="mb-12 md:mb-16"
-        />
+        <Revelar className="mb-12 md:mb-16">
+          <FaixaRepetida
+            id="faixa-sobre"
+            texto={content.sobre.historia.titulo}
+            palavraItalica={content.sobre.historia.palavraItalica}
+            repeticoes={content.sobre.sobreFaixaRepeticoes}
+            direcao="direita"
+          />
+        </Revelar>
 
         {/* Movimento a: Nossa história. Foto à esquerda, 5/12. */}
-        <div className="grid grid-cols-1 gap-8 md:grid-cols-12 md:gap-12">
+        <Revelar className="grid grid-cols-1 gap-8 md:grid-cols-12 md:gap-12">
           <div className="md:col-span-5">
-            <Image
-              src="/images/retrato-sobre.jpg"
-              alt={content.sobre.historia.fotoAlt}
-              width={1023}
-              height={1537}
-              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 42vw, 30vw"
-              className="h-auto w-full object-cover [clip-path:url(#crista-vale)]"
-            />
+            {/* O `clip-path` mora no wrapper, que é quem publica a linha do
+                tempo do parallax. A imagem consome. Ver §8, armadilha nº 1. */}
+            <div className="foto-textura [clip-path:url(#crista-vale)]">
+              <Image
+                src="/images/retrato-sobre.jpg"
+                alt={content.sobre.historia.fotoAlt}
+                width={1023}
+                height={1537}
+                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 42vw, 30vw"
+                className="h-auto w-full object-cover"
+              />
+            </div>
           </div>
 
           <div className="space-y-6 md:col-span-7">
@@ -92,12 +98,12 @@ export function Sobre() {
               </p>
             ))}
           </div>
-        </div>
+        </Revelar>
 
         {/* Movimento b: Quem está por trás da Alando. Inverte o lado, e a foto
             encolhe para 4/12: a coluna que sobra é o que impede a seção de ler
             como dois blocos espelhados. */}
-        <div className="mt-16 md:mt-24">
+        <Revelar className="mt-16 md:mt-24">
           <h3 className="display-md text-ancora mb-8">
             {content.sobre.equipe.titulo}
           </h3>
@@ -112,17 +118,19 @@ export function Sobre() {
             </div>
 
             <div className="md:col-span-4 md:col-start-9">
-              <Image
-                src="/images/servico-gestao.jpg"
-                alt={content.sobre.equipe.fotoAlt}
-                width={664}
-                height={1182}
-                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 34vw, 24vw"
-                className="h-auto w-full object-cover [clip-path:url(#crista-serra)]"
-              />
+              <div className="foto-textura [clip-path:url(#crista-serra)]">
+                <Image
+                  src="/images/servico-gestao.jpg"
+                  alt={content.sobre.equipe.fotoAlt}
+                  width={664}
+                  height={1182}
+                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 34vw, 24vw"
+                  className="h-auto w-full object-cover"
+                />
+              </div>
             </div>
           </div>
-        </div>
+        </Revelar>
       </div>
     </section>
   );

@@ -384,3 +384,150 @@
     }
   }
 }
+
+/* ==========================================================================
+   GESTO 2: A TRAVESSIA DE COR (DESIGN-GUIDELINES.md §8)
+
+   O fundo atravessa entre superfícies conforme a página desce, dentro de UMA
+   banda de valor. Claro para escuro é fronteira de seção, nunca travessia: no
+   meio do caminho o fundo viraria tom médio, o texto também, e o contraste
+   desabaria para perto de 1:1 sem que nada acusasse erro.
+
+   ⚠️ O QUE O JS ANIMA É UM ESCALAR, NUNCA UMA COR. `--travessia-t` vai de 0 a 1
+   e a cor é calculada aqui, por `color-mix`. Não é preciosismo: interpolar hex
+   em JavaScript colocaria valor de cor fora de `globals.css` e `brand.ts`, que é
+   a regra dura do CLAUDE.md, e o grep de auditoria deixaria de encontrá-lo.
+   `--travessia-de` e `--travessia-para` chegam por `style` como
+   `var(--color-*)`, ou seja, nome de token.
+
+   Repouso = `--travessia-t: 0`, a superfície declarada da seção. É o estado de
+   quem tem `prefers-reduced-motion` e o de quem está sem JS, e os dois ficam
+   IDÊNTICOS. A §8 fala em "superfície de destino"; as duas pontas são estados
+   finais legítimos (a regra existe para proibir congelar no MEIO), e a ponta de
+   origem é a única que não faz a página com movimento reduzido divergir da
+   página sem JS.
+   ========================================================================== */
+
+@layer components {
+  .travessia {
+    --travessia-t: 0;
+    background-color: color-mix(
+      in oklab,
+      var(--travessia-de),
+      var(--travessia-para) calc(var(--travessia-t) * 100%)
+    );
+  }
+}
+
+/* ==========================================================================
+   GESTO 3: A REVELAÇÃO POR MÁSCARA (DESIGN-GUIDELINES.md §8)
+
+   SUBSTITUI o `fade + translateY` na página inteira. Em vez de o conteúdo
+   surgir de baixo, que é o reveal de qualquer landing page, ele é revelado pela
+   máscara abrindo ao longo da CURVA DE CRISTA da marca. É o movimento que o
+   visitante vê quinze vezes, e trocá-lo por um derivado da forma da marca muda a
+   impressão da página inteira.
+
+   ── A curva é a mesma do sistema de formas ──────────────────────────────────
+
+   O contorno abaixo é a aresta superior do `CRISTA_SERRA` de
+   `OrganicClipPaths.tsx` (dois picos desiguais com o vale fundo entre eles, que
+   é a linha de crista da foto da paleta), remapeada de `objectBoundingBox` para
+   esta viewBox. ⚠️ São duas cópias do mesmo desenho, e é deliberado: o CSS não lê
+   a constante do TypeScript, e a alternativa seria montar a máscara em JS e pôr
+   uma decisão visual dentro de um componente. Mexeu numa, confira a outra.
+
+   ── A aritmética do 224%, que não é escolha estética ────────────────────────
+
+   Com `mask-size: 100% M%`, a janela visível da máscara é
+   `[(M-100)·p, (M-100)·p + 100]` em unidades da viewBox, onde `p` é a
+   `mask-position`. Para o bloco ficar INTEIRAMENTE escondido em p=0 e
+   INTEIRAMENTE visível em p=1, a faixa da crista precisa caber dentro de
+   `(100, M-100)`. A crista ocupa de 101 a 122, então M tem que passar de 222.
+   Com M=224 a crista entra pela base do bloco em p≈0,02 e sai pelo topo em
+   p≈0,98: quase nenhum curso morto. Baixar M cortaria conteúdo nas pontas.
+
+   ── O padrão é ABERTO, e a classe só existe se o JS chegar ──────────────────
+
+   `--revelacao: 1` é máscara aberta. Além disso, a classe `.revelar` é aplicada
+   PELO JS (`Revelar.tsx`), nunca pelo HTML: sem JavaScript o elemento não tem
+   máscara nenhuma. São duas garantias empilhadas de que conteúdo escondido não
+   sobrevive a uma falha, que é o pior desfecho possível.
+
+   ── O `%23fff` do preenchimento não é cor da marca ──────────────────────────
+
+   É branco opaco, e é o único valor seguro aqui. Com `mask-mode: match-source`
+   numa IMAGEM, a especificação manda usar o canal ALFA, e nessa leitura
+   qualquer cor opaca serviria. Só que se alguma engine interpretar por
+   LUMINÂNCIA, preto vira transparente e o conteúdo some por inteiro. Branco
+   opaco funciona nas duas leituras, e é por isso que ele está aqui em vez de um
+   token. Não conta como décima cor: é máscara, não pigmento.
+   ========================================================================== */
+
+@layer components {
+  .revelar {
+    --revelacao: 1;
+    mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 224' preserveAspectRatio='none'%3E%3Cpath d='M0,122C7.6,113.6 16.6,102.8 27.6,102C37.2,101.3 43.6,117.4 54.2,118C65.2,118.6 76,103.7 88.4,102.2C94.6,101.3 99,104.7 100,110.6L100,224L0,224Z' fill='%23fff'/%3E%3C/svg%3E");
+    mask-size: 100% 224%;
+    mask-repeat: no-repeat;
+    mask-position: 0 calc(var(--revelacao) * 100%);
+  }
+
+  /* Quem pediu menos movimento não paga nem pela rasterização da máscara. O JS
+     já não aplica a classe nesse caso; isto cobre a troca de preferência com a
+     aba aberta, quando a classe pode ter sido aplicada antes. */
+  @media (prefers-reduced-motion: reduce) {
+    .revelar {
+      mask-image: none;
+    }
+  }
+}
+
+/* ==========================================================================
+   TEXTURA, NÃO GESTO: o parallax da foto dentro da máscara
+
+   A foto deriva atrás do `clipPath`. CSS puro, 0 KB, e as três armadilhas da §8
+   estão endereçadas:
+
+   1. O WRAPPER publica a linha do tempo, a IMAGEM consome. `view()` direto na
+      imagem não funcionaria.
+   2. LONGHANDS, nunca o shorthand `animation`: ele reescreve
+      `animation-duration` para `0s`, e em timeline de progresso a duração
+      precisa ser `auto`. Com `0s` a animação congela em 50% e parece que "só
+      não funcionou".
+   3. O `scale` é REQUISITO e é CONSTANTE nos dois keyframes. Sem ele o translate
+      descobre a borda do `clipPath` e abre uma faixa vazia dentro da máscara.
+      2,5% de excursão para cada lado pede 5% de folga; 8% deixa margem.
+
+   O repouso (sem `animation-timeline`, ou com movimento reduzido) é transform
+   nenhum, ou seja, `scale(1)`: a foto preenche a máscara exatamente. A
+   degradação fica CERTA, não fica ampliada.
+   ========================================================================== */
+
+@layer components {
+  .foto-textura {
+    view-timeline-name: --foto;
+    view-timeline-axis: block;
+  }
+
+  @keyframes foto-deriva {
+    from {
+      transform: translate3d(0, -2.5%, 0) scale(1.08);
+    }
+    to {
+      transform: translate3d(0, 2.5%, 0) scale(1.08);
+    }
+  }
+
+  @supports (animation-timeline: view()) {
+    @media (prefers-reduced-motion: no-preference) {
+      .foto-textura > img {
+        animation-name: foto-deriva;
+        animation-duration: auto;
+        animation-timing-function: linear;
+        animation-fill-mode: both;
+        animation-timeline: --foto;
+      }
+    }
+  }
+}

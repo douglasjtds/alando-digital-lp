@@ -2,6 +2,7 @@ import { ChevronDown } from "lucide-react";
 
 import { content } from "@/config/content";
 import { FaixaRepetida } from "@/components/ui/FaixaRepetida";
+import { Revelar } from "@/components/motion/Revelar";
 import { renderizarPendencia } from "@/lib/pendencia";
 
 /**
@@ -37,13 +38,14 @@ export function Faq() {
       aria-labelledby="faixa-faq"
     >
       <div className="container-lp">
-        <FaixaRepetida
-          id="faixa-faq"
-          texto={content.faq.titulo}
-          repeticoes={content.faq.faixaRepeticoes}
-          direcao="esquerda"
-          className="mb-12 md:mb-16"
-        />
+        <Revelar className="mb-12 md:mb-16">
+          <FaixaRepetida
+            id="faixa-faq"
+            texto={content.faq.titulo}
+            repeticoes={content.faq.faixaRepeticoes}
+            direcao="esquerda"
+          />
+        </Revelar>
 
         {/* ⚠️ Desvio registrado: `decor` está documentado para 6-12% de
             opacidade, inclusive em borda (§3, `brand.ts`, `globals.css`). Aqui
@@ -52,7 +54,7 @@ export function Faq() {
             não comunica que há mais itens. Mesmo emprego que os `border-decor`
             dos blocos de `Servicos`. Se a banda for pra valer também em borda,
             o conserto é no sistema, não aqui. */}
-        <div className="border-t border-decor">
+        <Revelar como="lista" className="border-t border-decor">
           {content.faq.perguntas.map(({ pergunta, resposta }) => (
             <details key={pergunta} className="group border-b border-decor">
               {/* `list-none` mata o triângulo do Firefox e o pseudo-elemento
@@ -81,7 +83,7 @@ export function Faq() {
               </div>
             </details>
           ))}
-        </div>
+        </Revelar>
       </div>
     </section>
   );

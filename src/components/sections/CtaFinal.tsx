@@ -1,6 +1,7 @@
 import { content } from "@/config/content";
 import { FaixaRepetida } from "@/components/ui/FaixaRepetida";
 import { WhatsappCta } from "@/components/ui/WhatsappCta";
+import { Revelar } from "@/components/motion/Revelar";
 
 /**
  * O fechamento: faixa full-bleed em `ancora-quente`, o momento mais quente da
@@ -52,20 +53,23 @@ export function CtaFinal() {
       aria-labelledby="faixa-cta-final"
     >
       <div className="container-lp">
-        <FaixaRepetida
-          id="faixa-cta-final"
-          texto={content.ctaFinal.titulo}
-          repeticoes={content.ctaFinal.faixaRepeticoes}
-          direcao="direita"
-          variante="escuro"
-          className="mb-12 md:mb-16"
-        />
+        <Revelar className="mb-12 md:mb-16">
+          <FaixaRepetida
+            id="faixa-cta-final"
+            texto={content.ctaFinal.titulo}
+            repeticoes={content.ctaFinal.faixaRepeticoes}
+            direcao="direita"
+            variante="escuro"
+          />
+        </Revelar>
 
-        <WhatsappCta
-          origem="cta-final"
-          label={content.ctaFinal.ctaLabel}
-          variante="sage"
-        />
+        <Revelar>
+          <WhatsappCta
+            origem="cta-final"
+            label={content.ctaFinal.ctaLabel}
+            variante="sage"
+          />
+        </Revelar>
       </div>
     </section>
   );

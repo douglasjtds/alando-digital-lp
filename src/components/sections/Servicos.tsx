@@ -2,6 +2,7 @@ import Image from "next/image";
 import { content } from "@/config/content";
 import { FaixaRepetida } from "@/components/ui/FaixaRepetida";
 import { WhatsappCta } from "@/components/ui/WhatsappCta";
+import { Revelar } from "@/components/motion/Revelar";
 
 type Servico = (typeof content.servicos)[number];
 
@@ -18,20 +19,24 @@ export function Servicos() {
       aria-labelledby="faixa-servicos"
     >
       <div className="container-lp">
-        <FaixaRepetida
-          id="faixa-servicos"
-          texto={content.servicosTitulo}
-          repeticoes={content.servicosFaixaRepeticoes}
-          direcao="direita"
-          className="mb-12 md:mb-16"
-        />
+        <Revelar className="mb-12 md:mb-16">
+          <FaixaRepetida
+            id="faixa-servicos"
+            texto={content.servicosTitulo}
+            repeticoes={content.servicosFaixaRepeticoes}
+            direcao="direita"
+          />
+        </Revelar>
 
         <div className="space-y-12 md:space-y-16 mb-16">
           {/* Bloco dominante: Gestão de Redes Sociais. A copy diz que é "o
               coração da Alando", então ele leva largura cheia, o texto mais
               longo e a única superfície colorida da seção. */}
           {servicoDestaque && (
-            <article className="bg-superficie-2 p-8 md:p-12 border border-decor">
+            <Revelar
+              as="article"
+              className="bg-superficie-2 p-8 md:p-12 border border-decor"
+            >
               <h3 className="display-lg text-ancora mb-6">
                 {servicoDestaque.titulo}
               </h3>
@@ -47,12 +52,17 @@ export function Servicos() {
                   {servicoDestaque.fechamento}
                 </p>
               )}
-            </article>
+            </Revelar>
           )}
 
           {/* Os quatro em órbita: alternam de lado, larguras desiguais, e só um
-              deles tem foto. A lacuna é o que impede a leitura em grade. */}
-          <div className="space-y-8 md:space-y-12">
+              deles tem foto. A lacuna é o que impede a leitura em grade.
+
+              A lista é mais alta que uma tela, então cada bloco abre quando
+              chega a sua vez, em vez de os quatro escalonarem de uma vez com os
+              dois últimos abrindo longe da viewport. Quem decide isso é o
+              próprio `Revelar`, pela altura medida. */}
+          <Revelar como="lista" className="space-y-8 md:space-y-12">
             {servicosNormais.map((servico, idx) => {
               const textoNaEsquerda = idx % 2 === 0;
 
@@ -97,26 +107,32 @@ export function Servicos() {
                           : "md:col-start-1 md:row-start-1"
                       }
                     >
-                      <Image
-                        src={servico.foto}
-                        alt={servico.fotoAlt}
-                        width={664}
-                        height={1182}
-                        /* 24vw, medido: a coluna dá 331 CSS px em 1440, e 30vw
-                           pedia o candidato de 432 sem precisar. */
-                        sizes="(max-width: 768px) 100vw, 24vw"
-                        className="h-auto w-full object-cover [clip-path:url(#crista-faixa)]"
-                      />
+                      {/* O `clip-path` saiu da imagem e veio para o wrapper, e
+                          não é troca cosmética: é o wrapper que PUBLICA a linha
+                          do tempo do parallax (`foto-textura`) e a imagem que a
+                          consome. Ver a armadilha nº 1 no fim da §8. */}
+                      <div className="foto-textura [clip-path:url(#crista-faixa)]">
+                        <Image
+                          src={servico.foto}
+                          alt={servico.fotoAlt}
+                          width={664}
+                          height={1182}
+                          /* 24vw, medido: a coluna dá 331 CSS px em 1440, e 30vw
+                             pedia o candidato de 432 sem precisar. */
+                          sizes="(max-width: 768px) 100vw, 24vw"
+                          className="h-auto w-full object-cover"
+                        />
+                      </div>
                     </div>
                   )}
                 </article>
               );
             })}
-          </div>
+          </Revelar>
         </div>
 
         {/* Fechamento: é o diferencial, e é onde a tese volta. */}
-        <div className="bg-ancora-quente p-8 md:p-12 border border-decor">
+        <Revelar className="bg-ancora-quente p-8 md:p-12 border border-decor">
           <h3 className="display-lg text-papel mb-6">
             {content.maisQueContratarTitulo}
           </h3>
@@ -127,18 +143,18 @@ export function Servicos() {
               </p>
             ))}
           </div>
-        </div>
+        </Revelar>
 
         {/* O CTA da seção, que a Fase 5B não montou: `content.servicosCTA` e a
             mensagem de origem `servicos` já existiam desde a Fase 4, sem
             ninguém consumindo. */}
-        <div className="mt-12">
+        <Revelar className="mt-12">
           <WhatsappCta
             origem="servicos"
             label={content.servicosCTA}
             variante="primario"
           />
-        </div>
+        </Revelar>
       </div>
     </section>
   );
