@@ -45,6 +45,19 @@ export const TEMPO = {
   pausa: 380,
   /** Escalonamento entre itens de uma lista. */
   escalonamento: 110,
+  /**
+   * O tempo que cada quadro da sequência de Captação fica parado antes de a
+   * crista trazer o próximo. Ver `SequenciaDeQuadros.tsx` e o desvio registrado
+   * na DESIGN-GUIDELINES.md §8.
+   *
+   * ⚠️ ESTE É O QUINTO VALOR, e o comentário acima diz que um sexto significa
+   * que o vocabulário abriu. Ou seja: é o último que cabe aqui. O próximo pedido
+   * de movimento na página não tem mais essa folga e precisa reusar um destes.
+   *
+   * 3400 ms mais os 900 da varredura dão 4,3 s por quadro. Longo o bastante para
+   * a foto ser lida como foto, e não como frame de um efeito.
+   */
+  permanencia: 3400,
 } as const;
 
 /**

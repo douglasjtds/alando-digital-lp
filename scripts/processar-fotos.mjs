@@ -19,17 +19,43 @@
  *    paleta e aqueça levemente. Ajuste olhando a página montada, não a foto isolada,
  *    o que decide o valor é a foto ao lado da outra.
  *
+ *    ⚠️ **Duas exceções, e as duas são NOMEADAS, não uma abertura geral.** A regra
+ *    existe para domar cor que é RUÍDO, ensaios que brigam entre si por temperatura.
+ *    Onde a cor é o ASSUNTO, ela se inverte e passa a destruir o que a foto existe
+ *    para mostrar:
+ *
+ *      `captacao-hero.jpg` (26/08)         o coral da caneca e o rosa da tela são o
+ *                                          que a dessaturação come primeiro, e são
+ *                                          o motivo daquela foto estar ali.
+ *
+ *      `servico-estruturacao.jpg` (02/09)  o print prova um trabalho de IDENTIDADE
+ *                                          VISUAL. Os círculos terracota dos
+ *                                          destaques e o feed em tons de terra são
+ *                                          a entrega sendo mostrada, não ruído de
+ *                                          temperatura. Média RGB medida do original:
+ *                                          146,132,119, um neutro quente que já está
+ *                                          dentro da família da paleta.
+ *
+ *    As cinco restantes continuam tratadas. (Os dois retratos também não levam os
+ *    campos, mas por outro motivo, e não são exceção a nada: eles já vêm de parede
+ *    clara com luz quente e não pedem ajuste nenhum.)
+ *
  * 3. **Nomes semânticos.** `DSC03330.JPG` não diz nada seis meses depois;
  *    `retrato-hero.jpg` diz. O nome é o papel da foto na página.
  *
  * `sharp` vem junto com o Next; deliberadamente não está no package.json.
  */
 
-import { mkdir, readFile } from "node:fs/promises";
-import { dirname, resolve } from "node:path";
+import { execFile } from "node:child_process";
+import { mkdir, mkdtemp, readFile, rm } from "node:fs/promises";
+import { tmpdir } from "node:os";
+import { dirname, join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
+import { promisify } from "node:util";
 
 import sharp from "sharp";
+
+const execArquivo = promisify(execFile);
 
 const raiz = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 
@@ -40,8 +66,9 @@ const raiz = resolve(dirname(fileURLToPath(import.meta.url)), "..");
  * `drive-files/Fotos captações/` e `ref-files/`), então cada entrada `de:` carrega o
  * caminho relativo completo em vez de a base apontar para uma pasta só.
  *
- * O `sharp` aqui é 0.34.5 com entrada HEIF, então os `.heic` das fotos de captação
- * (que são as de maior resolução) são lidos direto, sem conversão prévia.
+ * ⚠️ Os `.heic` NÃO são lidos direto: o `sharp` do projeto entende o cabeçalho HEIF
+ * mas não decodifica HEVC. Quem resolve é o `decodificar()`, mais abaixo, e o
+ * porquê está no bloco de comentário em cima dele.
  */
 const PASTA_ORIGEM = ".";
 
@@ -55,14 +82,29 @@ const destino = (nome) => resolve(raiz, "public", nome);
  *   Com as duas, vira corte (`cover`), use `posicao` para escolher o que sobrevive.
  * - `saturacao` < 1 e `brilho`: só nas fotos que estão fora da paleta do conjunto.
  *   Mexer nas que já estão dentro só degrada a pele.
+ * - `qualidade`: o padrão é 82 e ele vale para toda imagem que a pessoa OLHA. Só
+ *   desça dele onde a imagem é textura passageira, e diga por quê na linha.
  * - Nenhuma imagem deve passar de ~200KB na maior variante. O script imprime o peso.
  */
 const FOTOS = [
+  /* ⚠️ Primeira das duas exceções de cor, e é de propósito. Ver a decisão 2 lá em
+     cima. (Dizia "a ÚNICA sem `saturacao`/`brilho`" até 02/09, e isso já estava
+     errado antes da segunda exceção existir: os dois retratos logo abaixo também não
+     têm os campos.) Sem os dois campos o guarda mais abaixo não chama o `.modulate()`,
+     e a foto sai com a cor que saiu da câmera. O `.rotate()` continua valendo para
+     ela: é orientação, não cor, e é quem resolve a `EXIF orientation: 6` do arquivo
+     original, que é 6000×4000 gravado deitado. Custo medido da exceção: 4 KB. */
+  {
+    de: "ref-files/foto lp.jpg",
+    para: "images/captacao-hero.jpg",
+    largura: 1200,
+    nota: "Herói, bastidor da captação, candidata a LCP. Sem tratamento de cor",
+  },
   {
     de: "drive-files/Dêssa/ChatGPT Image 30 de jul. de 2026, 11_53_02.png",
     para: "images/retrato-hero.jpg",
     largura: 1023,
-    nota: "Herói, retrato da Andressa, candidata a LCP",
+    nota: "Retrato da Andressa, fora do herói desde 26/08, aguarda seção",
   },
   {
     de: "drive-files/Dêssa/ChatGPT Image 30 de jul. de 2026, 11_54_15.png",
@@ -85,6 +127,166 @@ const FOTOS = [
     saturacao: 0.72,
     brilho: 1.01,
     nota: "Serviços: Produção de vídeo",
+  },
+  /* ── A SEQUÊNCIA DE QUADROS de Captação e edição de vídeos (02/09) ───────────
+   *
+   * Nove fotos que entram no MESMO slot do `servico-video.jpg` acima, trocando no
+   * tempo. Ele continua sendo o quadro em repouso (o único que sai no HTML do
+   * servidor), e estas nove são as posições 2 a 10 da sequência. O mecanismo está
+   * em `SequenciaDeQuadros.tsx`, e o desvio de movimento que ele representa está
+   * registrado na DESIGN-GUIDELINES.md §8.
+   *
+   * ── Por que elas LEVAM o tratamento de cor ───────────────────────────────────
+   *
+   * As duas exceções nomeadas acima podem sugerir que a régua afrouxou. Aqui é o
+   * contrário, e por dois motivos que se somam:
+   *
+   *   1. Elas vêm de sessões incompatíveis entre si (loja de calçados com luz
+   *      fria, cafeteria, mesa externa em sol pleno, cozinha branca, salão), que
+   *      é exatamente o ruído de temperatura para o qual a regra foi escrita.
+   *   2. Elas alternam com o `servico-video.jpg` NO MESMO PIXEL DA TELA. É a
+   *      condição mais dura de coerência cromática que a página tem: duas fotos
+   *      que se substituem no mesmo lugar não podem divergir de temperatura, ou a
+   *      troca vira um salto de cor. Os `0.72`/`1.01` daqui não são cópia por
+   *      inércia, são requisito: são os mesmos valores do quadro com que elas
+   *      alternam.
+   *
+   * ── As duas que ficaram de fora ──────────────────────────────────────────────
+   *
+   * A pasta tem ONZE. Dois pares eram quase o mesmo quadro (`IMG_2333`/`IMG_2334`
+   * e `IMG_7265`/`IMG_7266`), e no mesmo slot dois quadros iguais em sequência
+   * leem como falha na troca, não como foto nova. Ficou a `2334`, onde a tela da
+   * câmera está maior e legível, e a `7266`, com a expressão da cliente nítida.
+   *
+   * ── A ORDEM não é a do sistema de arquivos ───────────────────────────────────
+   *
+   * Fotos de contexto parecido ficam separadas por pelo menos duas outras (as duas
+   * de salão, as duas de mesa). Quem para de rolar no meio da sequência tem que
+   * ver duas fotos DIFERENTES em seguida.
+   *
+   * ⚠️ Sete das nove são material de TERCEIRO com pessoa identificável ou marca de
+   * cliente legível, e só entram em `public/` porque a autorização escrita existe,
+   * confirmada pelo Douglas em 02/09. Mesma linha que liberou o
+   * `servico-estruturacao.jpg`.
+   *
+   * ── Por que 800 px e qualidade 76, e não os 1100/82 do resto ────────────────
+   *
+   * Porque aqui o peso é somado NOVE VEZES no mesmo bloco, e essa é a diferença
+   * entre uma foto e uma sequência. Nos valores do `servico-video.jpg` (1100/82)
+   * as nove davam **1,15 MB** numa seção só, com duas passando de 180 KB, numa
+   * página cujo canal principal é link na bio do Instagram. A 800/76 elas somam
+   * **766 KB**, e a mais pesada cai de 188 para 125 KB.
+   *
+   * O que 800 px cobre, medido: o slot dá 330 CSS px em desktop (a coluna de um
+   * grid de 3 sobre um container de 1056) e ~350 px em 390. São 2,4x em desktop e
+   * 2,3x num celular a DPR 2. É a mesma folga que as fotos aprovadas do `Processo`
+   * têm, e estas são textura passageira: cada quadro fica 3,4 s na tela e a pessoa
+   * nunca compara dois lado a lado.
+   *
+   * ⚠️ O `servico-video.jpg` NÃO desce junto. Ele é o quadro em repouso, o único
+   * que sai no HTML do servidor e o único que quem tem `prefers-reduced-motion` vê:
+   * esse é olhado de verdade, e continua em 1100/82.
+   */
+  {
+    de: "drive-files/captação e edição de vídeo/IMG_5979.jpg",
+    para: "images/video-quadro-01.jpg",
+    largura: 800,
+    qualidade: 76,
+    saturacao: 0.72,
+    brilho: 1.01,
+    nota: "Quadro 01: tela mostra o bolo sendo coberto",
+  },
+  {
+    de: "drive-files/captação e edição de vídeo/IMG_2337.heic",
+    para: "images/video-quadro-02.jpg",
+    largura: 800,
+    qualidade: 76,
+    saturacao: 0.72,
+    brilho: 1.01,
+    nota: "Quadro 02: câmera no tripé, cozinha",
+  },
+  {
+    de: "drive-files/captação e edição de vídeo/IMG_1565.heic",
+    para: "images/video-quadro-03.jpg",
+    largura: 800,
+    qualidade: 76,
+    saturacao: 0.72,
+    brilho: 1.01,
+    nota: "Quadro 03: captação em loja de calçados",
+  },
+  {
+    de: "drive-files/captação e edição de vídeo/IMG_2321.heic",
+    para: "images/video-quadro-04.jpg",
+    largura: 800,
+    qualidade: 76,
+    saturacao: 0.72,
+    brilho: 1.01,
+    nota: "Quadro 04: câmera nas mãos, balcão do café",
+  },
+  {
+    de: "drive-files/captação e edição de vídeo/IMG_7268.HEIC",
+    para: "images/video-quadro-05.jpg",
+    largura: 800,
+    qualidade: 76,
+    saturacao: 0.72,
+    brilho: 1.01,
+    nota: "Quadro 05: braço erguendo a câmera, retrato no salão",
+  },
+  {
+    de: "drive-files/captação e edição de vídeo/IMG_5913.HEIC",
+    para: "images/video-quadro-06.jpg",
+    largura: 800,
+    qualidade: 76,
+    saturacao: 0.72,
+    brilho: 1.01,
+    nota: "Quadro 06: gravação sobre os barris",
+  },
+  {
+    de: "drive-files/captação e edição de vídeo/IMG_0504.jpg",
+    para: "images/video-quadro-07.jpg",
+    largura: 800,
+    qualidade: 76,
+    saturacao: 0.72,
+    brilho: 1.01,
+    nota: "Quadro 07: tela mostra duas pessoas na loja",
+  },
+  {
+    de: "drive-files/captação e edição de vídeo/IMG_2334.heic",
+    para: "images/video-quadro-08.jpg",
+    largura: 800,
+    qualidade: 76,
+    saturacao: 0.72,
+    brilho: 1.01,
+    nota: "Quadro 08: câmera nas mãos, mesa externa",
+  },
+  {
+    de: "drive-files/captação e edição de vídeo/IMG_7266.HEIC",
+    para: "images/video-quadro-09.jpg",
+    largura: 800,
+    qualidade: 76,
+    saturacao: 0.72,
+    brilho: 1.01,
+    nota: "Quadro 09: gravação diante do espelho",
+  },
+  /* ⚠️ SEGUNDA exceção de cor, e a única imagem da página que é ARTEFATO e não
+     fotografia: uma captura do perfil de uma cliente, entregue como prova do serviço
+     de Estruturação de Perfil (landing-page-structure.md §5.5). Três consequências:
+
+     1. Sem `saturacao`/`brilho`. O motivo está na decisão 2 lá em cima.
+     2. `largura: 1290` é a largura NATIVA do arquivo, então o `resize` não reduz
+        nada: com `withoutEnlargement: true` ele é no-op. Está escrito assim de
+        propósito, para o teto ficar explícito. Sai em 187 KB a q82, dentro do teto
+        de 200 KB e a mais pesada do projeto. A 1100 px cairia para 146 KB, ao custo
+        de a densidade em desktop ir de 2,01x para 1,71x.
+     3. O original tem EXIF e IPTC (medidos). Sair por aqui é o que apaga os dois.
+
+     ⚠️ É material de TERCEIRO, e só entra em `public/` porque a autorização escrita
+     da cliente existe, confirmada pelo Douglas em 02/09. */
+  {
+    de: "drive-files/estruturação de perfil/IMG_3788.jpg",
+    para: "images/servico-estruturacao.jpg",
+    largura: 1290,
+    nota: "Serviços: Estruturação de Perfil, print de perfil. Sem tratamento de cor",
   },
   {
     de: "drive-files/Fotos captações/2ED70A8D-1E75-48C5-8957-B161E9931D86_1_105_c.jpeg",
@@ -128,34 +330,92 @@ if (pendentes.length > 0) {
   process.exit(1);
 }
 
+/* ── A entrada HEIC, e por que ela precisa de um passo a mais ─────────────────
+ *
+ * ⚠️ O cabeçalho deste arquivo dizia, até 02/09, que o `sharp` lia os `.heic`
+ * direto. Ele não lê, e a forma como isso falha merece registro porque é
+ * enganosa: o `sharp` que vem com o Next tem libheif SEM o decodificador de
+ * HEVC. O cabeçalho HEIF ele entende, então `metadata()` responde certo
+ * (`3213x5712`, `compression: "hevc"`) e tudo parece funcionar; quem quebra é
+ * `toFile()`, na hora de decodificar os PIXELS, com um
+ * `Support for this compression format has not been built in`.
+ *
+ * A afirmação antiga nunca tinha sido exercitada: até aqui a tabela `FOTOS` só
+ * apontava para `.jpeg`, e as duas `.heic` de `Fotos captações/` estavam na
+ * pasta sem serem usadas.
+ *
+ * A saída é decodificar por fora, com o `sips` do macOS, e entregar ao `sharp`
+ * um TIFF sem perda (o `sips` preserva o perfil ICC, verificado: `srgb` com ICC
+ * presente). Não é conversão de qualidade: a perda continua acontecendo uma vez
+ * só, no JPEG final.
+ *
+ * Isto amarra o script ao macOS, e é aceitável porque ele já é ferramenta de mão
+ * ("rode à mão quando as fotos-fonte mudarem"), não passo de build. Em outro
+ * sistema, o equivalente é `heif-convert` (libheif-examples) ou um `sharp`
+ * compilado com libde265.
+ */
+const ehHeic = (caminho) => /\.heic$/i.test(caminho);
+
+/**
+ * Devolve `{ caminho, limpar }`. Para tudo que não é HEIC, `caminho` é o próprio
+ * original e `limpar` não faz nada.
+ */
+async function decodificar(caminho) {
+  if (!ehHeic(caminho)) return { caminho, limpar: async () => {} };
+
+  const pasta = await mkdtemp(join(tmpdir(), "alando-heic-"));
+  const tiff = join(pasta, "quadro.tiff");
+
+  try {
+    await execArquivo("sips", ["-s", "format", "tiff", caminho, "--out", tiff]);
+  } catch (erro) {
+    await rm(pasta, { recursive: true, force: true });
+    console.error(
+      `\n  Não consegui decodificar ${caminho} com o \`sips\`.\n` +
+        "  Este script depende dele para HEIC. Ver o bloco acima.\n",
+    );
+    throw erro;
+  }
+
+  return { caminho: tiff, limpar: () => rm(pasta, { recursive: true, force: true }) };
+}
+
 let acima = 0;
 
 for (const foto of FOTOS) {
   const saida = destino(foto.para);
   await mkdir(dirname(saida), { recursive: true });
 
-  let pipeline = sharp(origem(foto.de))
-    /* Respeita a orientação EXIF antes de qualquer corte: sem isso, foto de celular
-       sai deitada. */
-    .rotate()
-    .resize({
-      width: foto.largura,
-      height: foto.altura,
-      fit: foto.altura ? "cover" : "inside",
-      position: foto.posicao,
-      withoutEnlargement: true,
-    });
+  const fonte = await decodificar(origem(foto.de));
 
-  if (foto.saturacao || foto.brilho) {
-    pipeline = pipeline.modulate({
-      saturation: foto.saturacao ?? 1,
-      brightness: foto.brilho ?? 1,
-    });
+  let size;
+  try {
+    let pipeline = sharp(fonte.caminho)
+      /* Respeita a orientação EXIF antes de qualquer corte: sem isso, foto de celular
+         sai deitada. (O TIFF que vem do `sips` já chega em pé, e aí o `.rotate()` é
+         no-op: ele lê a orientação, e a do TIFF é 1.) */
+      .rotate()
+      .resize({
+        width: foto.largura,
+        height: foto.altura,
+        fit: foto.altura ? "cover" : "inside",
+        position: foto.posicao,
+        withoutEnlargement: true,
+      });
+
+    if (foto.saturacao || foto.brilho) {
+      pipeline = pipeline.modulate({
+        saturation: foto.saturacao ?? 1,
+        brightness: foto.brilho ?? 1,
+      });
+    }
+
+    ({ size } = await pipeline
+      .jpeg({ quality: foto.qualidade ?? 82, mozjpeg: true, progressive: true })
+      .toFile(saida));
+  } finally {
+    await fonte.limpar();
   }
-
-  const { size } = await pipeline
-    .jpeg({ quality: 82, mozjpeg: true, progressive: true })
-    .toFile(saida);
 
   if (size > 200 * 1024) acima += 1;
 

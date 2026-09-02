@@ -14,6 +14,7 @@ Inventário completo em `instructions/AUDITORIA-FASE-0.md` §4.
 | `drive-files/Fotos captações/` | **9 fotos do trabalho acontecendo**, iPhone | `Servicos`, `Sobre` |
 | `ref-files/Paleta de cores.png` | montanha na neblina | `CtaFinal`, **uma vez só** na página |
 | `drive-files/estruturação de perfil/` | **print do perfil de uma cliente**, 1290×1644 | `Servicos`, prova do serviço |
+| `drive-files/captação e edição de vídeo/` | **11 bastidores de captação**, iPhone, 9:16. Nove usados | `Servicos`, sequência de quadros |
 
 ## Três restrições que decidem o recorte
 
@@ -31,6 +32,18 @@ cena). Distribuir entre seções distantes e variar o recorte. Só duas estão e
 (as `.heic`); quatro vieram em 310×552 e servem apenas para thumbnail pequeno.
 
 **3. A paisagem tem uma única aparição permitida.** Uma vez é atmosfera, duas é banco de imagem.
+
+**4. A sequência de vídeo é somada nove vezes, e isso muda a régua.** Os nove `video-quadro-*`
+ocupam o MESMO slot, um de cada vez. Nos 1100 px e qualidade 82 do resto eles davam **1,15 MB**
+numa seção só; a 800 px e qualidade 76 somam **766 KB**, e a mais pesada cai de 188 para 125 KB. O
+slot dá 330 CSS px em desktop e ~350 em 390, então 800 px ainda são 2,3x num celular a DPR 2, e
+cada quadro fica 3,4 s na tela sem nunca aparecer ao lado de outro.
+
+⚠️ O `servico-video.jpg` **não desce junto**: ele é o quadro em repouso, o único que sai no HTML do
+servidor e o único que quem tem `prefers-reduced-motion` vê. Continua em 1100/82.
+
+E o peso da sequência **não é baixado de uma vez**: o `SequenciaDeQuadros` monta o quadro seguinte
+com um de antecedência, então quem passa rolando pela seção baixa dois ou três, não dez.
 
 ## Regras
 
@@ -62,3 +75,9 @@ cena). Distribuir entre seções distantes e variar o recorte. Só duas estão e
     dos posts. **Está em `public/` porque a autorização escrita existe**, confirmada pelo Douglas em
     02/09. Esta é a linha que separa esse arquivo do material de `drive-files/` que nunca pode sair
     de lá.
+  - Sete dos nove `video-quadro-*` têm pessoa identificável ou marca de cliente legível (a modelo na
+    loja de calçados, os dois homens sobre os barris, a cliente diante do espelho, e os rostos
+    pequenos nas telas das câmeras). **Estão em `public/` pela mesma linha**: a autorização escrita
+    existe, confirmada pelo Douglas em 02/09.
+  - As duas que ficaram de fora das onze (`IMG_2333` e `IMG_7265`) saíram por serem quase o mesmo
+    quadro das vizinhas, não por autorização. O critério está no `processar-fotos.mjs`.

@@ -569,6 +569,43 @@ Ferramenta: **anime.js `onScroll({ sync })`** + `stagger`.
 
 ---
 
+### ⚠️ DESVIO REGISTRADO: a sequência de quadros de Captação (02/09)
+
+**Existe UM movimento na página que não é preso ao scroll**, e ele é decisão do Douglas, tomada
+com esta seção na mesa. Fica escrito aqui para ninguém o encontrar numa auditoria e tratar como
+defeito, e para ninguém o usar como precedente.
+
+**O que é:** no slot lateral de "Captação e edição de vídeos", dez quadros se revezam sozinhos, um
+a cada 4,3 s (3,4 s parado + 0,9 s de troca).
+
+**Por que ele se sustenta:** a única seção que anda sozinha no tempo é a que vende imagem em
+movimento. Vídeo é quadro trocando no tempo. Aqui a autonomia é o argumento da própria seção, não
+um efeito aplicado por cima dela. Em qualquer outra seção o mesmo movimento seria carrossel de
+template, e é por isso que ele não se estende a nenhuma.
+
+**O desvio fica em UM eixo, o gatilho.** O gesto continua sendo o **Gesto 3**: o quadro que entra é
+trazido pela mesma crista de montanha que revela todo bloco da página, com a mesma classe
+`.revelar`, o mesmo `TEMPO.revelacao` e a mesma `CURVA.revelacao`. Nenhum CSS novo, nenhum keyframe
+novo, nenhuma máscara nova, nenhum subpath novo do anime.js (o chunk continua em **19.217 bytes
+gzip**, medido antes e depois). **Fade fica de fora de propósito:** crossfade é a transição de
+qualquer carrossel, e adotá-lo seria desviar em dois eixos em vez de um.
+
+**As quatro contenções, e nenhuma é opcional:**
+
+1. **Só anda com o bloco na tela.** Fora da viewport não há relógio.
+2. **Para com a aba oculta, no hover e no foco.** O `requestAnimationFrame` não roda em documento
+   oculto, então uma troca disparada ali ficaria pendurada no meio.
+3. **Botão de pausa visível**, exigência da WCAG 2.2.2 (conteúdo que anda sozinho por mais de cinco
+   segundos precisa de um jeito de parar). Fica **abaixo** da foto, nunca sobreposto: overlay de
+   carrossel é assinatura de template e a §9 não deixa nada boiar por cima da imagem.
+4. **`prefers-reduced-motion: reduce` desliga por completo**, e sobra o quadro em repouso, estático
+   e inteiro.
+
+**Acessibilidade:** o quadro em repouso carrega o `alt` real, os outros nove são `alt=""` e
+`aria-hidden`. É a regra da `FaixaRepetida` (§6) aplicada aqui pelo mesmo motivo.
+
+---
+
 **O momento coreografado: Resolução.** Uma vez só, na entrada do `Manifesto`.
 
 *"Antes de falar sobre redes sociais…"* aparece, e *"…queremos falar sobre pessoas."* resolve depois.
@@ -833,10 +870,13 @@ Intervalos numéricos usam hífen simples ou a palavra "a": `60-72 caracteres`, 
 - [ ] Nenhuma frase de copy que caberia no site de qualquer outra agência
 
 **Movimento**
-- [ ] **Nenhum movimento fora dos três gestos e do momento coreografado**
+- [ ] **Nenhum movimento fora dos três gestos e do momento coreografado**, com a ÚNICA exceção
+      registrada na §8: a sequência de quadros de Captação, cujo gatilho é o tempo e cujo gesto
+      continua sendo o Gesto 3. Se aparecer uma segunda exceção, o vocabulário abriu
 - [ ] O reveal da página é revelação por máscara, **não** `fade + translateY`
 - [ ] A travessia de cor mantém contraste em 0%, 25%, 50%, 75% e 100% do progresso
 - [ ] Faixas se movem só com scroll, nunca em loop autônomo
+- [ ] A sequência de Captação para no hover, no foco, com a aba oculta e no botão de pausa
 - [ ] Chunk de animação **≤ 24 KB gzip, medido gzipado**
 - [ ] Sem three.js, sem Lenis, sem ScrollSmoother
 - [ ] `prefers-reduced-motion` testado no DevTools: estático, **100% visível**, máscaras **abertas**, travessia em estado final

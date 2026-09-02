@@ -305,13 +305,18 @@ Cinco serviços, direto da copy, **e a copy diz qual é o centro**: *"Gestão de
 | **Gestão de Redes Sociais** | **Bloco dominante**, largura cheia, o texto mais longo, foto |
 | Identidade Visual | órbita |
 | Estruturação de Perfil | órbita |
-| Captação e edição de vídeos | órbita, foto |
+| Captação e edição de vídeos | órbita, **sequência de quadros** (ver DESIGN-GUIDELINES.md §8) |
 | Landing Pages | órbita |
 
 **Regras de layout:**
 - **Nunca cinco cards iguais.** Isso mentiria sobre o negócio e cairia no template no mesmo gesto.
 - Blocos empilhados **alternando o lado**, larguras desiguais.
 - Foto em **alguns**, não em todos, a lacuna quebra o ritmo de grade.
+- ⚠️ **Captação virou sequência em 02/09.** O slot é o mesmo e o layout não mudou: o que mudou é que
+  dez bastidores se revezam ali, trocando sozinhos. É o único movimento da página que não é preso ao
+  scroll, e o desvio, o argumento e as quatro contenções estão registrados na
+  `DESIGN-GUIDELINES.md` §8. **Não estenda para outro serviço:** o que sustenta o desvio é a seção
+  ser a que vende imagem em movimento.
 - Sem ícone genérico em cima de cada. Se não houver ícone proprietário, **não há ícone**.
 - **Thumbnails de portfólio entram aqui, não numa seção nova.** O material de
   `drive-files/` (capas de diagnóstico de marca e de identidade visual de clientes) vai **anexado ao
