@@ -9,17 +9,24 @@ Inventário completo em `instructions/AUDITORIA-FASE-0.md` §4.
 
 | Origem | O que é | Destino |
 |---|---|---|
-| `drive-files/Dêssa/` | **2 fotos da Andressa**, 1023×1537 | `Hero`, `Sobre`, `og-image` |
+| `ref-files/foto lp.jpg` | **bastidor da captação**, Sony ZV-E10, 4000×6000 | `Hero` |
+| `drive-files/Dêssa/` | **2 fotos da Andressa**, 1023×1537 | `Sobre`, `og-image` |
 | `drive-files/Fotos captações/` | **9 fotos do trabalho acontecendo**, iPhone | `Servicos`, `Sobre` |
 | `ref-files/Paleta de cores.png` | montanha na neblina | `CtaFinal`, **uma vez só** na página |
+| `drive-files/estruturação de perfil/` | **print do perfil de uma cliente**, 1290×1644 | `Servicos`, prova do serviço |
 
 ## Três restrições que decidem o recorte
 
 **1. Os retratos não têm folga de resolução.** 1023×1537 é o que existe. A coluna da imagem em
 55/45 sobre `max-w-6xl` pede 1036 px para cobrir 2x. **Nada de corte apertado no rosto:** qualquer
-recorte que amplie a face derruba a densidade abaixo de 2x, e o herói é o elemento de LCP.
+recorte que amplie a face derruba a densidade abaixo de 2x.
 
-**2. As nove de captação repetem o mesmo enquadramento** (mão segurando a câmera, tela mostrando a
+⚠️ Desde 26/08 esta restrição vale só para o `Sobre`. O herói trocou o retrato pelo bastidor da
+captação, que vem de uma fonte de 4000×6000 e sai em 1200×1800, com folga real de 2x. O retrato do
+herói continua sendo gerado (`retrato-hero.jpg`) porque a foto da Andressa volta em outra seção,
+ainda a definir.
+
+**2. As de captação repetem o mesmo enquadramento** (mão segurando a câmera, tela mostrando a
 cena). Distribuir entre seções distantes e variar o recorte. Só duas estão em resolução de trabalho
 (as `.heic`); quatro vieram em 310×552 e servem apenas para thumbnail pequeno.
 
@@ -27,13 +34,31 @@ cena). Distribuir entre seções distantes e variar o recorte. Só duas estão e
 
 ## Regras
 
-- Nenhuma imagem acima de ~200 KB. O herói vai até **120 KB**.
+- Nenhuma imagem acima de ~200 KB. A mais pesada é `servico-estruturacao.jpg`, **187 KB**, e ela é
+  servida em 1290×1644, a largura nativa, porque em desktop ela aparece a 642 CSS px e a 1100 px de
+  fonte a densidade cairia de 2,01x para 1,71x. A 1100 px ela pesaria 146 KB, se um dia for preciso.
+  O herói mira **120 KB**, e nenhuma das duas fotos que já
+  ocuparam o slot chegou lá: `retrato-hero.jpg` pesa 178 KB e `captacao-hero.jpg`, 142 KB (eram 138
+  KB enquanto ela era dessaturada; o croma que voltou custou 4 KB). O teto duro de 200 KB é
+  respeitado; o alvo de 120 KB é dívida aberta.
 - **Metadados removidos em tudo.** O `processar-fotos.mjs` usa `sharp` sem `withMetadata()` e sai
   em JPEG, o que apaga o EXIF das fotos de iPhone e a credencial C2PA dos retratos num passo só.
   **Nenhuma imagem entra aqui sem passar por ele.**
 - Tratamento cromático unificado: dessaturar na direção de `decor` (`#B3B793`) e aquecer
   levemente, ajustando pela **página montada**, nunca pela foto isolada. Os retratos pedem pouco,
   já vêm de parede clara com luz quente. As de captação é que brigam entre si.
+  - ⚠️ **Duas exceções, e as duas são nomeadas.** A regra existe para domar cor que é ruído. Onde a
+    cor é o assunto, ela se inverte e come exatamente o que a imagem foi buscar:
+    - `captacao-hero.jpg`, 26/08. O coral da caneca e o rosa da tela são o que a dessaturação come
+      primeiro, e são o que a foto existe para mostrar. Custa 4 KB e vale.
+    - `servico-estruturacao.jpg`, 02/09. O print prova um trabalho de identidade visual: os
+      círculos terracota dos destaques e o feed em tons de terra são a entrega sendo mostrada. A
+      média RGB medida do original é `146,132,119`, um neutro quente já dentro da família da paleta.
+    A regra continua valendo para as outras cinco.
 - **Nenhum PDF aqui. Nunca.** Ver `public/brand/LEIA-ME.md`.
 - Foto de terceiro só com autorização escrita. Há **uma criança** na tela da câmera em
   `499E4759`, e esse é o caso mais restritivo da lista.
+  - `servico-estruturacao.jpg` mostra o perfil de uma cliente com o nome legível e o rosto dela num
+    dos posts. **Está em `public/` porque a autorização escrita existe**, confirmada pelo Douglas em
+    02/09. Esta é a linha que separa esse arquivo do material de `drive-files/` que nunca pode sair
+    de lá.

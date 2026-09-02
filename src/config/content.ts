@@ -72,8 +72,13 @@ export const content = {
     subtitulo:
       "Porque nenhuma marca deveria ser tratada como só mais um cliente.",
     ctaLabel: "Quero conversar com a Alando",
+    /**
+     * ⚠️ Trocado em 26/08 junto com a foto do herói, que deixou de ser o retrato
+     * da Andressa e passou a ser o bastidor da captação. `alt` é obrigação de
+     * acessibilidade, não copy da cliente: mesma convenção do `seo.ogAlt`.
+     */
     fotoAlt:
-      "Andressa Lando, fundadora e estrategista de marketing da Alando Digital.",
+      "Mão segurando um celular na tela de publicação de story do Instagram, com um notebook exibindo a paleta de cores da marca ao fundo.",
   },
 
   /**
@@ -93,11 +98,10 @@ export const content = {
     resolvePalavraItalica: "pessoas",
     resolveParte2: ".",
     corpo: [
-      "Na Alando, acreditamos que um bom posicionamento começa muito antes do primeiro post, mas sim conhecendo a história, os valores, os objetivos e a essência de quem está por trás da marca. Só depois disso criamos estratégias que fazem sentido, porque sabemos que comunicar uma empresa sem entendê-la primeiro é como tentar contar a história de alguém que você acabou de conhecer.",
-      "Toda empresa nasce de um sonho. Existe uma história por trás dela, valores que guiam as decisões e um jeito único de fazer as coisas. É justamente isso que torna uma marca diferente de todas as outras, e, na nossa visão, a comunicação precisa carregar essa essência em cada detalhe.",
-      "Quando uma marca deixa de mostrar quem realmente é para seguir tendências ou copiar o que está funcionando para outra empresa, ela pode até chamar atenção por alguns segundos. Mas dificilmente será lembrada pelas pessoas certas.",
+      "Acreditamos que um bom posicionamento começa quando imergimos na história e objetivos de quem está por trás da marca. Só depois disso criamos estratégias que fazem sentido, porque sabemos que comunicar uma empresa sem entendê-la é como tentar contar a história de alguém que você acabou de conhecer.",
+      "Toda marca tem uma história, valores e um jeito único de fazer as coisas. Seguir tendências ou copiar o que funciona para outra empresa chama atenção por segundos, mas não constrói memória.",
     ],
-    fecha: "É por isso que, antes de pensar em conteúdo, pensamos em identidade.",
+    fecha: "Por isso, antes de conteúdo, pensamos em identidade.",
     faixaRepeticoes: 6,
   },
 
@@ -152,6 +156,12 @@ export const content = {
    * em todos", porque foto em todos devolve o ritmo de grade que a hierarquia
    * existe para quebrar.
    *
+   * `prova` é chave SEPARADA de `foto`, e não uma flag dentro dela, porque as duas
+   * se renderizam diferente: `foto` é coluna estreita ao lado do texto, `prova` é
+   * campo largo emoldurado abaixo dele. Um booleano em `foto` faria o componente
+   * ler o mesmo dado de dois jeitos, que é como nasce o `as any` da próxima fase.
+   * Pela mesma razão do `fechamento`, ela existe nos CINCO, vazia em quatro.
+   *
    * ⚠️ O bloco DOMINANTE (Gestão) deveria ter foto pela §5.5 e não tem, e o
    * motivo é falta de material, não escolha de layout. Das cinco imagens de
    * `public/images/`, `servico-gestao.jpg` é a única que resolve o parágrafo da
@@ -167,6 +177,8 @@ export const content = {
       destaque: false,
       foto: "",
       fotoAlt: "",
+      quadros: [],
+      prova: { imagem: "", alt: "" },
     },
     {
       titulo: "Estruturação de Perfil",
@@ -175,26 +187,70 @@ export const content = {
       destaque: false,
       foto: "",
       fotoAlt: "",
+      /* A prova do serviço, e a §5.5 da estrutura já a tinha previsto por nome:
+         "o material de drive-files vai anexado ao serviço que ele comprova:
+         Identidade Visual e Estruturação de Perfil".
+
+         ⚠️ `alt` é texto do projeto, não copy da Andressa, mesma convenção do
+         `seo.ogAlt` e do `hero.fotoAlt`. Ele descreve só o que está no quadro e
+         não afirma resultado nenhum, porque a §11 proíbe promessa numérica e a
+         imagem é de uma cliente real, publicada com autorização escrita. */
+      quadros: [],
+      prova: {
+        imagem: "/images/servico-estruturacao.jpg",
+        alt: "Perfil de Instagram de uma cliente, estruturado pela Alando: três destaques nomeados e um feed com identidade visual consistente.",
+      },
     },
     {
       titulo: "Gestão de Redes Sociais",
-      corpo: "Esse é o coração da Alando.\n\nNossa gestão vai muito além de criar artes e escrever legendas. Nós mergulhamos na sua marca para construir uma comunicação que tenha personalidade, gere conexão e fortaleça o seu posicionamento.\n\nTudo começa com um diagnóstico profundo do seu negócio. A partir dele, desenvolvemos o planejamento estratégico, criamos os roteiros, produzimos os conteúdos, acompanhamos os resultados e ajustamos a comunicação conforme sua empresa evolui.\n\nVocê deixa de apenas alimentar um perfil e passa a construir uma marca que as pessoas reconhecem e lembram.",
-      fechamento: "",
+      corpo: "O coração da Alando. Mergulhamos na sua marca para criar uma comunicação com personalidade, estratégia e posicionamento, cuidando de todo o processo: do planejamento à produção, publicação e análise de resultados.",
+      fechamento:
+        "Ideal para marcas que querem construir uma presença digital estratégica, consistente e memorável.",
       destaque: true,
       foto: "",
       fotoAlt: "",
+      quadros: [],
+      prova: { imagem: "", alt: "" },
     },
     {
       titulo: "Captação e edição de vídeos",
       corpo: "Sabemos que aparecer na câmera nem sempre é fácil.\n\nPor isso, nossa equipe conduz toda a gravação de forma leve e natural, criando um ambiente em que você se sinta confortável para falar sobre aquilo que faz todos os dias.\n\nTambém pensamos em cada cena, enquadramento e roteiro para que os vídeos reflitam a essência da sua marca, e não apenas acompanhem tendências.\n\nDepois da gravação, todo o material passa pela edição para transformar boas imagens em conteúdos estratégicos.",
       fechamento: "",
       destaque: false,
-      /* A única foto da seção, e é a que casa com o serviço que ela mostra:
-         literalmente uma câmera enquadrando a cena. `alt` descritivo, escrito
-         aqui, não é copy da cliente. */
+      /* A foto que casa com o serviço que ela mostra: literalmente uma câmera
+         enquadrando a cena. Desde 02/09 ela é o QUADRO EM REPOUSO de uma
+         sequência de dez, e continua sendo a única que sai no HTML do servidor,
+         a única que quem tem `prefers-reduced-motion` vê e a única que carrega
+         `alt` de verdade. `alt` descritivo, escrito aqui, não é copy da cliente. */
       foto: "/images/servico-video.jpg",
       fotoAlt:
-        "Mão segurando uma câmera cuja tela mostra a mesa posta que está sendo fotografada.",
+        "Mão segurando uma câmera cuja tela mostra a mesa posta que está sendo fotografada, um dos bastidores de captação da Alando.",
+      /* ── A SEQUÊNCIA DE QUADROS ────────────────────────────────────────────
+         Os nove que se revezam com a foto acima, no mesmo slot, trocando no
+         tempo. Mecanismo em `SequenciaDeQuadros.tsx`; o desvio de movimento que
+         ele representa está registrado na DESIGN-GUIDELINES.md §8.
+
+         ⚠️ A ORDEM É DELIBERADA e não é a do sistema de arquivos: quadros de
+         contexto parecido (os dois de salão, os dois de mesa) ficam separados
+         por pelo menos dois outros, porque quem para de rolar no meio da
+         sequência tem que ver duas fotos DIFERENTES em seguida.
+
+         ⚠️ Nenhum `alt` aqui, e é decisão, não esquecimento: os nove são
+         `alt=""` e `aria-hidden`, pela mesma regra da `FaixaRepetida` (uma
+         instância semântica só). Dez descrições de mãos segurando câmera
+         enfileiradas dentro de um bloco de serviço são ruído, não informação. */
+      quadros: [
+        "/images/video-quadro-01.jpg",
+        "/images/video-quadro-02.jpg",
+        "/images/video-quadro-03.jpg",
+        "/images/video-quadro-04.jpg",
+        "/images/video-quadro-05.jpg",
+        "/images/video-quadro-06.jpg",
+        "/images/video-quadro-07.jpg",
+        "/images/video-quadro-08.jpg",
+        "/images/video-quadro-09.jpg",
+      ],
+      prova: { imagem: "", alt: "" },
     },
     {
       titulo: "Landing Pages",
@@ -203,6 +259,8 @@ export const content = {
       destaque: false,
       foto: "",
       fotoAlt: "",
+      quadros: [],
+      prova: { imagem: "", alt: "" },
     },
   ],
 
@@ -232,6 +290,26 @@ export const content = {
     "Você passa a contar com uma equipe que se preocupa em entender sua empresa como ela realmente é.\n\nPorque acreditamos que nenhuma estratégia funciona quando tenta encaixar todas as marcas na mesma fórmula.\n\nNosso trabalho é justamente o contrário: descobrir o que torna o seu negócio único e transformar isso em uma comunicação que faça sentido para você e para quem está do outro lado da tela.",
   servicosCTA: "Quero conhecer o processo",
   servicosFaixaRepeticoes: 6,
+
+  /**
+   * Os rótulos do controle da sequência de quadros.
+   *
+   * ⚠️ TEXTO DO PROJETO, não copy da Andressa, mesma convenção já registrada
+   * para `fotoAlt` e `seo.ogAlt`. Entram na lista do relatório da fase.
+   *
+   * O botão existe por exigência da WCAG 2.2.2: conteúdo que anda sozinho por
+   * mais de cinco segundos precisa de um jeito de parar. E são DOIS pares de
+   * rótulo, não um: o visível é curto porque fica embaixo de uma foto estreita,
+   * e o de leitor de tela diz o que o botão controla, coisa que "Pausar"
+   * sozinho não diz. O visível é prefixo do descritivo de propósito, que é o
+   * que a WCAG 2.5.3 (Label in Name) pede.
+   */
+  quadrosRotulos: {
+    pausar: "Pausar",
+    retomar: "Retomar",
+    pausarDescricao: "Pausar a sequência de bastidores de captação",
+    retomarDescricao: "Retomar a sequência de bastidores de captação",
+  },
 
   /**
    * Resultados. Nasce desligada porque os dados do deck não têm autorização de

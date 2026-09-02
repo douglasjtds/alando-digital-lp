@@ -71,10 +71,10 @@ export function Hero() {
 
             <div className="relative w-full">
               <Image
-                src="/images/retrato-hero.jpg"
+                src="/images/captacao-hero.jpg"
                 alt={content.hero.fotoAlt}
-                width={1023}
-                height={1537}
+                width={1200}
+                height={1800}
                 priority
                 className={cn(
                   "w-full h-auto object-cover",

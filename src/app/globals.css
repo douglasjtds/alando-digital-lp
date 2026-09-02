@@ -531,3 +531,58 @@
     }
   }
 }
+
+/* ==========================================================================
+   O CAMPO DA PROVA: a máscara emoldura a imagem em vez de recortá-la
+
+   Caso único da página, e vale explicar por que ele existe antes de explicar os
+   números. Toda imagem daqui SANGRA até a borda da máscara: a `crista` corta a
+   foto, e isso é barato porque a borda de uma fotografia é fundo. O print do
+   perfil que prova a Estruturação de Perfil é a exceção, porque ele é ARTEFATO e
+   não fotografia: cada aresta dele carrega conteúdo (os destaques encostam no
+   topo, a última fileira de posts encosta na base), e cortar 4% ali é perder
+   informação, não respiro.
+
+   Então o papel se inverte: a forma orgânica passa a ser do CAMPO, e o print vive
+   inteiro dentro dele. A regra "nunca border-radius, nunca recorte flutuante"
+   continua valendo, porque quem tem a crista e o degrau é o campo.
+
+   ── Por que a `crista-retrato`, e não a `crista-faixa` ──────────────────────
+
+   A §5.5 aponta a `crista-faixa` para thumbnail de portfólio, e ela seria a
+   escolha óbvia. Só que ela foi desenhada para a imagem sangrar até a borda DELA.
+   Invertido o papel, o que importa deixa de ser a área e passa a ser o INTERIOR,
+   e aí ela é a pior das quatro: come 19% do topo à esquerda. Medindo o maior
+   retângulo que cabe inteiro em cada máscara, na proporção 1290×1644 do print:
+
+     crista-retrato   1,19x larg   1,14x alt   <- escolhida
+     crista-vale      1,18x larg   1,26x alt
+     crista-serra     1,15x larg   1,39x alt
+     crista-faixa     1,12x larg   1,46x alt   <- levaria o bloco a 1200 px
+
+   A §6 pede forma diferente por FOTO. Aqui a forma é do campo, e a outra
+   ocorrência da `crista-retrato` (o herói) fica a meia página de distância.
+
+   ── Os quatro paddings, medidos ─────────────────────────────────────────────
+
+   Padding percentual em CSS se mede pela LARGURA nos quatro lados, inclusive no
+   topo e na base. É isso que faz a proporção do campo se resolver sozinha, sem
+   `aspect-ratio` escrito à mão e sem posicionamento absoluto: a altura do campo
+   passa a ser 7% + (80% / 0,785) + 13% = 1,220x a largura, ou seja, AR 0,820.
+
+   Com `7% 18% 13% 2%` o print ocupa x[0.020, 0.820] e y[0.057, 0.893] da caixa,
+   e sobra de folga: esquerda 1,4% · direita 3,4% · topo 2,2% · base 4,4%.
+   Verificado amostrando 2000 pontos por aresta contra o path, não no olho.
+
+   ⚠️ NÃO combine com `.foto-textura`. O parallax translada ±2,5% e aplica
+   `scale(1.08)`, e só o scale já pede 4% por lado: a folga mais apertada aqui é
+   1,4%. O parallax empurraria o print para fora da máscara e cortaria exatamente
+   o que este utilitário existe para preservar. O Gesto 3 (revelação por máscara)
+   continua valendo pelo `Revelar` que envolve a lista.
+   ========================================================================== */
+
+@layer components {
+  .campo-prova {
+    padding: 7% 18% 13% 2%;
+  }
+}

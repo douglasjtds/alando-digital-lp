@@ -26,7 +26,7 @@
  * DEGRAU, onde a faixa vertical se desloca**. Cada máscara tem um, e ele é a
  * variável estrutural:
  *
- *   crista-retrato  degrau à DIREITA, na meia altura
+ *   crista-retrato  degrau à DIREITA, a 71% da altura
  *   crista-vale     degrau à ESQUERDA, mais baixo, e o recuo é maior
  *   crista-serra    SEM degrau, largura cheia. É a exceção, e é isso que a marca
  *   crista-faixa    as duas colunas deslocadas na VERTICAL, uma contra a outra
@@ -39,7 +39,11 @@
  *    só cresce, ou só decresce, ao longo de cada aresta). É o que garante, por
  *    construção, que nenhuma se autointersecta: não é conferido no olho.
  * 3. As que cobrem RETRATO (`crista-retrato` e `crista-vale`) têm borda superior
- *    quase reta: é onde está a cabeça.
+ *    quase reta: é onde está a cabeça. Na `crista-retrato` isso deixou de ser
+ *    literal em 26/08, quando o herói trocou o retrato pela foto de bastidor:
+ *    lá o topo limpo protege a borda do notebook. A regra sobrevive à troca de
+ *    foto porque o que ela pede é a mesma coisa nos dois casos, não invadir o
+ *    alto do quadro.
  * 4. Canto arredondado é o mínimo para não virar vértice, nunca o suficiente
  *    para lembrar `border-radius`. Na `crista-faixa`, que é a mais exposta a
  *    esse risco, o canto ocupa menos de 4% da altura.
@@ -52,24 +56,46 @@
  */
 
 /**
- * Retrato do herói.
+ * A do herói.
  *
- * Topo limpo (a cabeça). Largura cheia até a meia altura, e aí um DEGRAU de 12%
- * para dentro na lateral direita. A base é uma crista longa com o pico à
- * esquerda do centro.
+ * Topo limpo. Largura cheia até 71% da altura, e aí um DEGRAU de 12% para dentro
+ * na lateral direita. A base é uma crista longa com o pico à esquerda do centro.
+ *
+ * ── Por que o degrau desceu de 50% para 71% ─────────────────────────────────
+ *
+ * ⚠️ Ele entrava na MEIA altura até 26/08, e ali era corte caro. Medindo a foto
+ * que ocupa este slot (área da máscara, e detalhe por variância local numa grade
+ * de 60×90), o mapa de conteúdo dela é:
+ *
+ *   topo 38,9%   meio 46,4%   base 14,7%   |   esq 14,5%   centro 63,5%   dir 22,0%
+ *
+ * A base é fundo, então a crista lá embaixo é barata. O degrau na meia altura,
+ * não: era o único ponto onde a máscara atravessava OBJETO em vez de fundo.
+ * Descê-lo para baixo da caneca levou a máscara de 83,0% para 90,9% de área, e de
+ * 89,7% para 95,0% do detalhe da foto.
+ *
+ * A profundidade continua 12% de propósito. As outras três máscaras foram
+ * medidas na mesma foto e nenhuma delas chegava perto (`vale` 89,2%, `serra`
+ * 88,6%, `faixa` 89,5%): trocar de máscara não era a saída, e afinar o degrau
+ * para 6% dava 92,9% ao custo de apagar o único traço que distingue esta forma
+ * da `crista-serra`. O degrau é o vocabulário. Ele desce, não encolhe.
+ *
+ * Os números acima são do `captacao-hero.jpg` SEM tratamento de cor, que é o que
+ * o `processar-fotos.mjs` produz desde 26/08. Refazer a conta em cima de uma
+ * versão dessaturada move três deles em 0,1 ponto e não muda conclusão nenhuma.
  */
 const CRISTA_RETRATO = [
-  "M 0.000,0.042",
-  "C 0.300,0.014 0.640,0.004 0.938,0.020" /*      topo, limpo                  */,
-  "C 0.966,0.022 0.984,0.044 0.986,0.082" /*      canto superior direito       */,
-  "C 0.988,0.230 0.988,0.380 0.986,0.502" /*      lateral direita, cheia       */,
-  "C 0.984,0.552 0.948,0.578 0.898,0.590" /*  ←── O DEGRAU, 12% para dentro    */,
-  "C 0.878,0.595 0.868,0.612 0.867,0.646" /*      lateral direita, recuada     */,
-  "C 0.864,0.746 0.836,0.842 0.760,0.900" /*      crista desce                 */,
-  "C 0.664,0.972 0.548,0.930 0.442,0.878" /*      crista sobe: o pico          */,
-  "C 0.336,0.826 0.216,0.902 0.108,0.958" /*      crista cai para a esquerda   */,
-  "C 0.058,0.984 0.014,0.966 0.006,0.912" /*      canto inferior esquerdo      */,
-  "C 0.000,0.640 0.000,0.320 0.000,0.042" /*      lateral esquerda             */,
+  "M 0.000,0.036",
+  "C 0.300,0.012 0.640,0.003 0.940,0.018" /*      topo, limpo                  */,
+  "C 0.968,0.020 0.986,0.042 0.988,0.080" /*      canto superior direito       */,
+  "C 0.990,0.300 0.990,0.520 0.988,0.706" /*      lateral direita, cheia       */,
+  "C 0.986,0.748 0.950,0.772 0.900,0.784" /*  ←── O DEGRAU, 12% para dentro    */,
+  "C 0.880,0.789 0.870,0.806 0.869,0.836" /*      lateral direita, recuada     */,
+  "C 0.866,0.888 0.842,0.936 0.782,0.962" /*      crista desce                 */,
+  "C 0.680,1.000 0.556,0.980 0.446,0.950" /*      crista sobe: o pico          */,
+  "C 0.338,0.920 0.214,0.958 0.106,0.986" /*      crista cai para a esquerda   */,
+  "C 0.056,0.998 0.012,0.984 0.005,0.940" /*      canto inferior esquerdo      */,
+  "C 0.000,0.640 0.000,0.320 0.000,0.036" /*      lateral esquerda             */,
   "Z",
 ].join(" ");
 
@@ -153,7 +179,7 @@ export const MASCARAS = [
   {
     id: "crista-retrato",
     d: CRISTA_RETRATO,
-    nota: "Herói. Topo limpo (a cabeça), degrau à direita na meia altura, pico ao centro da base.",
+    nota: "Herói. Topo limpo, degrau à direita a 71% da altura, pico ao centro da base.",
   },
   {
     id: "crista-vale",

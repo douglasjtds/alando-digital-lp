@@ -3,6 +3,7 @@ import { content } from "@/config/content";
 import { FaixaRepetida } from "@/components/ui/FaixaRepetida";
 import { WhatsappCta } from "@/components/ui/WhatsappCta";
 import { Revelar } from "@/components/motion/Revelar";
+import { SequenciaDeQuadros } from "@/components/motion/SequenciaDeQuadros";
 
 type Servico = (typeof content.servicos)[number];
 
@@ -47,8 +48,12 @@ export function Servicos() {
                   </p>
                 ))}
               </div>
+              {/* O fechamento do bloco dominante vai em `body-lg`, e não no
+                  `caption` dos outros quatro: aqui a frase é ênfase do próprio
+                  argumento, não etiqueta de rodapé, então muda o peso e não o
+                  tamanho de leitura. */}
               {servicoDestaque.fechamento && (
-                <p className="caption text-ancora font-semibold medida mt-6">
+                <p className="body-lg text-ancora font-semibold medida mt-6">
                   {servicoDestaque.fechamento}
                 </p>
               )}
@@ -98,7 +103,15 @@ export function Servicos() {
                   {/* A foto ocupa a coluna que o texto deixou, do lado oposto a
                       ele. `crista-faixa` é a quarta máscara e a única ainda não
                       usada na página: o herói tem `crista-retrato` e o `Sobre`
-                      tem `crista-vale` e `crista-serra`. */}
+                      tem `crista-vale` e `crista-serra`.
+
+                      Desde 02/09 o slot é uma SEQUÊNCIA de quadros, não uma foto
+                      só. O `clip-path` e o `foto-textura` mudaram de arquivo e
+                      não de valor: eles moram dentro do `SequenciaDeQuadros`
+                      porque é lá que os quadros precisam ser filhos DIRETOS do
+                      wrapper, que é o que mantém o parallax vivo. O componente
+                      atende os dois casos, e um serviço sem `quadros` continua
+                      renderizando uma imagem estática só. */}
                   {servico.foto && (
                     <div
                       className={
@@ -107,20 +120,64 @@ export function Servicos() {
                           : "md:col-start-1 md:row-start-1"
                       }
                     >
-                      {/* O `clip-path` saiu da imagem e veio para o wrapper, e
-                          não é troca cosmética: é o wrapper que PUBLICA a linha
-                          do tempo do parallax (`foto-textura`) e a imagem que a
-                          consome. Ver a armadilha nº 1 no fim da §8. */}
-                      <div className="foto-textura [clip-path:url(#crista-faixa)]">
+                      <SequenciaDeQuadros
+                        foto={servico.foto}
+                        fotoAlt={servico.fotoAlt}
+                        quadros={servico.quadros}
+                        /* 24vw, medido: a coluna dá 331 CSS px em 1440, e 30vw
+                           pedia o candidato de 432 sem precisar. */
+                        sizes="(max-width: 768px) 100vw, 24vw"
+                        rotulos={content.quadrosRotulos}
+                      />
+                    </div>
+                  )}
+
+                  {/* A PROVA, e ela se renderiza diferente da `foto` de propósito.
+
+                      A §5.5 da estrutura já apontava para cá por nome ("o material
+                      de drive-files vai anexado ao serviço que ele comprova"), e o
+                      que ela pede é evidência ao lado da afirmação. Só que este
+                      print é ARTEFATO, não fotografia: cada aresta dele carrega
+                      conteúdo, então ele não pode sangrar até a borda da máscara
+                      como as fotos fazem. O `campo-prova` inverte o papel, a máscara
+                      emoldura em vez de recortar, e os quatro paddings medidos estão
+                      no `globals.css`.
+
+                      Duas consequências de layout:
+
+                      1. Ele ocupa a LINHA inteira e não uma coluna. A coluna estreita
+                         dá 331 CSS px, e o print de 1290 encolhido para lá vira
+                         borrão justamente nos destaques e nas legendas, que são o
+                         que a imagem existe para mostrar. Em 76% do container ele sai
+                         a 642 px, ou seja, 2,01x de densidade.
+                      2. Ele se desloca para o lado OPOSTO ao do texto, mesma regra da
+                         `foto`. Com o texto no alto de um lado e o print embaixo do
+                         outro, o bloco lê como diagonal e não como pilha, que é o que
+                         o separa visualmente do serviço de vídeo logo abaixo.
+
+                      Sem `foto-textura`: o parallax cortaria o print. Ver o aviso no
+                      fim do bloco do `campo-prova` no `globals.css`. */}
+                  {servico.prova.imagem && (
+                    <div
+                      className={
+                        textoNaEsquerda
+                          ? "w-full md:col-span-3 md:row-start-2 md:w-[76%] md:ml-auto"
+                          : "w-full md:col-span-3 md:row-start-2 md:w-[76%] md:mr-auto"
+                      }
+                    >
+                      <div className="campo-prova bg-decor/12 [clip-path:url(#crista-retrato)]">
                         <Image
-                          src={servico.foto}
-                          alt={servico.fotoAlt}
-                          width={664}
-                          height={1182}
-                          /* 24vw, medido: a coluna dá 331 CSS px em 1440, e 30vw
-                             pedia o candidato de 432 sem precisar. */
-                          sizes="(max-width: 768px) 100vw, 24vw"
-                          className="h-auto w-full object-cover"
+                          src={servico.prova.imagem}
+                          alt={servico.prova.alt}
+                          width={1290}
+                          height={1644}
+                          /* Medido, não arredondado: o print é 80% do campo, e o
+                             campo é 100% do container em mobile e 76% dele em
+                             desktop. Em 390px isso dá 72vw; acima de 1248px o
+                             container trava em 1056 px e o print fica fixo em
+                             642 px, que é a largura nativa de 1290 a 2,01x. */
+                          sizes="(max-width: 768px) 72vw, (max-width: 1248px) 55vw, 642px"
+                          className="h-auto w-full"
                         />
                       </div>
                     </div>

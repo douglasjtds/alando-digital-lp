@@ -419,7 +419,7 @@ function Mascaras() {
           <p className="eyebrow text-tinta-suave mb-4">
             {formato} ·{" "}
             {formato === "retrato"
-              ? "as duas primeiras têm topo limpo: é onde está a cabeça"
+              ? "as duas primeiras têm topo limpo: o alto do quadro é intocável"
               : "a serra vai para o topo quando não há cabeça a proteger"}
           </p>
           <ul className="grid grid-cols-2 gap-4 lg:grid-cols-4">

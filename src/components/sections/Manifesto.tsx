@@ -60,17 +60,27 @@ export function Manifesto() {
         </ManifestoTimeline>
 
         <Revelar como="lista" className="medida mx-auto">
-          <p className="body-lg text-superficie-2 mb-6">
-            {content.manifesto.corpo[0]}
-          </p>
+          {/* Percorre o `corpo` em vez de ler `[0]`, `[1]` e `[2]` à mão.
 
-          <p className="body-lg text-superficie-2 mb-6">
-            {content.manifesto.corpo[1]}
-          </p>
-
-          <p className="body-lg text-superficie-2 mb-12">
-            {content.manifesto.corpo[2]}
-          </p>
+              ⚠️ Não é refatoração de estilo: a versão anterior lia `corpo[2]` num
+              array que passou a ter DOIS parágrafos, e isso quebrava o
+              `tsc`, ou seja, o build inteiro. Índice fixo em cima de `content.ts`
+              transforma "a Andressa cortou um parágrafo" em erro de compilação
+              numa seção que ninguém estava editando. Assim a seção acompanha a
+              copy, e o espaço maior antes do fecho fica preso ao ÚLTIMO
+              parágrafo, seja ele qual for. */}
+          {content.manifesto.corpo.map((paragrafo, i) => (
+            <p
+              key={paragrafo}
+              className={
+                i === content.manifesto.corpo.length - 1
+                  ? "body-lg text-superficie-2 mb-12"
+                  : "body-lg text-superficie-2 mb-6"
+              }
+            >
+              {paragrafo}
+            </p>
+          ))}
 
           <p className="text-center text-superficie-2 text-sm leading-relaxed">
             {content.manifesto.fecha}
