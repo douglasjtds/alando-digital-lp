@@ -601,8 +601,25 @@ qualquer carrossel, e adotá-lo seria desviar em dois eixos em vez de um.
 4. **`prefers-reduced-motion: reduce` desliga por completo**, e sobra o quadro em repouso, estático
    e inteiro.
 
+**O contador, e por que ele não é bolinha.** Abaixo da foto, ao lado do botão, um rótulo
+`01 / 10` diz que existem outras fotos **antes de qualquer movimento**. Sem ele, nos primeiros
+3,4 s o bloco é indistinguível de uma foto estática, e o botão sozinho avisa que algo se move sem
+avisar que há mais o que ver.
+
+Como o botão, ele **não sai no HTML do servidor**: os dois só existem depois que a hidratação
+confirma que a sequência vai rodar. Sem JS não há sequência, e prometer dez fotos que não chegam
+é pior do que não prometer. A seção fica bem abaixo da dobra, então na prática ninguém vê a falta.
+
+⚠️ **Fileira de pontos está proibida aqui**, é a assinatura de carrossel que a §2.5 veta. O que
+entra no lugar é o rótulo em **caixa alta com tracking largo** (§4), com numeração de zero à
+esquerda, que nesta seção é a convenção do próprio ofício: claquete numera take. Número corrente
+em `ancora` (13,27:1), total em `tinta-suave` (5,76:1). Ele vira no **fim** da varredura: anuncia o
+quadro que chegou, nunca o que está chegando.
+
 **Acessibilidade:** o quadro em repouso carrega o `alt` real, os outros nove são `alt=""` e
-`aria-hidden`. É a regra da `FaixaRepetida` (§6) aplicada aqui pelo mesmo motivo.
+`aria-hidden`, e **o contador também é `aria-hidden`**. É a regra da `FaixaRepetida` (§6) aplicada
+aqui pelo mesmo motivo: anunciar "1 de 10" a quem recebe um `alt` só é prometer nove coisas que a
+pessoa não alcança.
 
 ---
 

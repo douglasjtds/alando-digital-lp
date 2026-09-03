@@ -327,28 +327,73 @@ export function SequenciaDeQuadros({
         ))}
       </div>
 
-      {/* O controle da WCAG 2.2.2. Só existe se houver sequência para parar:
-          com movimento reduzido, ou sem quadros, não há o que pausar. */}
+      {/* A linha de controle. Só existe se houver sequência: com movimento
+          reduzido, ou sem quadros, não há nem o que contar nem o que pausar. */}
       {sequenciaLigada && (
-        <button
-          type="button"
-          onClick={alternarPausa}
-          aria-pressed={pausadoPelaPessoa}
-          aria-label={
-            pausadoPelaPessoa
-              ? rotulos.retomarDescricao
-              : rotulos.pausarDescricao
-          }
-          className={cn(
-            "mt-4 inline-flex min-h-11 items-center",
-            "caption font-ui text-tinta-suave",
-            "underline decoration-acento underline-offset-4",
-            "transition-colors hover:text-acento-texto",
-            "focus-visible:outline-2 focus-visible:outline-offset-3 focus-visible:outline-acento-texto",
-          )}
-        >
-          {pausadoPelaPessoa ? rotulos.retomar : rotulos.pausar}
-        </button>
+        <div className="mt-4 flex items-center justify-between gap-4">
+          {/* ── O CONTADOR, e ele resolve um buraco real ────────────────────
+              Sem ele, nos primeiros 3,4 s o bloco é indistinguível de uma foto
+              estática: a única pista de que ali tem mais coisa era o botão
+              "Pausar", que diz que algo se move e não diz que existem outras
+              fotos. O `/ 10` diz, antes de qualquer movimento.
+
+              ⚠️ Ele NÃO sai no HTML do servidor, e isso é correto, não defeito:
+              o `usePrefersReducedMotion` devolve `true` no servidor de
+              propósito, então a linha inteira só existe depois que a hidratação
+              confirma que a sequência vai mesmo rodar. Sem JS não há sequência,
+              e um `/ 10` ali prometeria nove fotos que nunca chegam, do mesmo
+              jeito que um botão de pausa sem nada para pausar. Na prática o
+              visitante nunca vê a falta: a seção está bem abaixo da dobra.
+
+              ⚠️ NÃO são bolinhas. Fileira de pontos embaixo da imagem é A
+              assinatura de carrossel, e o §2.5 proíbe justamente esse tipo de
+              chrome. O que entra no lugar é o rótulo em caixa alta com tracking
+              largo, que é traço registrado do deck (§4), e numeração com zero à
+              esquerda, que na seção de vídeo é a convenção do próprio ofício:
+              claquete numera take.
+
+              A hierarquia dentro dos sete caracteres é o que faz ele ler como
+              desenhado e não como padrão: o número corrente em `ancora`
+              (13,27:1) é o valor vivo, e o total em `tinta-suave` (5,76:1) é a
+              escala fixa.
+
+              O número vira no FIM da varredura, não no começo, porque quem
+              manda é o `indiceVisivel`: o contador anuncia o quadro que
+              chegou, nunca o que ainda está chegando.
+
+              `aria-hidden` pela mesma razão que os nove quadros são: anunciar
+              "1 de 10" a quem tem um `alt` só é prometer nove coisas que a
+              pessoa não alcança. Quem lê a página com leitor de tela recebe
+              uma foto descrita, que é a verdade dela. */}
+          <p aria-hidden="true" className="eyebrow text-tinta-suave">
+            <span className="text-ancora">
+              {String(indiceVisivel + 1).padStart(2, "0")}
+            </span>
+            {" / "}
+            {String(total).padStart(2, "0")}
+          </p>
+
+          {/* O controle da WCAG 2.2.2. */}
+          <button
+            type="button"
+            onClick={alternarPausa}
+            aria-pressed={pausadoPelaPessoa}
+            aria-label={
+              pausadoPelaPessoa
+                ? rotulos.retomarDescricao
+                : rotulos.pausarDescricao
+            }
+            className={cn(
+              "inline-flex min-h-11 items-center",
+              "caption font-ui text-tinta-suave",
+              "underline decoration-acento underline-offset-4",
+              "transition-colors hover:text-acento-texto",
+              "focus-visible:outline-2 focus-visible:outline-offset-3 focus-visible:outline-acento-texto",
+            )}
+          >
+            {pausadoPelaPessoa ? rotulos.retomar : rotulos.pausar}
+          </button>
+        </div>
       )}
     </div>
   );
