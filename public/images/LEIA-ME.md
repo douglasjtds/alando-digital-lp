@@ -38,7 +38,7 @@ cena). Distribuir entre seções distantes e variar o recorte. Só duas estão e
 ocupam o MESMO slot, um de cada vez. Nos 1100 px e qualidade 82 do resto eles davam **1,15 MB**
 numa seção só; a 800 px e qualidade 76 somam **766 KB**, e a mais pesada cai de 188 para 125 KB. O
 slot dá 330 CSS px em desktop e ~350 em 390, então 800 px ainda são 2,3x num celular a DPR 2, e
-cada quadro fica 3,4 s na tela sem nunca aparecer ao lado de outro.
+cada quadro fica 2,2 s na tela sem nunca aparecer ao lado de outro.
 
 ⚠️ O `servico-video.jpg` **não desce junto**: ele é o quadro em repouso, o único que sai no HTML do
 servidor e o único que quem tem `prefers-reduced-motion` vê. Continua em 1100/82.

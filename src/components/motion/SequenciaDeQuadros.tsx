@@ -112,7 +112,7 @@ type Props = {
  *
  * Os nove quadros são 9:16 exatos (o `servico-video.jpg` é 668×1177, 1% de
  * diferença que o `object-cover` absorve). Sem isto, cada quadro traria a própria
- * altura e a coluna pularia a cada 4,3 s.
+ * altura e a coluna pularia a cada 3,1 s.
  */
 const PROPORCAO = "9 / 16";
 
@@ -359,7 +359,7 @@ export function SequenciaDeQuadros({
               e a última precisa ser a que fica logo atrás da foto. A `key` é a
               POSIÇÃO na pilha, não a foto: assim o quadro que avança troca o
               `src` do mesmo elemento em vez de desmontar e remontar um `<img>`
-              a cada 4,1 s. */}
+              a cada 3,1 s. */}
           {placas
             .map((quadro, posicao) => ({ quadro, posicao }))
             .reverse()
@@ -418,7 +418,7 @@ export function SequenciaDeQuadros({
         {sequenciaLigada && (
           <div className="mt-4 flex items-center justify-between gap-4">
             {/* ── O CONTADOR, e ele resolve um buraco real ────────────────────
-              Sem ele, nos primeiros 3,2 s o bloco é indistinguível de uma foto
+              Sem ele, nos primeiros 2,2 s o bloco é indistinguível de uma foto
               estática: a única pista de que ali tem mais coisa era o botão
               "Pausar", que diz que algo se move e não diz que existem outras
               fotos. O `/ 10` diz, antes de qualquer movimento.

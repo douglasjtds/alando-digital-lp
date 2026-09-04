@@ -54,13 +54,14 @@ export const TEMPO = {
    * que o vocabulário abriu. Ou seja: é o último que cabe aqui. O próximo pedido
    * de movimento na página não tem mais essa folga e precisa reusar um destes.
    *
-   * 3200 ms mais os 900 da varredura dão 4,1 s por quadro. Longo o bastante para
+   * 2200 ms mais os 900 da varredura dão 3,1 s por quadro. Longo o bastante para
    * a foto ser lida como foto, e não como frame de um efeito.
    *
-   * Eram 3400 até 04/09, quando o Douglas pediu 0,2 s a menos vendo o bloco
-   * rodar. Não é tempo novo no vocabulário: é o mesmo campo, com outro valor.
+   * Duas reduções, as duas em 04/09 e as duas com o Douglas vendo o bloco rodar:
+   * 3400 caiu para 3200, e como o corte de 0,2 s não se notou, 3200 caiu para
+   * 2200. Não é tempo novo no vocabulário: é o mesmo campo, com outro valor.
    */
-  permanencia: 3200,
+  permanencia: 2200,
 } as const;
 
 /**

@@ -576,8 +576,8 @@ com esta seção na mesa. Fica escrito aqui para ninguém o encontrar numa audit
 defeito, e para ninguém o usar como precedente.
 
 **O que é:** no slot lateral de "Captação e edição de vídeos", dez quadros se revezam sozinhos, um
-a cada 4,1 s (3,2 s parado + 0,9 s de troca). Eram 4,3 s até 04/09, quando o Douglas pediu 0,2 s a
-menos vendo o bloco rodar.
+a cada 3,1 s (2,2 s parado + 0,9 s de troca). Eram 4,3 s até 04/09: naquele dia o Douglas viu o
+bloco rodar duas vezes e pediu duas reduções, primeiro 0,2 s (que não se notou) e depois 1 s.
 
 **Por que ele se sustenta:** a única seção que anda sozinha no tempo é a que vende imagem em
 movimento. Vídeo é quadro trocando no tempo. Aqui a autonomia é o argumento da própria seção, não
@@ -604,7 +604,7 @@ qualquer carrossel, e adotá-lo seria desviar em dois eixos em vez de um.
 
 **O contador, e por que ele não é bolinha.** Abaixo da foto, ao lado do botão, um rótulo
 `01 / 10` diz que existem outras fotos **antes de qualquer movimento**. Sem ele, nos primeiros
-3,2 s o bloco é indistinguível de uma foto estática, e o botão sozinho avisa que algo se move sem
+2,2 s o bloco é indistinguível de uma foto estática, e o botão sozinho avisa que algo se move sem
 avisar que há mais o que ver.
 
 Como o botão, ele **não sai no HTML do servidor**: os dois só existem depois que a hidratação
