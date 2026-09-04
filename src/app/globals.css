@@ -68,6 +68,25 @@
     var(--font-editorial-family), "Playfair Display", Georgia, serif;
   --font-ui:
     var(--font-ui-family), "Montserrat", ui-sans-serif, system-ui, sans-serif;
+
+  /* --------------------------------------------------------------------
+     O único breakpoint próprio da marca, e ele não é gosto de largura: são os
+     mesmos 72rem do `--largura-lp` logo abaixo, ou seja, o ponto em que o
+     `container-lp` PARA DE CRESCER. Daqui para cima o conteúdo tem sempre
+     1056 px, então um layout que vira neste ponto vira sempre nas mesmas
+     medidas, em vez de atravessar uma faixa fluida que aperta coluna.
+
+     Quem usa: a prova em vídeo de `Servicos`, que acima daqui fica ao lado do
+     texto em vez de abaixo dele.
+
+     ⚠️ Ele é REGISTRADO, e não um `min-[1152px]:` arbitrário, e a razão custou
+     um passe visual: o Tailwind v4 emite o bloco de um `min-[...]` arbitrário
+     ANTES dos breakpoints nomeados, então `md:grid-cols-3` vencia
+     `min-[1152px]:grid-cols-[1.4fr_1fr]` em 1440px. Sem erro, sem aviso, e o
+     layout simplesmente não virava. Registrado, ele é ordenado pelo valor,
+     entre `lg` e `xl`.
+     -------------------------------------------------------------------- */
+  --breakpoint-largo: 72rem;
 }
 
 /* ==========================================================================

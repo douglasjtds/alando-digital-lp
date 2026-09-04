@@ -331,6 +331,11 @@ Cinco serviços, direto da copy, **e a copy diz qual é o centro**: *"Gestão de
     cliente rolando (03/09). Nos dois casos a máscara **emoldura** o artefato em vez de recortá-lo,
     porque cada aresta deles carrega conteúdo: `.campo-prova` no retrato e `.campo-prova-largo` no
     deitado, os dois medidos no `globals.css`. O componente é o `CampoProva`.
+  - ✅ **Acima de 1152px o vídeo fica AO LADO do texto** (04/09), na coluna larga de um grid de
+    1,4fr / 1fr. O print de retrato **não** vai junto: ele tem 1290 px e é nas legendas dele que a
+    prova mora, então continua ocupando a linha inteira. No vídeo a conta é a oposta e ela melhora,
+    a densidade sobe de 1,48x para 1,99x. Detalhe medido na `DESIGN-GUIDELINES.md` §8 e no
+    comentário do `Servicos.tsx`.
   - ⚠️ **As duas dependem de autorização escrita da cliente dona do material**, e a de Landing Pages
     depende de mais uma coisa: **a página precisa ter sido entregue pela Alando.** Exibir como
     portfólio um trabalho que não é da agência é afirmação falsa sobre o serviço, o que é a mesma
@@ -642,14 +647,14 @@ outro orçamento. Dizer isso no começo evita a conversa ruim no terceiro mês.
 | CLS | < 0.05 |
 | Chunk de animação | **< 25 KB gzip**, medido gzipado |
 | Qualquer imagem | ≤ ~200 KB |
-| O vídeo da prova de Landing Pages | **≤ 400 KB**, linha própria. Medido: 359 KB |
+| O vídeo da prova de Landing Pages | **≤ 400 KB**, linha própria. Medido: 375 KB |
 
 - anime.js por subpath, via `dynamic import` **após a hidratação**. Confirmar que o chunk é lazy.
 - Se passar de 25 KB, cortar momento de animação, não cortar qualidade dos que ficam.
 - Só o herói com `priority`. Todo o resto lazy.
 - **O vídeo não conta para o carregamento inicial, e isso é obrigação e não consequência.**
   `preload="none"` e `<source>` anexado só quando o bloco se aproxima: quem não desce até Serviços
-  não baixa os 359 KB. Verificado no painel de rede, em desktop e em 390px. Os 400 KB são linha de
+  não baixa os 375 KB. Verificado no painel de rede, em desktop e em 390px. Os 400 KB são linha de
   orçamento própria, aberta com a decisão de 03/09, e não folga para os outros assets.
 - `next/font` faz self-host no build, o navegador do visitante nunca fala com o servidor do Google
   (relevante para LGPD e para latência).

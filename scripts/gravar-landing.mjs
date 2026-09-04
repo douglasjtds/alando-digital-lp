@@ -78,18 +78,19 @@ const URL_FONTE = "https://bruna-magalhaes.vercel.app/";
  *
  * ── Por que 964, e não 1284 ──────────────────────────────────────────────────
  *
- * O campo da prova dá 642 CSS px em desktop (76% do container de 1056), então
- * 1284 seria o 2x exato. Medi as duas larguras com o mesmo ritmo e os mesmos
- * keyframes, e 1284 não coube:
+ * O campo da prova dava 642 CSS px quando ocupava a linha inteira (76% do
+ * container de 1056), então 1284 seria o 2x exato. Medi as duas larguras com o
+ * mesmo ritmo e os mesmos keyframes, e 1284 não coube:
  *
  *   1284×800   crf 34   528 KB   crf 36   447 KB   ← nem no pior degrau cabe
  *    964×600   crf 34   359 KB                     ← escolhida
  *
- * A 964 a densidade cai de 2,0x para 1,5x, e a perda é menor do que o número
- * sugere por dois motivos: vídeo já é mais macio que imagem, e a página-fonte
- * passa a ser diagramada em 964, o que deixa o texto dela PROPORCIONALMENTE
- * maior dentro do quadro. Conferido em quadro extraído do MP4 final, não no
- * número.
+ * ⚠️ Desde 04/09 o vídeo é exibido AO LADO DO TEXTO acima de 1152px, e a conta
+ * mudou a favor: a coluna dá 597 px e o `.campo-prova-largo` deixa 81% dela para
+ * o conteúdo, ou seja, 484 CSS px. A densidade passou de 1,48x para 1,99x, que é
+ * praticamente o 2x que os 1284 iam buscar, e por 359 KB em vez de 528. A
+ * escolha continua sendo 964, agora sem a perda que este bloco registrava. As
+ * medidas do layout estão no `APRESENTACAO`, em `Servicos.tsx`.
  *
  * `QUADRO=1284x800 node scripts/gravar-landing.mjs` refaz a comparação.
  */
@@ -117,8 +118,16 @@ const FPS = 24;
  * quase de graça em H.264. E o ganho não é só de bytes: a pessoa VÊ cada seção
  * em vez de ver a página passar. O movimento vira visita guiada, que é o que a
  * prova precisa mostrar.
+ *
+ * ⚠️ A PARADA subiu de 0,7s para 1,2s em 04/09, e o avanço ficou onde estava.
+ * A visita passava rápido demais na página montada: cada seção da página da
+ * cliente ficava menos de um segundo na tela. Alongar a parada é o único eixo
+ * que compra tempo sem comprar bytes, pela mesma razão que fez o ritmo existir,
+ * quadro repetido é quase de graça em H.264, enquanto todo quadro de avanço é
+ * movimento que o codec paga. Se um dia a parada precisar passar daqui, meça: o
+ * custo dela não é zero, é pequeno.
  */
-const PARADO = 0.7;
+const PARADO = 1.2;
 const AVANCO = 0.5;
 
 /** Teto do orçamento novo aberto na §8. Medido, não estimado. */
@@ -579,7 +588,7 @@ for (const crf of ESCADA_CRF) {
 if (!escolhido) {
   console.error(
     `\n  Nenhum CRF da escada coube em ${kb(ORCAMENTO_VIDEO)}.` +
-      `\n  Reduza QUADRO para 964×600 ou DURACAO antes de afrouxar o orçamento.\n`,
+      `\n  Reduza QUADRO para 964×600, ou PARADO e AVANCO, antes de afrouxar o orçamento.\n`,
   );
   process.exit(1);
 }

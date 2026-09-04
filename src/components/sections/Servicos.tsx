@@ -4,6 +4,7 @@ import { WhatsappCta } from "@/components/ui/WhatsappCta";
 import { Revelar } from "@/components/motion/Revelar";
 import { SequenciaDeQuadros } from "@/components/motion/SequenciaDeQuadros";
 import { CampoProva } from "@/components/ui/CampoProva";
+import { cn } from "@/lib/cn";
 
 type Servico = (typeof content.servicos)[number];
 
@@ -17,19 +18,25 @@ type Servico = (typeof content.servicos)[number];
  *
  * ── Os `sizes`, medidos e não arredondados ──────────────────────────────────
  *
- * O container trava em 1056 px (`max-w-6xl` menos os dois paddings de 48), o
- * campo é 76% dele (802,6 px) e o artefato ocupa dentro do campo o que os
- * paddings do `globals.css` deixam: 80% no retrato e 81% no largo.
+ * O container trava em 1056 px (`max-w-6xl` menos os dois paddings de 48), e daí
+ * em diante os dois campos divergem, porque desde 04/09 eles não ocupam a mesma
+ * caixa. O artefato ocupa dentro do campo o que os paddings do `globals.css`
+ * deixam: 80% no retrato e 81% no largo.
  *
- *   retrato   802,6 × 0,80 = 642 px   fonte 1290   densidade 2,01x
- *   largo     802,6 × 0,81 = 650 px   fonte  964   densidade 1,48x
+ *   retrato   linha inteira, 76% do container    802,6 × 0,80 = 642 px
+ *             fonte 1290   densidade 2,01x
+ *   largo     coluna lateral de 1,4fr no breakpoint `largo`, 597 px
+ *             597 × 0,81 = 484 px   fonte 964   densidade 1,99x
  *
- * Em mobile o campo é 100% do container, que é 90vw (100 menos os dois 5vw do
- * `container-lp`), então o artefato dá 72vw e 73vw respectivamente.
+ * Entre 768 e 1151 o largo ainda é a linha inteira a 76%, que é a caixa antiga,
+ * e é de onde vem o degrau de 55vw. Em mobile os dois campos são 100% do
+ * container, que é 90vw (100 menos os dois 5vw do `container-lp`), então o
+ * artefato dá 72vw e 73vw respectivamente.
  *
- * A densidade menor do largo é decisão medida, não descuido: 1284 de largura
- * não coube no orçamento de 400 KB em nenhum degrau de qualidade. A conta está
- * no cabeçalho do `scripts/gravar-landing.mjs`.
+ * ⚠️ O `sizes` do largo governa só o `<Image>`, ou seja, o caso
+ * `prefers-reduced-motion`: o `<video>` aponta o `poster=` para o JPEG cru, sem
+ * `srcset`. É justamente o caso que não pode baixar o candidato errado, porque é
+ * ele que fica na tela.
  *
  * ⚠️ `classeDaMascara` guarda a CLASSE INTEIRA e não o `id`, e é aqui que ela
  * precisa estar escrita por extenso: o Tailwind gera classe arbitrária varrendo o
@@ -50,7 +57,7 @@ const APRESENTACAO = {
     altura: 600,
     classeDaMascara: "[clip-path:url(#crista-vale)]",
     moldura: "campo-prova-largo",
-    sizes: "(max-width: 768px) 73vw, (max-width: 1248px) 55vw, 650px",
+    sizes: "(max-width: 768px) 73vw, (max-width: 1151px) 55vw, 484px",
   },
 } as const;
 
@@ -117,18 +124,27 @@ export function Servicos() {
           <Revelar como="lista" className="space-y-8 md:space-y-12">
             {servicosNormais.map((servico, idx) => {
               const textoNaEsquerda = idx % 2 === 0;
+              /* Só a prova em VÍDEO vai para o lado do texto, e o porquê de o
+                 print de retrato continuar em linha inteira está no comentário
+                 do bloco da prova, mais abaixo. */
+              const provaLateral = Boolean(servico.prova.video);
 
               return (
                 <article
                   key={servico.titulo}
-                  className="grid grid-cols-1 items-start gap-6 md:grid-cols-3 md:gap-8"
+                  className={cn(
+                    "grid grid-cols-1 items-start gap-6 md:grid-cols-3 md:gap-8",
+                    provaLateral && "largo:grid-cols-[1.4fr_1fr]",
+                  )}
                 >
                   <div
-                    className={
+                    className={cn(
                       textoNaEsquerda
                         ? "md:col-span-2 md:col-start-1"
-                        : "md:col-span-2 md:col-start-2"
-                    }
+                        : "md:col-span-2 md:col-start-2",
+                      provaLateral &&
+                        "largo:col-span-1 largo:col-start-2 largo:row-start-1",
+                    )}
                   >
                     <h3 className="display-md text-ancora mb-4">
                       {servico.titulo}
@@ -209,14 +225,48 @@ export function Servicos() {
                       entre eles é a presença de `prova.video`. As duas
                       apresentações estão em `APRESENTACAO`, no topo do arquivo.
                       O comportamento (interseção, autoplay, botão, movimento
-                      reduzido) mora no `CampoProva`. */}
+                      reduzido) mora no `CampoProva`.
+
+                      ── E desde 04/09 SÓ O VÍDEO VAI PARA O LADO ────────────────
+
+                      Acima de 1152px o vídeo deixa a linha de baixo e vira a coluna
+                      larga de um grid de duas, com o texto na estreita. O `provaLateral`
+                      é o que liga isso, e ele lê `prova.video` justamente para o print
+                      de retrato NÃO ir junto: o argumento 1 acima continua valendo
+                      inteiro para ele, e vale ao contrário para o vídeo.
+
+                      Três medidas decidem o ponto de virada e a proporção:
+
+                      1. **O breakpoint `largo`, 1152px, e não `lg`.** É exatamente onde o
+                         `max-w-6xl` para de crescer e o container trava em 1056 px de
+                         conteúdo. Virando ali, a divisão lateral sempre renderiza nas
+                         mesmas medidas. Em 1024px o container ainda tem 928, e a coluna do
+                         texto cairia para 374 px. Ele é um breakpoint REGISTRADO no
+                         `globals.css`, e não um `min-[1152px]:` arbitrário: o porquê está
+                         escrito lá, e custou um passe visual.
+                      2. **1,4fr / 1fr**, que dá 597 px de coluna para o vídeo e 427 para
+                         o texto, medidos no navegador. Os 597 deixam 484 px de conteúdo
+                         (81%, o padding do `.campo-prova-largo`), e o arquivo de 964 sai a
+                         1,99x, ACIMA dos 1,48x que ele tinha na linha inteira. O campo
+                         largo perde tamanho de tela e ganha densidade.
+                      3. A coluna do texto dá de 39 a 51 caracteres por linha, medido linha
+                         a linha, abaixo dos 60-72 que a §4 mira. É deliberado, não
+                         descuido: o checklist proíbe passar de 72, e coluna curta ao lado
+                         de uma imagem é composição editorial, não erro de medida.
+
+                      O vídeo fica à ESQUERDA porque a regra do lado oposto não mudou:
+                      "Landing Pages" é o índice 3 dos quatro em órbita, então o texto
+                      está à direita. E a ordem no DOM continua texto e depois prova,
+                      que é o que o leitor de tela ouve. */}
                   {servico.prova.imagem && (
                     <div
-                      className={
+                      className={cn(
                         textoNaEsquerda
                           ? "w-full md:col-span-3 md:row-start-2 md:ml-auto md:w-[76%]"
-                          : "w-full md:col-span-3 md:row-start-2 md:mr-auto md:w-[76%]"
-                      }
+                          : "w-full md:col-span-3 md:row-start-2 md:mr-auto md:w-[76%]",
+                        provaLateral &&
+                          "largo:col-span-1 largo:col-start-1 largo:row-start-1 largo:mx-0 largo:w-full",
+                      )}
                     >
                       <CampoProva
                         imagem={servico.prova.imagem}

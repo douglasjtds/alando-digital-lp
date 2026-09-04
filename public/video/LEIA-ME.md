@@ -23,7 +23,7 @@ estão na §8.
 
 | Item | Teto | Medido |
 |---|---|---|
-| `servico-landing-page.mp4` | **400 KB** | **359 KB**, CRF 34, 964×600, 8,0s |
+| `servico-landing-page.mp4` | **400 KB** | **375 KB**, CRF 34, 964×600, 11,5s |
 | `servico-landing-page.jpg` (pôster) | 200 KB, o teto de imagem | **26 KB** |
 
 O teto de 400 KB é linha de orçamento **nova**, aberta junto com a decisão de 03/09: nenhum vídeo
@@ -34,8 +34,12 @@ Três coisas seguram o custo real, e as três estão medidas no cabeçalho do sc
 
 1. **O ritmo é parada e avanço**, não rolagem contínua. Rolagem contínua move todo pixel em todo
    quadro, e nessa forma nem o pior degrau de qualidade coube: 688 KB em CRF 36.
-2. **964 de largura, não 1284.** O 2x exato do campo seria 1284, e ele não cabia em degrau nenhum.
-   A 964 a densidade é 1,48x.
+   A parada subiu de 0,7s para 1,2s em 04/09, porque a visita passava rápido demais na página
+   montada. Custou 16 KB (359 → 375) por 3,5s a mais, que é a medida do argumento: quadro repetido
+   é quase de graça, e é por isso que o avanço ficou onde estava.
+2. **964 de largura, não 1284.** O 2x exato do campo, quando ele ocupava a linha inteira, seria
+   1284, e ele não cabia em degrau nenhum. Desde 04/09 o vídeo é exibido ao lado do texto acima de
+   1152px, em 484 px de conteúdo, e a densidade dos mesmos 964 subiu para **1,99x**.
 3. **`preload="none"` e `<source>` anexado só na interseção.** Quem não chega na seção não baixa
    nada, e isso foi verificado com o painel de rede: zero requisição de `.mp4` antes de rolar.
 

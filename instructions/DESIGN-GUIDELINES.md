@@ -654,9 +654,15 @@ pessoa não alcança.
 Captação, "para ninguém o usar como precedente", e o checklist dizia "se aparecer uma segunda
 exceção, o vocabulário abriu". Apareceu. Fica registrado com o mesmo rigor, e com o custo à vista.
 
-**O que é:** no campo de prova de "Landing Pages", um MP4 de 8 segundos mostra a landing page de uma
-cliente em visita guiada, parando em cada seção. Toca uma vez ao entrar na tela, para no fim e
-volta ao primeiro quadro.
+**O que é:** no campo de prova de "Landing Pages", um MP4 de 11,5 segundos mostra a landing page de
+uma cliente em visita guiada, parando 1,2s em cada seção. Toca uma vez ao entrar na tela, para no
+fim e volta ao primeiro quadro.
+
+**A parada era de 0,7s e subiu para 1,2s em 04/09**, com a página montada na mesa: cada seção da
+página da cliente ficava menos de um segundo na tela, que é pouco para alguém ver o que está sendo
+mostrado. Só a parada mudou, e o avanço entre seções continua em 0,5s, porque alongar a parada é o
+único eixo que compra tempo sem comprar bytes: quadro repetido é quase de graça em H.264, e a
+medida ficou registrada, 16 KB por 3,5s a mais.
 
 **⚠️ Este desvio é MAIOR que o primeiro, e isso precisa estar dito.** A sequência de Captação desvia
 em **um** eixo, o gatilho, e mantém o Gesto 3 como transição: mesma crista, mesma classe, mesmo
@@ -699,13 +705,25 @@ comum de o autoplay ser bloqueado. Testado com a política mais restritiva do Ch
 (`--autoplay-policy=document-user-activation-required`): toca, porque vídeo mudo é isento.
 
 **O orçamento é NOVO, e é o segundo custo desta decisão.** Nenhum vídeo cabe nos ~200 KB que valem
-para imagem. Abriu-se uma linha de **400 KB**, e o arquivo mede **359 KB** (964×600, CRF 34, 8,0s).
+para imagem. Abriu-se uma linha de **400 KB**, e o arquivo mede **375 KB** (964×600, CRF 34, 11,5s).
 Ela vale para este arquivo, não é folga para os outros assets, e o `scripts/gravar-landing.mjs`
 falha em vez de estourá-la. As três medições que seguraram o número estão no cabeçalho do script.
 
 **A moldura é a `crista-vale`**, escolhida por medição na proporção do vídeo, e o campo é o
 `.campo-prova-largo`. Os números e o porquê de não ser a `crista-retrato` (que é a mais econômica e
 já está na mesma seção) estão no `globals.css`.
+
+**Acima de 1152px o vídeo fica AO LADO do texto, e não abaixo dele** (04/09). Ele vira a coluna
+larga de um grid de 1,4fr / 1fr, com o texto na estreita, e 1152 é o ponto exato em que o
+`max-w-6xl` para de crescer, então a divisão sempre renderiza nas mesmas medidas. Abaixo disso
+segue empilhado, inclusive nos 390px.
+
+Isto vale **só para o vídeo**. O print de Estruturação de Perfil continua ocupando a linha inteira,
+pelo motivo já registrado na §5.5 da estrutura: ele tem 1290 px de largura e é nas legendas dele
+que a prova mora. A conta é a oposta no vídeo, e ela melhora: a coluna de 597 px deixa 484 px de
+conteúdo, e a densidade dos mesmos 964 sobe de 1,48x para **1,99x**. O campo largo perde tamanho de
+tela e ganha nitidez. A coluna do texto fica entre 39 e 51 caracteres por linha, abaixo dos 60-72
+da §4 e dentro do checklist, que proíbe passar de 72.
 
 **Risco em aberto, para julgar na página montada:** a página da cliente usa o mesmo vocabulário
 visual desta (serifada display, neutros quentes, botão escuro), então ela pode ler como um pedaço da
@@ -994,7 +1012,7 @@ Intervalos numéricos usam hífen simples ou a palavra "a": `60-72 caracteres`, 
 - [ ] A sequência de Captação para no hover, no foco, com a aba oculta e no botão de pausa
 - [ ] O vídeo de Landing Pages toca uma vez, volta ao primeiro quadro e tem botão de pausa
 - [ ] Nenhuma requisição de `.mp4` antes de o bloco entrar na tela, medida no painel de rede
-- [ ] Vídeo **≤ 400 KB**, que é linha de orçamento própria e não vale para mais nada
+- [ ] Vídeo **≤ 400 KB**, que é linha de orçamento própria e não vale para mais nada. Medido: 375 KB
 - [ ] Chunk de animação **≤ 24 KB gzip, medido gzipado**
 - [ ] Sem three.js, sem Lenis, sem ScrollSmoother
 - [ ] `prefers-reduced-motion` testado no DevTools: estático, **100% visível**, máscaras **abertas**, travessia em estado final
