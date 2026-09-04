@@ -718,12 +718,47 @@ larga de um grid de 1,4fr / 1fr, com o texto na estreita, e 1152 é o ponto exat
 `max-w-6xl` para de crescer, então a divisão sempre renderiza nas mesmas medidas. Abaixo disso
 segue empilhado, inclusive nos 390px.
 
-Isto vale **só para o vídeo**. O print de Estruturação de Perfil continua ocupando a linha inteira,
-pelo motivo já registrado na §5.5 da estrutura: ele tem 1290 px de largura e é nas legendas dele
-que a prova mora. A conta é a oposta no vídeo, e ela melhora: a coluna de 597 px deixa 484 px de
-conteúdo, e a densidade dos mesmos 964 sobe de 1,48x para **1,99x**. O campo largo perde tamanho de
-tela e ganha nitidez. A coluna do texto fica entre 39 e 51 caracteres por linha, abaixo dos 60-72
-da §4 e dentro do checklist, que proíbe passar de 72.
+A conta melhora para o vídeo: a coluna de 597 px deixa 484 px de conteúdo, e a densidade dos mesmos
+964 sobe de 1,48x para **1,99x**. O campo largo perde tamanho de tela e ganha nitidez. A coluna do
+texto fica entre 39 e 51 caracteres por linha, abaixo dos 60-72 da §4 e dentro do checklist, que
+proíbe passar de 72.
+
+**O print de Estruturação de Perfil foi junto, algumas horas depois, e a divisão dele é a
+espelhada** (04/09). Este parágrafo dizia o contrário até então, e o texto anterior fica resumido
+aqui porque ele é o argumento que a decisão contrariou: o print tem 1290 px, é nas legendas dele que
+a prova mora, e por isso ele ocupava a linha inteira. O Douglas pediu que ele também fosse para o
+lado, e escolheu para ele a coluna **estreita**, com o custo apresentado antes da escolha:
+
+| | vídeo | print |
+|---|---|---|
+| grade acima de 1152px | `1,4fr / 1fr` | `1fr / 1,4fr` |
+| coluna da prova | 597 px | 427 px |
+| conteúdo dentro do campo | 484 px (81%) | 342 px (80%) |
+| densidade sobre o arquivo | 1,99x de 964 | 3,77x de 1290 |
+| coluna do texto | 427 px, 39-51 car. | 597 px, cerca de 62 car. |
+
+⚠️ **O custo do print está na linha que a tabela não tem, e ele é de legibilidade, não de
+densidade.** Densidade sobra (3,77x), só que num artefato ela não é a medida certa: o print é a
+captura de uma tela de 430 px lógicos, então em 342 px a interface do Instagram renderiza a
+**0,80x**, menor do que num celular real. Na linha inteira ela saía a 1,49x. As legendas e os nomes
+de destaque, que são a prova, ficam no limite.
+
+**O passe visual em 1440px foi feito, e o veredito é parcial.** A 1x, os nomes dos destaques
+("Atuação", "Olhar", "Nathalia"), a estrutura do perfil e a consistência visual do feed continuam
+legíveis, e são exatamente as três coisas que o `alt` da prova afirma. O que se perde são as
+legendas DENTRO de cada post, que a 342 px viram textura. A prova, como ela está escrita, ainda se
+sustenta; ela deixou de sustentar mais do que isso.
+
+O que se ganha em troca é real e é o outro lado da mesma conta: a coluna do texto vai a 597 px, e
+as linhas caem para **66-75 caracteres**, contra até 79 nos blocos que seguem em linha inteira
+(contado linha a linha com `Range`, não estimado). E as duas alturas passam a casar, 520 px de campo
+contra 336 de texto, em vez de o bloco medir 1318 px empilhado.
+
+⚠️ Os 75 ainda passam dos 72 desta §4, e isso é **pré-existente e da seção inteira**, não desta
+mudança: o utilitário `medida` é `62ch`, e em Montserrat 1ch mede 10,6 px, ou seja, 62ch dá 657 px e
+rende até 79 caracteres. Vale uma decisão à parte, para a seção toda, e não aqui.
+
+Abaixo de 1152px nada disso vale, e os dois seguem empilhados, inclusive nos 390px.
 
 **Risco em aberto, para julgar na página montada:** a página da cliente usa o mesmo vocabulário
 visual desta (serifada display, neutros quentes, botão escuro), então ela pode ler como um pedaço da

@@ -16,20 +16,36 @@ type Servico = (typeof content.servicos)[number];
  * Largura e altura nativas entram porque são fato do arquivo, e é delas que o
  * `next/image` tira a caixa reservada, o que mantém o CLS em zero.
  *
+ * ── A grade lateral, e por que ela é espelhada ───────────────────────────────
+ *
+ * Acima do breakpoint `largo` os dois campos ficam AO LADO do texto, e cada um
+ * pede uma divisão diferente, porque um é deitado e o outro é em pé:
+ *
+ *   retrato   `1fr / 1,4fr`   print na coluna ESTREITA, texto na larga
+ *   largo     `1,4fr / 1fr`   vídeo na coluna LARGA, texto na estreita
+ *
+ * O vídeo entrou nisso em 04/09, o print no mesmo dia, algumas horas depois, e a
+ * escolha da coluna estreita para ele é do Douglas, tomada com o custo na mesa.
+ * Ele está registrado no bloco grande da prova, mais abaixo.
+ *
+ * A grade vive AQUI e não no `<article>` pela mesma razão da `classeDaMascara`:
+ * o Tailwind varre o código atrás do literal, e um template string não é
+ * encontrado. As duas classes precisam estar escritas por extenso.
+ *
  * ── Os `sizes`, medidos e não arredondados ──────────────────────────────────
  *
- * O container trava em 1056 px (`max-w-6xl` menos os dois paddings de 48), e daí
- * em diante os dois campos divergem, porque desde 04/09 eles não ocupam a mesma
- * caixa. O artefato ocupa dentro do campo o que os paddings do `globals.css`
- * deixam: 80% no retrato e 81% no largo.
+ * O container trava em 1056 px (`max-w-6xl` menos os dois paddings de 48) e o
+ * gap é de 32 px (`md:gap-8`), então as colunas dividem 1024 px. O artefato ocupa
+ * dentro do campo o que os paddings do `globals.css` deixam: 80% no retrato e 81%
+ * no largo.
  *
- *   retrato   linha inteira, 76% do container    802,6 × 0,80 = 642 px
- *             fonte 1290   densidade 2,01x
- *   largo     coluna lateral de 1,4fr no breakpoint `largo`, 597 px
+ *   retrato   coluna lateral de 1fr, 427 px
+ *             427 × 0,80 = 342 px   fonte 1290   densidade 3,77x
+ *   largo     coluna lateral de 1,4fr, 597 px
  *             597 × 0,81 = 484 px   fonte 964   densidade 1,99x
  *
- * Entre 768 e 1151 o largo ainda é a linha inteira a 76%, que é a caixa antiga,
- * e é de onde vem o degrau de 55vw. Em mobile os dois campos são 100% do
+ * Entre 768 e 1151 os dois ainda são a linha inteira a 76%, que é a caixa antiga,
+ * e é de onde vem o degrau de 55vw nos dois. Em mobile os dois campos são 100% do
  * container, que é 90vw (100 menos os dois 5vw do `container-lp`), então o
  * artefato dá 72vw e 73vw respectivamente.
  *
@@ -50,13 +66,15 @@ const APRESENTACAO = {
     altura: 1644,
     classeDaMascara: "[clip-path:url(#crista-retrato)]",
     moldura: "campo-prova",
-    sizes: "(max-width: 768px) 72vw, (max-width: 1248px) 55vw, 642px",
+    grade: "largo:grid-cols-[1fr_1.4fr]",
+    sizes: "(max-width: 768px) 72vw, (max-width: 1151px) 55vw, 342px",
   },
   largo: {
     largura: 964,
     altura: 600,
     classeDaMascara: "[clip-path:url(#crista-vale)]",
     moldura: "campo-prova-largo",
+    grade: "largo:grid-cols-[1.4fr_1fr]",
     sizes: "(max-width: 768px) 73vw, (max-width: 1151px) 55vw, 484px",
   },
 } as const;
@@ -124,17 +142,21 @@ export function Servicos() {
           <Revelar como="lista" className="space-y-8 md:space-y-12">
             {servicosNormais.map((servico, idx) => {
               const textoNaEsquerda = idx % 2 === 0;
-              /* Só a prova em VÍDEO vai para o lado do texto, e o porquê de o
-                 print de retrato continuar em linha inteira está no comentário
-                 do bloco da prova, mais abaixo. */
-              const provaLateral = Boolean(servico.prova.video);
+              /* Qual das duas apresentações a prova deste serviço usa, e é ela
+                 que carrega a grade lateral. Serviço sem prova não tem nenhuma,
+                 e aí a grade de três colunas do `md` vale até o fim. */
+              const apresentacao = servico.prova.imagem
+                ? servico.prova.video
+                  ? APRESENTACAO.largo
+                  : APRESENTACAO.retrato
+                : null;
 
               return (
                 <article
                   key={servico.titulo}
                   className={cn(
                     "grid grid-cols-1 items-start gap-6 md:grid-cols-3 md:gap-8",
-                    provaLateral && "largo:grid-cols-[1.4fr_1fr]",
+                    apresentacao?.grade,
                   )}
                 >
                   <div
@@ -142,7 +164,7 @@ export function Servicos() {
                       textoNaEsquerda
                         ? "md:col-span-2 md:col-start-1"
                         : "md:col-span-2 md:col-start-2",
-                      provaLateral &&
+                      apresentacao &&
                         "largo:col-span-1 largo:col-start-2 largo:row-start-1",
                     )}
                   >
@@ -206,13 +228,15 @@ export function Servicos() {
                       emoldura em vez de recortar, e os quatro paddings medidos estão
                       no `globals.css`.
 
-                      Duas consequências de layout:
+                      Duas consequências de layout, e a primeira vale de 768 a 1151
+                      px, porque acima disso o print também vai para o lado (ver o
+                      bloco de 04/09 mais abaixo):
 
-                      1. Ele ocupa a LINHA inteira e não uma coluna. A coluna estreita
-                         dá 331 CSS px, e o print de 1290 encolhido para lá vira
-                         borrão justamente nos destaques e nas legendas, que são o
-                         que a imagem existe para mostrar. Em 76% do container ele sai
-                         a 642 px, ou seja, 2,01x de densidade.
+                      1. Ele ocupa a LINHA inteira e não uma das três colunas do `md`.
+                         A coluna estreita de lá dá 331 CSS px, e o print de 1290
+                         encolhido para ali vira borrão justamente nos destaques e nas
+                         legendas, que são o que a imagem existe para mostrar. Em 76%
+                         do container ele sai a 642 px, ou seja, 2,01x de densidade.
                       2. Ele se desloca para o lado OPOSTO ao do texto, mesma regra da
                          `foto`. Com o texto no alto de um lado e o print embaixo do
                          outro, o bloco lê como diagonal e não como pilha, que é o que
@@ -227,55 +251,85 @@ export function Servicos() {
                       O comportamento (interseção, autoplay, botão, movimento
                       reduzido) mora no `CampoProva`.
 
-                      ── E desde 04/09 SÓ O VÍDEO VAI PARA O LADO ────────────────
+                      ── E desde 04/09 AS DUAS PROVAS VÃO PARA O LADO ────────────
 
-                      Acima de 1152px o vídeo deixa a linha de baixo e vira a coluna
-                      larga de um grid de duas, com o texto na estreita. O `provaLateral`
-                      é o que liga isso, e ele lê `prova.video` justamente para o print
-                      de retrato NÃO ir junto: o argumento 1 acima continua valendo
-                      inteiro para ele, e vale ao contrário para o vídeo.
+                      Acima de 1152px a prova deixa a linha de baixo e vira uma das duas
+                      colunas de um grid, com o texto na outra. Quem liga isso é a
+                      presença de `prova.imagem`, e quem escolhe a divisão é a
+                      `APRESENTACAO`, no topo do arquivo. **As duas grades são
+                      espelhadas**, porque um artefato é deitado e o outro é em pé:
 
-                      Três medidas decidem o ponto de virada e a proporção:
+                        vídeo   `1,4fr / 1fr`   597 px de coluna, texto em 427
+                        print   `1fr / 1,4fr`   427 px de coluna, texto em 597
 
-                      1. **O breakpoint `largo`, 1152px, e não `lg`.** É exatamente onde o
-                         `max-w-6xl` para de crescer e o container trava em 1056 px de
-                         conteúdo. Virando ali, a divisão lateral sempre renderiza nas
-                         mesmas medidas. Em 1024px o container ainda tem 928, e a coluna do
-                         texto cairia para 374 px. Ele é um breakpoint REGISTRADO no
-                         `globals.css`, e não um `min-[1152px]:` arbitrário: o porquê está
-                         escrito lá, e custou um passe visual.
-                      2. **1,4fr / 1fr**, que dá 597 px de coluna para o vídeo e 427 para
-                         o texto, medidos no navegador. Os 597 deixam 484 px de conteúdo
-                         (81%, o padding do `.campo-prova-largo`), e o arquivo de 964 sai a
-                         1,99x, ACIMA dos 1,48x que ele tinha na linha inteira. O campo
-                         largo perde tamanho de tela e ganha densidade.
-                      3. A coluna do texto dá de 39 a 51 caracteres por linha, medido linha
-                         a linha, abaixo dos 60-72 que a §4 mira. É deliberado, não
-                         descuido: o checklist proíbe passar de 72, e coluna curta ao lado
-                         de uma imagem é composição editorial, não erro de medida.
+                      O ponto de virada é o mesmo, e é uma medida e não um gosto: **o
+                      breakpoint `largo`, 1152px, e não `lg`.** É exatamente onde o
+                      `max-w-6xl` para de crescer e o container trava em 1056 px de
+                      conteúdo, então a divisão lateral sempre renderiza nas mesmas
+                      medidas. Em 1024px o container ainda tem 928, e a coluna estreita
+                      cairia para 374 px. Ele é um breakpoint REGISTRADO no
+                      `globals.css`, e não um `min-[1152px]:` arbitrário: o porquê está
+                      escrito lá, e custou um passe visual.
 
-                      O vídeo fica à ESQUERDA porque a regra do lado oposto não mudou:
-                      "Landing Pages" é o índice 3 dos quatro em órbita, então o texto
-                      está à direita. E a ordem no DOM continua texto e depois prova,
-                      que é o que o leitor de tela ouve. */}
-                  {servico.prova.imagem && (
+                      **O vídeo na coluna larga**, e a conta melhora: os 597 deixam
+                      484 px de conteúdo (81%, o padding do `.campo-prova-largo`), e o
+                      arquivo de 964 sai a 1,99x, ACIMA dos 1,48x que ele tinha na linha
+                      inteira. O campo perde tamanho de tela e ganha nitidez. A coluna
+                      do texto dá de 39 a 51 caracteres por linha, medido linha a linha,
+                      abaixo dos 60-72 que a §4 mira. É deliberado: o checklist proíbe
+                      passar de 72, e coluna curta ao lado de imagem é composição
+                      editorial, não erro de medida.
+
+                      **O print na coluna estreita, e aqui a conta PIORA de propósito.**
+                      Escolha do Douglas em 04/09, tomada com o custo na mesa, e ela
+                      fica escrita porque contraria o argumento 1 lá em cima. Os 427 px
+                      deixam 342 px de conteúdo (80%, o padding do `.campo-prova`).
+                      Densidade sobre o arquivo sobra, 3,77x de 1290, mas densidade não
+                      é o que está em jogo num artefato: o print é a captura de uma tela
+                      de 430 px lógicos, então em 342 px a interface do Instagram
+                      renderiza a **0,80x**, ou seja, MENOR do que num celular real. Na
+                      linha inteira ela saía a 1,49x. Medido no navegador em 1440px:
+                      os nomes dos destaques e a consistência do feed, que são o que o
+                      `alt` afirma, continuam legíveis a 1x; as legendas DENTRO de cada
+                      post não. O que se compra em troca: a coluna do texto vai a 597 px,
+                      e as linhas caem para 66-75 caracteres, contra até 79 nos blocos
+                      que seguem em linha inteira (contado linha a linha por `Range`, não
+                      estimado por `ch`). E as alturas passam a casar, 520 px de campo
+                      contra 336 de texto, em vez de o bloco medir 1318 px empilhado.
+
+                      ⚠️ Os 75 ainda passam dos 72 da §4, e isso é PRÉ-EXISTENTE e da
+                      seção inteira, não desta mudança: o `medida` é `62ch`, e em
+                      Montserrat 1ch é 10,6 px, então 62ch dá 657 px e rende até 79
+                      caracteres. Este bloco é o que mais se aproximou da regra.
+
+                      As duas provas ficam à ESQUERDA porque a regra do lado oposto não
+                      mudou: "Estruturação de Perfil" é o índice 1 e "Landing Pages" o
+                      índice 3 dos quatro em órbita, os dois ímpares, então nos dois o
+                      texto está à direita. Entre eles fica "Captação", índice 2, com a
+                      foto à direita, e é isso que mantém a seção alternando em diagonal
+                      em vez de encostar as duas provas na mesma borda. E a ordem no DOM
+                      continua texto e depois prova, que é o que o leitor de tela ouve. */}
+                  {apresentacao && (
                     <div
                       className={cn(
                         textoNaEsquerda
                           ? "w-full md:col-span-3 md:row-start-2 md:ml-auto md:w-[76%]"
                           : "w-full md:col-span-3 md:row-start-2 md:mr-auto md:w-[76%]",
-                        provaLateral &&
-                          "largo:col-span-1 largo:col-start-1 largo:row-start-1 largo:mx-0 largo:w-full",
+                        "largo:col-span-1 largo:col-start-1 largo:row-start-1 largo:mx-0 largo:w-full",
                       )}
                     >
+                      {/* Prop a prop, e não `{...apresentacao}`: a `grade` mora no
+                          mesmo objeto e é do `<article>`, não do campo. */}
                       <CampoProva
                         imagem={servico.prova.imagem}
                         video={servico.prova.video}
                         alt={servico.prova.alt}
                         rotulos={content.provaRotulos}
-                        {...(servico.prova.video
-                          ? APRESENTACAO.largo
-                          : APRESENTACAO.retrato)}
+                        largura={apresentacao.largura}
+                        altura={apresentacao.altura}
+                        classeDaMascara={apresentacao.classeDaMascara}
+                        moldura={apresentacao.moldura}
+                        sizes={apresentacao.sizes}
                       />
                     </div>
                   )}

@@ -331,11 +331,19 @@ Cinco serviços, direto da copy, **e a copy diz qual é o centro**: *"Gestão de
     cliente rolando (03/09). Nos dois casos a máscara **emoldura** o artefato em vez de recortá-lo,
     porque cada aresta deles carrega conteúdo: `.campo-prova` no retrato e `.campo-prova-largo` no
     deitado, os dois medidos no `globals.css`. O componente é o `CampoProva`.
-  - ✅ **Acima de 1152px o vídeo fica AO LADO do texto** (04/09), na coluna larga de um grid de
-    1,4fr / 1fr. O print de retrato **não** vai junto: ele tem 1290 px e é nas legendas dele que a
-    prova mora, então continua ocupando a linha inteira. No vídeo a conta é a oposta e ela melhora,
-    a densidade sobe de 1,48x para 1,99x. Detalhe medido na `DESIGN-GUIDELINES.md` §8 e no
-    comentário do `Servicos.tsx`.
+  - ✅ **Acima de 1152px as duas provas ficam AO LADO do texto** (04/09), em grades **espelhadas**,
+    porque um artefato é deitado e o outro é em pé: o vídeo em `1,4fr / 1fr`, na coluna larga, e o
+    print de perfil em `1fr / 1,4fr`, na estreita. Abaixo de 1152px os dois seguem empilhados.
+    - No vídeo a conta melhora: 484 px de conteúdo e densidade de 1,48x para 1,99x.
+    - ⚠️ **No print ela piora, e isso é escolha registrada do Douglas**, tomada com o custo na mesa.
+      O bullet aqui dizia o contrário até 04/09 ("o print de retrato não vai junto, é nas legendas
+      dele que a prova mora"), e o argumento continua verdadeiro: em 342 px de conteúdo a interface
+      do Instagram renderiza a 0,80x, menor do que num celular real, contra 1,49x na linha inteira.
+      **Passe visual feito em 1440px:** os nomes dos destaques e a consistência do feed, que é o que
+      o `alt` afirma, seguem legíveis a 1x; as legendas dentro de cada post, não. Em troca, a coluna
+      do texto cai de até 79 para 66-75 caracteres por linha e as alturas casam (520 contra 336, em
+      vez de 1318 empilhado).
+    - Números medidos na `DESIGN-GUIDELINES.md` §8 e no comentário do `Servicos.tsx`.
   - ⚠️ **As duas dependem de autorização escrita da cliente dona do material**, e a de Landing Pages
     depende de mais uma coisa: **a página precisa ter sido entregue pela Alando.** Exibir como
     portfólio um trabalho que não é da agência é afirmação falsa sobre o serviço, o que é a mesma
