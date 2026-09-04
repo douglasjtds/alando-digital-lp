@@ -44,14 +44,37 @@ import { CURVA, TEMPO, carregarAnime } from "./anime";
  * 4. `prefers-reduced-motion: reduce` não monta relógio nenhum. Fica o quadro em
  *    repouso, estático e inteiro, igual ao resto da página.
  *
- * ── Bytes: só se monta o que já tocou, mais o próximo ────────────────────────
+ * ── Bytes: só se monta o que já tocou, mais os dois seguintes ────────────────
  *
  * Dez quadros empilhados no HTML seriam ~840 KB baixados de uma vez, num bloco
  * só, numa página cujo canal principal é link na bio do Instagram. Então o DOM
  * cresce com a sequência: quem passa rolando pela seção em quatro segundos baixa
- * duas fotos, não dez. O próximo quadro é montado com um de antecedência, para
+ * três fotos, não dez. O próximo quadro é montado com um de antecedência, para
  * chegar carregado na hora de a crista passar por ele. Quadro já montado fica
  * montado: a volta do laço não refaz requisição.
+ *
+ * A terceira foto é a placa de trás da PILHA (abaixo), e ela sai de graça duas
+ * vezes: mostra `n+2` e, de quebra, já deixa esse quadro baixado antes da vez
+ * dele. As placas repetem o `sizes` da foto da frente de propósito, então placa
+ * e empilhamento pedem a MESMA URL do `/_next/image`, que é uma requisição só.
+ *
+ * ── A PILHA: as outras fotos aparecendo atrás da atual ───────────────────────
+ *
+ * Duas placas atrás da foto, em leque, com os próximos dois quadros da
+ * sequência. Pedido do Douglas em 04/09: o contador diz em texto que existem
+ * outras nove, e a pilha diz o mesmo em imagem, antes de qualquer movimento.
+ *
+ * ⚠️ Não é chrome de carrossel. As placas ficam ATRÁS e nunca por cima (§9),
+ * usam a MESMA `crista-faixa` da foto da frente (nenhum `border-radius`) e são
+ * ESTÁTICAS: nenhum tempo novo entrou no vocabulário de movimento. A geometria
+ * do leque, e por que ele cabe dentro da coluna em vez de sangrar para fora,
+ * está no bloco `.pilha-de-quadros` do `globals.css`.
+ *
+ * Elas viram no COMEÇO da varredura, junto com a foto da frente, e não junto com
+ * o contador: a base delas é o quadro que ENTRA. O porquê está no `baseDaPilha`,
+ * mais abaixo. E somem inteiras com `prefers-reduced-motion`, pela mesma razão
+ * do contador: prometer em imagem nove fotos que não chegam é o erro que o
+ * `/ 10` cometeria.
  *
  * ── Acessibilidade da sequência ──────────────────────────────────────────────
  *
@@ -134,10 +157,38 @@ export function SequenciaDeQuadros({
   const indiceVisivel = movimentoReduzido ? 0 : indice;
   const entrandoVisivel = movimentoReduzido ? null : entrando;
 
-
   /* `?? foto` nunca deveria acontecer (`montados` é limitado a `total - 1`),
      e existe para o índice ser um tipo estreito em vez de um `!`. */
-  const fonteDoQuadro = (i: number) => (i === 0 ? foto : (quadros[i - 1] ?? foto));
+  const fonteDoQuadro = (i: number) =>
+    i === 0 ? foto : (quadros[i - 1] ?? foto);
+
+  /**
+   * As placas da pilha, e elas são os PRÓXIMOS quadros, nunca o da frente.
+   * `Math.min(2, total - 1)` é o que impede uma sequência curta de pôr na placa
+   * a mesma foto que já está na frente. Índice 0 é a placa de cima.
+   *
+   * ⚠️ A base é `entrandoVisivel ?? indiceVisivel`, e o `entrando` vindo PRIMEIRO
+   * é a correção de 04/09: a pilha vira no COMEÇO da varredura, junto com a foto
+   * da frente, e não no fim dela.
+   *
+   * Saindo só do `indiceVisivel`, as placas esperavam os 900 ms inteiros da
+   * crista para virar, com a foto da frente já trocando. Lia como atraso, e era
+   * atraso mesmo. Com o quadro que ENTRA mandando na pilha, a foto que estava na
+   * placa de cima é a que vem para a frente no mesmo gesto, que é o que a pilha
+   * promete: a de cima do monte é a próxima.
+   *
+   * É por isso que a pilha NÃO acompanha o contador, que vira no fim de
+   * propósito. Não é incoerência: o contador ANUNCIA o quadro que chegou, e a
+   * pilha mostra o monte que sobrou. As duas coisas mudam quando o que elas
+   * dizem muda.
+   */
+  const baseDaPilha = entrandoVisivel ?? indiceVisivel;
+  const placas = sequenciaLigada
+    ? Array.from(
+        { length: Math.min(2, total - 1) },
+        (_, k) => (baseDaPilha + k + 1) % total,
+      )
+    : [];
 
   /* Só anda quando as quatro condições valem juntas. Nenhuma delas é a mesma
      coisa que outra: a pessoa pode ter pausado E ter saído do bloco. */
@@ -299,40 +350,75 @@ export function SequenciaDeQuadros({
       onFocus={() => setInteragindo(true)}
       onBlur={() => setInteragindo(false)}
     >
-      <div
-        ref={raiz}
-        className="foto-textura relative [clip-path:url(#crista-faixa)]"
-        style={{ aspectRatio: PROPORCAO }}
-      >
-        {Array.from({ length: montados + 1 }, (_, i) => (
-          <Image
-            key={fonteDoQuadro(i)}
-            ref={(elemento) => {
-              refsDosQuadros.current[i] = elemento;
-            }}
-            src={fonteDoQuadro(i)}
-            alt={i === 0 ? fotoAlt : ""}
-            aria-hidden={i === 0 ? undefined : true}
-            fill
-            sizes={sizes}
-            className="object-cover"
-            /* `opacity` e não `display`, porque um quadro escondido precisa
+      {/* A pilha. A classe do padding só entra com a sequência ligada: sem
+          placas para acomodar, o leque não existe e a foto não tem por que
+          encolher. Ver `.pilha-de-quadros` no `globals.css`. */}
+      <div className={cn(sequenciaLigada && "pilha-de-quadros")}>
+        <div className="pilha-caixa" style={{ aspectRatio: PROPORCAO }}>
+          {/* Da mais distante para a mais próxima: elas pintam por ORDEM DE DOM,
+              e a última precisa ser a que fica logo atrás da foto. A `key` é a
+              POSIÇÃO na pilha, não a foto: assim o quadro que avança troca o
+              `src` do mesmo elemento em vez de desmontar e remontar um `<img>`
+              a cada 4,1 s. */}
+          {placas
+            .map((quadro, posicao) => ({ quadro, posicao }))
+            .reverse()
+            .map(({ quadro, posicao }) => (
+              <div
+                key={posicao}
+                aria-hidden="true"
+                className={cn(
+                  "pilha-placa [clip-path:url(#crista-faixa)]",
+                  posicao === 0 ? "pilha-placa-1" : "pilha-placa-2",
+                )}
+              >
+                <Image
+                  src={fonteDoQuadro(quadro)}
+                  alt=""
+                  fill
+                  /* O MESMO `sizes` da foto da frente, e é ele que faz placa e
+                     empilhamento caírem na mesma URL otimizada. */
+                  sizes={sizes}
+                  className="object-cover"
+                />
+              </div>
+            ))}
+
+          <div
+            ref={raiz}
+            className="foto-textura absolute inset-0 [clip-path:url(#crista-faixa)]"
+          >
+            {Array.from({ length: montados + 1 }, (_, i) => (
+              <Image
+                key={fonteDoQuadro(i)}
+                ref={(elemento) => {
+                  refsDosQuadros.current[i] = elemento;
+                }}
+                src={fonteDoQuadro(i)}
+                alt={i === 0 ? fotoAlt : ""}
+                aria-hidden={i === 0 ? undefined : true}
+                fill
+                sizes={sizes}
+                className="object-cover"
+                /* `opacity` e não `display`, porque um quadro escondido precisa
                continuar BAIXANDO: é ele que chega pronto na vez dele. O que
                entra fica por cima do que sai enquanto a crista passa. */
-            style={{
-              opacity: i === indiceVisivel || i === entrandoVisivel ? 1 : 0,
-              zIndex: i === entrandoVisivel ? 2 : i === indiceVisivel ? 1 : 0,
-            }}
-          />
-        ))}
-      </div>
+                style={{
+                  opacity: i === indiceVisivel || i === entrandoVisivel ? 1 : 0,
+                  zIndex:
+                    i === entrandoVisivel ? 2 : i === indiceVisivel ? 1 : 0,
+                }}
+              />
+            ))}
+          </div>
+        </div>
 
-      {/* A linha de controle. Só existe se houver sequência: com movimento
+        {/* A linha de controle. Só existe se houver sequência: com movimento
           reduzido, ou sem quadros, não há nem o que contar nem o que pausar. */}
-      {sequenciaLigada && (
-        <div className="mt-4 flex items-center justify-between gap-4">
-          {/* ── O CONTADOR, e ele resolve um buraco real ────────────────────
-              Sem ele, nos primeiros 3,4 s o bloco é indistinguível de uma foto
+        {sequenciaLigada && (
+          <div className="mt-4 flex items-center justify-between gap-4">
+            {/* ── O CONTADOR, e ele resolve um buraco real ────────────────────
+              Sem ele, nos primeiros 3,2 s o bloco é indistinguível de uma foto
               estática: a única pista de que ali tem mais coisa era o botão
               "Pausar", que diz que algo se move e não diz que existem outras
               fotos. O `/ 10` diz, antes de qualquer movimento.
@@ -365,36 +451,37 @@ export function SequenciaDeQuadros({
               "1 de 10" a quem tem um `alt` só é prometer nove coisas que a
               pessoa não alcança. Quem lê a página com leitor de tela recebe
               uma foto descrita, que é a verdade dela. */}
-          <p aria-hidden="true" className="eyebrow text-tinta-suave">
-            <span className="text-ancora">
-              {String(indiceVisivel + 1).padStart(2, "0")}
-            </span>
-            {" / "}
-            {String(total).padStart(2, "0")}
-          </p>
+            <p aria-hidden="true" className="eyebrow text-tinta-suave">
+              <span className="text-ancora">
+                {String(indiceVisivel + 1).padStart(2, "0")}
+              </span>
+              {" / "}
+              {String(total).padStart(2, "0")}
+            </p>
 
-          {/* O controle da WCAG 2.2.2. */}
-          <button
-            type="button"
-            onClick={alternarPausa}
-            aria-pressed={pausadoPelaPessoa}
-            aria-label={
-              pausadoPelaPessoa
-                ? rotulos.retomarDescricao
-                : rotulos.pausarDescricao
-            }
-            className={cn(
-              "inline-flex min-h-11 items-center",
-              "caption font-ui text-tinta-suave",
-              "underline decoration-acento underline-offset-4",
-              "transition-colors hover:text-acento-texto",
-              "focus-visible:outline-2 focus-visible:outline-offset-3 focus-visible:outline-acento-texto",
-            )}
-          >
-            {pausadoPelaPessoa ? rotulos.retomar : rotulos.pausar}
-          </button>
-        </div>
-      )}
+            {/* O controle da WCAG 2.2.2. */}
+            <button
+              type="button"
+              onClick={alternarPausa}
+              aria-pressed={pausadoPelaPessoa}
+              aria-label={
+                pausadoPelaPessoa
+                  ? rotulos.retomarDescricao
+                  : rotulos.pausarDescricao
+              }
+              className={cn(
+                "inline-flex min-h-11 items-center",
+                "caption font-ui text-tinta-suave",
+                "decoration-acento underline underline-offset-4",
+                "hover:text-acento-texto transition-colors",
+                "focus-visible:outline-acento-texto focus-visible:outline-2 focus-visible:outline-offset-3",
+              )}
+            >
+              {pausadoPelaPessoa ? rotulos.retomar : rotulos.pausar}
+            </button>
+          </div>
+        )}
+      </div>
     </div>
   );
 }

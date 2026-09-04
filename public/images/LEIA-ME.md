@@ -15,6 +15,7 @@ Inventário completo em `instructions/AUDITORIA-FASE-0.md` §4.
 | `ref-files/Paleta de cores.png` | montanha na neblina | `CtaFinal`, **uma vez só** na página |
 | `drive-files/estruturação de perfil/` | **print do perfil de uma cliente**, 1290×1644 | `Servicos`, prova do serviço |
 | `drive-files/captação e edição de vídeo/` | **11 bastidores de captação**, iPhone, 9:16. Nove usados | `Servicos`, sequência de quadros |
+| `drive-files/landing pages/` | **captura da landing page de uma cliente**, 1928×16824 | `Servicos`, prova do serviço (pôster do vídeo) |
 
 ## Três restrições que decidem o recorte
 
@@ -45,6 +46,15 @@ servidor e o único que quem tem `prefers-reduced-motion` vê. Continua em 1100/
 E o peso da sequência **não é baixado de uma vez**: o `SequenciaDeQuadros` monta o quadro seguinte
 com um de antecedência, então quem passa rolando pela seção baixa dois ou três, não dez.
 
+**5. O pôster do vídeo não é foto, é quadro.** `servico-landing-page.jpg` (964×600, **26 KB**) é o
+primeiro quadro do `public/video/servico-landing-page.mp4`, escrito pelo `gravar-landing.mjs` e não
+pelo `processar-fotos.mjs`. Ele faz três trabalhos: pôster do `<video>`, substituto em
+`prefers-reduced-motion` e fallback se o vídeo não carregar. Sai da mesma fonte pelo mesmo `sharp`
+sem `withMetadata()`, então a regra de metadados continua valendo inteira.
+
+⚠️ Ele é leve porque é o topo de uma página quase toda creme, não porque a régua afrouxou. Se um
+dia o quadro de repouso mudar para uma seção com foto, meça de novo.
+
 ## Regras
 
 - Nenhuma imagem acima de ~200 KB. A mais pesada é `servico-estruturacao.jpg`, **187 KB**, e ela é
@@ -68,6 +78,8 @@ com um de antecedência, então quem passa rolando pela seção baixa dois ou tr
       círculos terracota dos destaques e o feed em tons de terra são a entrega sendo mostrada. A
       média RGB medida do original é `146,132,119`, um neutro quente já dentro da família da paleta.
     A regra continua valendo para as outras cinco.
+- **Nenhum vídeo aqui.** Vídeo mora em `public/video/`, tem script próprio e orçamento próprio.
+  Ver `public/video/LEIA-ME.md`, inclusive para por que existe um vídeo nesta página.
 - **Nenhum PDF aqui. Nunca.** Ver `public/brand/LEIA-ME.md`.
 - Foto de terceiro só com autorização escrita. Há **uma criança** na tela da câmera em
   `499E4759`, e esse é o caso mais restritivo da lista.
@@ -75,6 +87,10 @@ com um de antecedência, então quem passa rolando pela seção baixa dois ou tr
     dos posts. **Está em `public/` porque a autorização escrita existe**, confirmada pelo Douglas em
     02/09. Esta é a linha que separa esse arquivo do material de `drive-files/` que nunca pode sair
     de lá.
+  - `servico-landing-page.jpg` e o vídeo de que ele é o pôster mostram a página de outra cliente,
+    com nome, rosto e registro profissional legíveis. Mesma linha, confirmada pelo Douglas em 03/09,
+    e com uma condição a mais: **a página foi entregue pela Alando**. Prova de portfólio de trabalho
+    que não é da agência seria afirmação falsa sobre o serviço, não questão de imagem.
   - Sete dos nove `video-quadro-*` têm pessoa identificável ou marca de cliente legível (a modelo na
     loja de calçados, os dois homens sobre os barris, a cliente diante do espelho, e os rostos
     pequenos nas telas das câmeras). **Estão em `public/` pela mesma linha**: a autorização escrita

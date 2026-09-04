@@ -172,17 +172,20 @@ export const content = {
   servicos: [
     {
       titulo: "Identidade Visual",
-      corpo: "A identidade visual é muito mais do que um logotipo bonito. Ela é a primeira impressão que as pessoas terão sobre a sua empresa.\n\nPor isso, antes de pensar em cores, tipografia ou símbolos, buscamos entender quem é a sua marca, quais sensações ela deve transmitir e como deseja ser lembrada. O resultado é uma identidade que representa sua essência e acompanha o crescimento do seu negócio.",
-      fechamento: "Ideal para empresas que estão começando ou passando por um reposicionamento",
+      corpo:
+        "A identidade visual é muito mais do que um logotipo bonito. Ela é a primeira impressão que as pessoas terão sobre a sua empresa.\n\nPor isso, antes de pensar em cores, tipografia ou símbolos, buscamos entender quem é a sua marca, quais sensações ela deve transmitir e como deseja ser lembrada. O resultado é uma identidade que representa sua essência e acompanha o crescimento do seu negócio.",
+      fechamento:
+        "Ideal para empresas que estão começando ou passando por um reposicionamento",
       destaque: false,
       foto: "",
       fotoAlt: "",
       quadros: [],
-      prova: { imagem: "", alt: "" },
+      prova: { imagem: "", video: "", alt: "" },
     },
     {
       titulo: "Estruturação de Perfil",
-      corpo: "Antes de publicar conteúdo, existe um perfil inteiro que precisa comunicar confiança.\n\nAnalisamos cada detalhe do seu Instagram para que ele deixe claro quem é a sua empresa, o que ela faz e por que alguém deveria escolher você. Ajustamos biografia, destaques, identidade visual, organização das informações e toda a experiência de quem chega ao seu perfil pela primeira vez.\n\nPorque, muitas vezes, o cliente decide se continua navegando ou fecha o Instagram em poucos segundos.",
+      corpo:
+        "Antes de publicar conteúdo, existe um perfil inteiro que precisa comunicar confiança.\n\nAnalisamos cada detalhe do seu Instagram para que ele deixe claro quem é a sua empresa, o que ela faz e por que alguém deveria escolher você. Ajustamos biografia, destaques, identidade visual, organização das informações e toda a experiência de quem chega ao seu perfil pela primeira vez.\n\nPorque, muitas vezes, o cliente decide se continua navegando ou fecha o Instagram em poucos segundos.",
       fechamento: "",
       destaque: false,
       foto: "",
@@ -198,23 +201,26 @@ export const content = {
       quadros: [],
       prova: {
         imagem: "/images/servico-estruturacao.jpg",
+        video: "",
         alt: "Perfil de Instagram de uma cliente, estruturado pela Alando: três destaques nomeados e um feed com identidade visual consistente.",
       },
     },
     {
       titulo: "Gestão de Redes Sociais",
-      corpo: "O coração da Alando. Mergulhamos na sua marca para criar uma comunicação com personalidade, estratégia e posicionamento, cuidando de todo o processo: do planejamento à produção, publicação e análise de resultados.",
+      corpo:
+        "O coração da Alando. Mergulhamos na sua marca para criar uma comunicação com personalidade, estratégia e posicionamento, cuidando de todo o processo: do planejamento à produção, publicação e análise de resultados.",
       fechamento:
         "Ideal para marcas que querem construir uma presença digital estratégica, consistente e memorável.",
       destaque: true,
       foto: "",
       fotoAlt: "",
       quadros: [],
-      prova: { imagem: "", alt: "" },
+      prova: { imagem: "", video: "", alt: "" },
     },
     {
       titulo: "Captação e edição de vídeos",
-      corpo: "Sabemos que aparecer na câmera nem sempre é fácil.\n\nPor isso, nossa equipe conduz toda a gravação de forma leve e natural, criando um ambiente em que você se sinta confortável para falar sobre aquilo que faz todos os dias.\n\nTambém pensamos em cada cena, enquadramento e roteiro para que os vídeos reflitam a essência da sua marca, e não apenas acompanhem tendências.\n\nDepois da gravação, todo o material passa pela edição para transformar boas imagens em conteúdos estratégicos.",
+      corpo:
+        "Sabemos que aparecer na câmera nem sempre é fácil.\n\nPor isso, nossa equipe conduz toda a gravação de forma leve e natural, criando um ambiente em que você se sinta confortável para falar sobre aquilo que faz todos os dias.\n\nTambém pensamos em cada cena, enquadramento e roteiro para que os vídeos reflitam a essência da sua marca, e não apenas acompanhem tendências.\n\nDepois da gravação, todo o material passa pela edição para transformar boas imagens em conteúdos estratégicos.",
       fechamento: "",
       destaque: false,
       /* A foto que casa com o serviço que ela mostra: literalmente uma câmera
@@ -250,17 +256,37 @@ export const content = {
         "/images/video-quadro-08.jpg",
         "/images/video-quadro-09.jpg",
       ],
-      prova: { imagem: "", alt: "" },
+      prova: { imagem: "", video: "", alt: "" },
     },
     {
       titulo: "Landing Pages",
-      corpo: "Uma boa campanha merece uma página que continue a conversa iniciada no anúncio.\n\nDesenvolvemos landing pages pensadas para apresentar sua empresa, transmitir confiança e conduzir o visitante até a ação que realmente importa, seja solicitar um orçamento, preencher um formulário ou realizar uma compra.\n\nAssim como todo o nosso trabalho, cada página é construída de forma personalizada, respeitando a identidade e o posicionamento da sua marca.",
+      corpo:
+        "Uma boa campanha merece uma página que continue a conversa iniciada no anúncio.\n\nDesenvolvemos landing pages pensadas para apresentar sua empresa, transmitir confiança e conduzir o visitante até a ação que realmente importa, seja solicitar um orçamento, preencher um formulário ou realizar uma compra.\n\nAssim como todo o nosso trabalho, cada página é construída de forma personalizada, respeitando a identidade e o posicionamento da sua marca.",
       fechamento: "",
       destaque: false,
       foto: "",
       fotoAlt: "",
       quadros: [],
-      prova: { imagem: "", alt: "" },
+      /* A prova do serviço, e a única da página que é VÍDEO.
+
+         A página é de uma cliente real e só entra em `public/` porque a
+         autorização escrita existe, confirmada pelo Douglas em 03/09: mesma
+         linha que liberou o print de Estruturação de Perfil em 02/09.
+
+         ⚠️ Vídeo é o SEGUNDO desvio da DESIGN-GUIDELINES.md §8, e ele está
+         registrado lá com o argumento inteiro. Não é precedente para um
+         terceiro. O mecanismo, com as cinco contenções, está no `CampoProva`.
+
+         ⚠️ `alt` é texto do projeto, não copy da Andressa, mesma convenção do
+         `seo.ogAlt` e do `hero.fotoAlt`. Ele descreve o que está no quadro e não
+         afirma resultado nenhum, porque a §11 proíbe promessa numérica. E não
+         nomeia a cliente: a autorização é para publicar a página, não para
+         transformar o nome dela em legenda no site de outra marca. */
+      prova: {
+        imagem: "/images/servico-landing-page.jpg",
+        video: "/video/servico-landing-page.mp4",
+        alt: "Landing page de uma cliente nutricionista, construída pela Alando: título, botão de agendamento por WhatsApp e as seções de método, processo e dúvidas.",
+      },
     },
   ],
 
@@ -309,6 +335,27 @@ export const content = {
     retomar: "Retomar",
     pausarDescricao: "Pausar a sequência de bastidores de captação",
     retomarDescricao: "Retomar a sequência de bastidores de captação",
+  },
+
+  /**
+   * Os rótulos do controle do vídeo da prova de Landing Pages.
+   *
+   * ⚠️ TEXTO DO PROJETO, não copy da Andressa, igual aos de cima. Entram na
+   * lista do relatório da fase.
+   *
+   * Por que "Repetir" e não "Tocar": o vídeo toca sozinho ao entrar na tela e
+   * para no fim, então quando o botão está no estado de partida o que ele faz é
+   * rodar de novo. "Tocar" prometeria uma primeira vez que já aconteceu.
+   *
+   * Mesmos dois pares de rótulo da sequência de quadros, e pelo mesmo motivo: o
+   * visível é curto, o descritivo diz o que o botão controla, e o visível é
+   * prefixo do descritivo, que é o que a WCAG 2.5.3 (Label in Name) pede.
+   */
+  provaRotulos: {
+    repetir: "Repetir",
+    pausar: "Pausar",
+    repetirDescricao: "Repetir o vídeo da landing page de uma cliente",
+    pausarDescricao: "Pausar o vídeo da landing page de uma cliente",
   },
 
   /**
@@ -413,8 +460,7 @@ export const content = {
     titulo: "Dúvidas",
     perguntas: [
       {
-        pergunta:
-          "<<A CONFIRMAR: as 5-7 objeções que a Andressa mais ouve>>",
+        pergunta: "<<A CONFIRMAR: as 5-7 objeções que a Andressa mais ouve>>",
         resposta:
           "<<A CONFIRMAR: a resposta de cada objeção, em prosa, 2 a 4 frases, com as palavras dela>>",
       },
@@ -530,20 +576,14 @@ export const resultadosDeCaso: readonly ResultadoDeCaso[] = [];
  * adicionar uma origem sem mensagem quebra o build.
  */
 export type CtaOrigem =
-  | "header"
-  | "hero"
-  | "servicos"
-  | "processo"
-  | "cta-final"
-  | "sticky-mobile";
+  "header" | "hero" | "servicos" | "processo" | "cta-final" | "sticky-mobile";
 
 export const mensagensWhatsapp: Record<CtaOrigem, string> = {
   header: "Oi! Vim pelo site da Alando e quero falar com vocês.",
   hero: "Oi! Quero conversar sobre a comunicação da minha marca.",
   servicos:
     "Oi! Vi os serviços de vocês e quero entender qual faz sentido pra minha empresa.",
-  processo:
-    "Oi! Vi como vocês trabalham e queria entender como começar.",
+  processo: "Oi! Vi como vocês trabalham e queria entender como começar.",
   "cta-final":
     "Oi! Li a página inteira e quero começar uma conversa sobre a minha marca.",
   "sticky-mobile": "Oi! Quero falar com a Alando sobre a minha marca.",

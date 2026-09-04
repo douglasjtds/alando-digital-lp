@@ -317,12 +317,26 @@ Cinco serviços, direto da copy, **e a copy diz qual é o centro**: *"Gestão de
   scroll, e o desvio, o argumento e as quatro contenções estão registrados na
   `DESIGN-GUIDELINES.md` §8. **Não estenda para outro serviço:** o que sustenta o desvio é a seção
   ser a que vende imagem em movimento.
+- ⚠️ **A pilha entrou em 04/09**, e o layout continua sem mudar: atrás da foto, duas placas em leque
+  mostram os próximos dois quadros, para o slot dizer em imagem o que o contador `01 / 10` já dizia
+  em texto. Placas atrás e nunca por cima, mesma máscara, estáticas. Ver `DESIGN-GUIDELINES.md` §8.
 - Sem ícone genérico em cima de cada. Se não houver ícone proprietário, **não há ícone**.
 - **Thumbnails de portfólio entram aqui, não numa seção nova.** O material de
   `drive-files/` (capas de diagnóstico de marca e de identidade visual de clientes) vai **anexado ao
   serviço que ele comprova**: Identidade Visual e Estruturação de Perfil. Prova ao lado da
   afirmação vale mais do que uma galeria no fim da página, e evita inflar a arquitetura.
   Tratamento obrigatório em `DESIGN-GUIDELINES.md` §9.
+  - ✅ **Duas provas existem, e as duas se renderizam diferente da `foto`.** Estruturação de Perfil
+    tem o print do perfil de uma cliente (02/09) e Landing Pages tem **um vídeo** da página de outra
+    cliente rolando (03/09). Nos dois casos a máscara **emoldura** o artefato em vez de recortá-lo,
+    porque cada aresta deles carrega conteúdo: `.campo-prova` no retrato e `.campo-prova-largo` no
+    deitado, os dois medidos no `globals.css`. O componente é o `CampoProva`.
+  - ⚠️ **As duas dependem de autorização escrita da cliente dona do material**, e a de Landing Pages
+    depende de mais uma coisa: **a página precisa ter sido entregue pela Alando.** Exibir como
+    portfólio um trabalho que não é da agência é afirmação falsa sobre o serviço, o que é a mesma
+    classe de erro que inventar depoimento. Confirmado pelo Douglas em 02/09 e 03/09.
+  - ⚠️ **O vídeo é o segundo desvio registrado da `DESIGN-GUIDELINES.md` §8**, e ele é maior que o
+    primeiro. Leia a §8 antes de propor um terceiro.
 - ⚠️ **Passe visual obrigatório em 390px.** É aqui que o clichê volta: em mobile tudo empilha, e
   cinco blocos empilhados com título em cima leem como cinco cards iguais, por mais que o código
   do desktop esteja certo.
@@ -628,10 +642,15 @@ outro orçamento. Dizer isso no começo evita a conversa ruim no terceiro mês.
 | CLS | < 0.05 |
 | Chunk de animação | **< 25 KB gzip**, medido gzipado |
 | Qualquer imagem | ≤ ~200 KB |
+| O vídeo da prova de Landing Pages | **≤ 400 KB**, linha própria. Medido: 359 KB |
 
 - anime.js por subpath, via `dynamic import` **após a hidratação**. Confirmar que o chunk é lazy.
 - Se passar de 25 KB, cortar momento de animação, não cortar qualidade dos que ficam.
 - Só o herói com `priority`. Todo o resto lazy.
+- **O vídeo não conta para o carregamento inicial, e isso é obrigação e não consequência.**
+  `preload="none"` e `<source>` anexado só quando o bloco se aproxima: quem não desce até Serviços
+  não baixa os 359 KB. Verificado no painel de rede, em desktop e em 390px. Os 400 KB são linha de
+  orçamento própria, aberta com a decisão de 03/09, e não folga para os outros assets.
 - `next/font` faz self-host no build, o navegador do visitante nunca fala com o servidor do Google
   (relevante para LGPD e para latência).
 - Separar o piso do framework do código da aplicação antes de julgar que algo está pesado.

@@ -576,7 +576,8 @@ com esta seção na mesa. Fica escrito aqui para ninguém o encontrar numa audit
 defeito, e para ninguém o usar como precedente.
 
 **O que é:** no slot lateral de "Captação e edição de vídeos", dez quadros se revezam sozinhos, um
-a cada 4,3 s (3,4 s parado + 0,9 s de troca).
+a cada 4,1 s (3,2 s parado + 0,9 s de troca). Eram 4,3 s até 04/09, quando o Douglas pediu 0,2 s a
+menos vendo o bloco rodar.
 
 **Por que ele se sustenta:** a única seção que anda sozinha no tempo é a que vende imagem em
 movimento. Vídeo é quadro trocando no tempo. Aqui a autonomia é o argumento da própria seção, não
@@ -603,7 +604,7 @@ qualquer carrossel, e adotá-lo seria desviar em dois eixos em vez de um.
 
 **O contador, e por que ele não é bolinha.** Abaixo da foto, ao lado do botão, um rótulo
 `01 / 10` diz que existem outras fotos **antes de qualquer movimento**. Sem ele, nos primeiros
-3,4 s o bloco é indistinguível de uma foto estática, e o botão sozinho avisa que algo se move sem
+3,2 s o bloco é indistinguível de uma foto estática, e o botão sozinho avisa que algo se move sem
 avisar que há mais o que ver.
 
 Como o botão, ele **não sai no HTML do servidor**: os dois só existem depois que a hidratação
@@ -616,10 +617,100 @@ esquerda, que nesta seção é a convenção do próprio ofício: claquete numer
 em `ancora` (13,27:1), total em `tinta-suave` (5,76:1). Ele vira no **fim** da varredura: anuncia o
 quadro que chegou, nunca o que está chegando.
 
+**A pilha, e por que ela não é chrome de carrossel (04/09).** Atrás da foto, duas placas em leque
+(8 px e 16 px de deslocamento, 1,5° e 3° de giro) mostram os **próximos dois quadros** da sequência.
+O contador diz em texto que existem outras nove; a pilha diz o mesmo em imagem, e as duas coisas
+falam antes de qualquer movimento. As quatro razões de ela não ser chrome:
+
+1. As placas ficam **atrás**, nunca por cima: a §9 continua valendo inteira, nada boia sobre a
+   imagem.
+2. Elas usam a **mesma `crista-faixa`** da foto da frente. Nenhum `border-radius` entrou pela porta
+   dos fundos, e a pilha não é um cartão flutuante.
+3. Elas são **estáticas**. Nenhum tempo novo entrou no vocabulário: o leque dá volume físico ao
+   slot, ele não anima.
+4. Elas **viram no começo da varredura**, junto com a foto da frente: a base delas é o quadro que
+   **entra**. A foto que estava na placa de cima é a que vem para a frente no mesmo gesto, que é o
+   que a pilha promete. Saindo do `indiceVisivel`, como o contador, as placas esperavam os 900 ms
+   da crista para virar e aquilo lia como atraso (corrigido em 04/09). **A pilha não acompanha o
+   contador de propósito:** o contador *anuncia* o quadro que chegou, a pilha mostra o monte que
+   sobrou, e cada um muda quando o que ele diz muda.
+
+O leque cabe **dentro** da coluna, por `padding` na pilha e não por sangria: em 390 px sobram 19,5 px
+de margem de página, e leque sangrando ali daria scroll horizontal. A conta está no bloco
+`.pilha-de-quadros` do `globals.css`. Como o contador e o botão, a pilha **some inteira** com
+`prefers-reduced-motion` e sem JS: prometer em imagem nove fotos que não chegam é o mesmo erro que o
+`/ 10` cometeria.
+
 **Acessibilidade:** o quadro em repouso carrega o `alt` real, os outros nove são `alt=""` e
-`aria-hidden`, e **o contador também é `aria-hidden`**. É a regra da `FaixaRepetida` (§6) aplicada
+`aria-hidden`, **as placas da pilha também**, e **o contador também é `aria-hidden`**. É a regra da `FaixaRepetida` (§6) aplicada
 aqui pelo mesmo motivo: anunciar "1 de 10" a quem recebe um `alt` só é prometer nove coisas que a
 pessoa não alcança.
+
+---
+
+### ⚠️ SEGUNDO DESVIO REGISTRADO: o vídeo da prova de Landing Pages (03/09)
+
+**O vocabulário abriu, e o desvio acima previa exatamente isto.** A §8 dizia, sobre a sequência de
+Captação, "para ninguém o usar como precedente", e o checklist dizia "se aparecer uma segunda
+exceção, o vocabulário abriu". Apareceu. Fica registrado com o mesmo rigor, e com o custo à vista.
+
+**O que é:** no campo de prova de "Landing Pages", um MP4 de 8 segundos mostra a landing page de uma
+cliente em visita guiada, parando em cada seção. Toca uma vez ao entrar na tela, para no fim e
+volta ao primeiro quadro.
+
+**⚠️ Este desvio é MAIOR que o primeiro, e isso precisa estar dito.** A sequência de Captação desvia
+em **um** eixo, o gatilho, e mantém o Gesto 3 como transição: mesma crista, mesma classe, mesmo
+tempo, mesma curva. O vídeo desvia em **três**: no gatilho (tempo, não scroll), na mídia (um `<video>`,
+que nenhuma outra parte da página usa) e no gesto (o movimento é interno ao arquivo, não é nenhum
+dos três).
+
+**Por que ele se sustenta mesmo assim:** a prova de que a Alando constrói uma página é a página se
+comportando como página, e página é uma coisa que rola. Um print prova que existe um topo bonito;
+prova nenhuma sobre a página inteira, que é o que o serviço entrega. É a mesma família de argumento
+do primeiro desvio (a autonomia pertence ao que a seção vende), e é por isso que os dois param aqui:
+**os outros três serviços não têm nada que só se demonstre em movimento.**
+
+**Antes de admitir um terceiro, saiba o que já foi recusado nesta decisão.** Havia uma alternativa
+que não abria exceção nenhuma: a página alta rolando dentro da máscara presa ao `animation-timeline:
+view()`, 0 KB de JS, que é a textura de parallax que a §8 já prevê. Ela foi apresentada com esse
+argumento e o Douglas escolheu o vídeo mesmo assim, em 03/09, com este texto na mesa. A escolha é
+dele; o registro é para que o próximo desvio precise de um argumento melhor que "já tem vídeo lá".
+
+**As cinco contenções, e nenhuma é opcional:**
+
+1. **Toca uma vez e para.** Não é loop. Conteúdo em loop dentro de um bloco de serviço é banner, e a
+   §2.5 veta.
+2. **Volta ao primeiro quadro no fim.** Achado no passe visual: sem isso o bloco fica parado para
+   sempre no último quadro, que é a faixa escura de fechamento da página da cliente, e um retângulo
+   verde escuro dentro de uma seção clara lê como pedaço da própria página da Alando, não como o
+   site de outra marca. O repouso é sempre o topo da página da cliente.
+3. **Não baixa para quem não chega.** `preload="none"` e `<source>` anexado só na interseção, com
+   uma tela de antecedência. Verificado no painel de rede: **zero requisição de `.mp4`** antes de
+   rolar até lá, em desktop e em 390px.
+4. **Botão de repetir e pausar**, exigência da WCAG 2.2.2, **abaixo** do vídeo e nunca sobreposto,
+   no mesmo desenho do controle da sequência de quadros para os dois lerem como um sistema só.
+   Nada de `<video controls>`, que traz a barra do sistema operacional inteira.
+5. **`prefers-reduced-motion: reduce` não monta `<video>` nenhum.** Fica o pôster, que é o primeiro
+   quadro, com o `alt` real. Verificado: nesse modo não há `<video>` no DOM e nenhuma requisição de
+   vídeo acontece.
+
+**Sem áudio.** O arquivo não tem trilha (`-an`). Economiza bytes e tira do caminho o motivo mais
+comum de o autoplay ser bloqueado. Testado com a política mais restritiva do Chromium
+(`--autoplay-policy=document-user-activation-required`): toca, porque vídeo mudo é isento.
+
+**O orçamento é NOVO, e é o segundo custo desta decisão.** Nenhum vídeo cabe nos ~200 KB que valem
+para imagem. Abriu-se uma linha de **400 KB**, e o arquivo mede **359 KB** (964×600, CRF 34, 8,0s).
+Ela vale para este arquivo, não é folga para os outros assets, e o `scripts/gravar-landing.mjs`
+falha em vez de estourá-la. As três medições que seguraram o número estão no cabeçalho do script.
+
+**A moldura é a `crista-vale`**, escolhida por medição na proporção do vídeo, e o campo é o
+`.campo-prova-largo`. Os números e o porquê de não ser a `crista-retrato` (que é a mais econômica e
+já está na mesma seção) estão no `globals.css`.
+
+**Risco em aberto, para julgar na página montada:** a página da cliente usa o mesmo vocabulário
+visual desta (serifada display, neutros quentes, botão escuro), então ela pode ler como um pedaço da
+própria Alando em vez de "o site de outra marca", o que enfraquece justamente a frase da copy que a
+prova existe para sustentar. A contenção 2 reduz o efeito; ela não o elimina.
 
 ---
 
@@ -720,6 +811,7 @@ Detalhe completo, com resoluções, EXIF e pesos, em `AUDITORIA-FASE-0.md` §4.
 | PNG da paleta | Montanha na neblina, floresta de outono | `CtaFinal`, **uma vez só** | É o vocabulário mais copiado que existe hoje. Uma aparição é atmosfera, duas é banco de imagem |
 | PDF, p. 4-15 | Prints de feed de clientes | `Resultados` | Terceiros identificáveis. **Autorização obrigatória** |
 | `drive-files/Identidades visuais/` | Capas de identidade visual de clientes | `Servicos` (thumbnail) | ⚠️ **Referência. Não podem ser publicados.** Regra abaixo |
+| `drive-files/landing pages/` | Captura da landing page de uma cliente | `Servicos` (prova, **em vídeo**) | Entregue pela Alando e **autorizada por escrito**, 03/09. Ver §8, segundo desvio |
 
 ### As três decisões que o acervo define
 
@@ -771,6 +863,10 @@ padrão. **Distribuir entre seções distantes e variar o recorte dentro da más
   a foto isolada.
 - Toda foto de conteúdo com `alt` descritivo real. `alt=""` só em decorativo.
 - **AVIF com fallback WebP** via `next/image`, `sizes` correto, `priority` **só** no herói.
+- **Vídeo é exceção registrada, não mídia disponível.** Existe **um** na página, e ele tem seção
+  própria na §8, script próprio (`scripts/gravar-landing.mjs`), pasta própria (`public/video/`) e
+  orçamento próprio (400 KB, contra ~200 KB de imagem). Um segundo vídeo não é decisão de
+  fotografia: é uma terceira exceção de movimento, e passa pela §8.
 - Nenhuma imagem acima de ~200 KB, e o herói até **120 KB**.
 - **Nenhuma imagem entra em `public/` sem passar pelo `scripts/processar-fotos.mjs`**, que é o que
   remove metadados.
@@ -887,13 +983,18 @@ Intervalos numéricos usam hífen simples ou a palavra "a": `60-72 caracteres`, 
 - [ ] Nenhuma frase de copy que caberia no site de qualquer outra agência
 
 **Movimento**
-- [ ] **Nenhum movimento fora dos três gestos e do momento coreografado**, com a ÚNICA exceção
-      registrada na §8: a sequência de quadros de Captação, cujo gatilho é o tempo e cujo gesto
-      continua sendo o Gesto 3. Se aparecer uma segunda exceção, o vocabulário abriu
+- [ ] **Nenhum movimento fora dos três gestos e do momento coreografado**, com as DUAS exceções
+      registradas na §8, e nenhuma além delas: a sequência de quadros de Captação (02/09, desvia só
+      no gatilho) e o vídeo da prova de Landing Pages (03/09, desvia no gatilho, na mídia e no
+      gesto). As duas param em `Servicos` e as duas vivem no que a seção vende. **Uma terceira
+      precisa de argumento melhor que "já tem duas"**
 - [ ] O reveal da página é revelação por máscara, **não** `fade + translateY`
 - [ ] A travessia de cor mantém contraste em 0%, 25%, 50%, 75% e 100% do progresso
 - [ ] Faixas se movem só com scroll, nunca em loop autônomo
 - [ ] A sequência de Captação para no hover, no foco, com a aba oculta e no botão de pausa
+- [ ] O vídeo de Landing Pages toca uma vez, volta ao primeiro quadro e tem botão de pausa
+- [ ] Nenhuma requisição de `.mp4` antes de o bloco entrar na tela, medida no painel de rede
+- [ ] Vídeo **≤ 400 KB**, que é linha de orçamento própria e não vale para mais nada
 - [ ] Chunk de animação **≤ 24 KB gzip, medido gzipado**
 - [ ] Sem three.js, sem Lenis, sem ScrollSmoother
 - [ ] `prefers-reduced-motion` testado no DevTools: estático, **100% visível**, máscaras **abertas**, travessia em estado final

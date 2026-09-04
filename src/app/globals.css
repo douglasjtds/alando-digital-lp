@@ -533,6 +533,89 @@
 }
 
 /* ==========================================================================
+   A PILHA DE QUADROS: as outras fotos aparecendo atrás da atual
+
+   Só a sequência de Captação usa. Antes dela, o slot era indistinguível de uma
+   foto estática nos primeiros 3,2 s: o contador `01 / 10` dizia em texto que
+   existem outras nove, e o pedido do Douglas em 04/09 foi dizer o mesmo em
+   imagem, com as próximas fotos espiando atrás em leque, como um monte de
+   fotografias sobre a mesa.
+
+   ⚠️ Isto NÃO é chrome de carrossel, e a diferença não é de opinião: as placas
+   ficam ATRÁS e nunca por cima (a §9 não deixa nada boiar sobre a imagem), usam
+   a MESMA `crista-faixa` da foto da frente (nenhum `border-radius` entrou pela
+   porta dos fundos) e são ESTÁTICAS, ou seja, nenhum tempo novo no vocabulário
+   de movimento da §8. A pilha dá volume ao slot, não anima nada.
+
+   ── Por que o `padding`, e por que ele é 32 nos dois eixos ──────────────────
+
+   O giro afasta o canto da placa do centro em proporção à ALTURA dela, e o slot
+   é 9:16. Com a placa 2 em `translate(16px, -16px) rotate(3deg)`, medindo nas
+   duas larguras REAIS da coluna (331 px no desktop em 1440, 351 px em 390):
+
+                             desktop        mobile
+     largura do conteúdo     299 px         319 px
+     altura (9:16)           532 px         567 px
+     excursão à direita      13,9 + 16      14,8 + 16   =  30 e 31 px
+     excursão para baixo      7,8 + 16       7,8 + 16   =  24 e 25 px
+
+   O giro é horário e o deslocamento é para baixo e para a direita, então a placa
+   só transborda por esses DOIS lados: à esquerda e no topo o giro empurra para
+   dentro e cancela o deslocamento. Daí o `padding` assimétrico.
+
+   ⚠️ O sentido vertical é PARA BAIXO, e isso foi medido, não escolhido no
+   escuro. Com as placas subindo, a `crista-faixa` da foto da frente mergulha até
+   19% da altura no canto superior esquerdo, e as placas apareciam POR CIMA
+   daquele mergulho: uma faixa larga de foto desfocada no alto, solta do resto da
+   pilha, que lia como sujeira e não como monte de fotografias. Para baixo, o
+   topo das placas fica escondido atrás da foto e o que sobra é uma borda
+   contínua à direita e embaixo, que é como pilha de foto sobre a mesa se parece
+   mesmo.
+
+   O leque cabendo dentro da coluna não é preciosismo. Em 390 px a coluna é 90vw
+   e sobram 5vw (19,5 px) de margem de página: leque sangrando para fora dali dá
+   SCROLL HORIZONTAL, que é regra dura. Com o padding a pilha inteira cabe na
+   coluna em qualquer viewport, sem media query e sem `overflow: hidden`, que
+   cortaria justamente o que a pilha existe para mostrar.
+
+   O preço é a foto da frente encolher ~10% e descer um pouco dentro da coluna.
+   É o que faz a pilha ler como pilha.
+
+   ⚠️ NÃO combine `.pilha-placa` com `.foto-textura`. A placa é uma foto parada
+   atrás; dar parallax a ela seria movimento por cima de movimento, e o leque
+   passaria a respirar sozinho.
+   ========================================================================== */
+
+@layer components {
+  .pilha-de-quadros {
+    padding: 0 32px 32px 0;
+  }
+
+  /* A caixa da foto. É ela que carrega a proporção, e é contra ela que as
+     placas resolvem o `inset: 0`: sem este nível, `inset: 0` cairia na caixa COM
+     padding e as placas ficariam maiores que a foto. */
+  .pilha-caixa {
+    position: relative;
+  }
+
+  .pilha-placa {
+    position: absolute;
+    inset: 0;
+  }
+
+  /* As placas pintam antes da foto por ORDEM DE DOM (vêm primeiro e têm
+     `z-index: auto`). Nenhum `z-index` novo: o wrapper da foto já cria contexto
+     de empilhamento por causa do `clip-path`. */
+  .pilha-placa-1 {
+    transform: translate(8px, 8px) rotate(1.5deg);
+  }
+
+  .pilha-placa-2 {
+    transform: translate(16px, 16px) rotate(3deg);
+  }
+}
+
+/* ==========================================================================
    O CAMPO DA PROVA: a máscara emoldura a imagem em vez de recortá-la
 
    Caso único da página, e vale explicar por que ele existe antes de explicar os
@@ -584,5 +667,67 @@
 @layer components {
   .campo-prova {
     padding: 7% 18% 13% 2%;
+  }
+}
+
+/* ==========================================================================
+   O CAMPO LARGO: a mesma inversão, na proporção de um vídeo deitado
+
+   Segundo campo de prova da página, e ele existe porque a moldura de cima não
+   serve aqui. O `.campo-prova` e a `crista-retrato` foram medidos para o retrato
+   1290×1644 (AR 0,785) do print de perfil. O vídeo da landing page é 964×600
+   (AR 1,607), e os mesmos paddings ali deixariam 13% de base em quadro deitado,
+   ou seja, 19% da altura da caixa: moldura pesada embaixo, e o vídeo boiando.
+
+   ── A máscara, escolhida por medição ────────────────────────────────────────
+
+   Mesmo método do bloco acima: o maior retângulo na proporção 1,607 que cabe
+   inteiro em cada máscara, rasterizada em grade de 1000×1000 e varrida com
+   imagem integral. `fw` e `fh` são o quanto a caixa precisa crescer sobre a
+   imagem em cada eixo, e a área é o produto:
+
+     crista-retrato   1,202x larg   1,127x alt   área 1,355
+     crista-vale      1,193x larg   1,248x alt   área 1,490   <- escolhida
+     crista-serra     1,139x larg   1,408x alt   área 1,604
+     crista-faixa     1,116x larg   1,468x alt   área 1,639
+
+   A `crista-retrato` é a mais econômica também na horizontal, e mesmo assim não
+   entra: ela já é a moldura do print de Estruturação de Perfil, **na mesma
+   seção**, dois blocos acima. A §6 pede forma diferente por foto, e duas
+   ocorrências separadas por meia página (herói e prova) são uma coisa; duas
+   dentro do mesmo bloco de serviços são outra. A `crista-vale` custa 10% de área
+   a mais e é a única das quatro que ainda não aparece em `Servicos`: a
+   `crista-faixa` é a sequência de quadros da captação, e ela é de novo a pior das
+   quatro nesta proporção, pelo mesmo motivo registrado acima.
+
+   A ocorrência distante da `crista-vale` fica no `Sobre`, mais de uma seção
+   abaixo, que é a mesma folga que autorizou o reúso da `crista-retrato`.
+
+   ── Os quatro paddings, medidos ─────────────────────────────────────────────
+
+   O ajuste mais apertado que a `crista-vale` aceita nesta proporção é
+   `1,7% 2,3% 11,3% 13,9%`, e ele encosta na máscara nas quatro arestas. Os
+   valores abaixo são esse mínimo arredondado para fora, e a folga resultante foi
+   verificada empurrando cada aresta em passos de 0,1% até sair da máscara, com
+   600 pontos por aresta:
+
+     esquerda 2,2%  ·  direita 2,1%  ·  topo 1,9%  ·  base 3,3%
+
+   Mesma ordem de folga do `.campo-prova` (a aresta mais apertada dele é 1,4%).
+   Com `3% 4% 13% 15%` a caixa fica em AR 1,506, e o vídeo ocupa 81% da largura.
+
+   ⚠️ A assimetria é a forma, não desalinho: a `crista-vale` tem o degrau à
+   ESQUERDA e o vale fundo à direita da base, então o padding esquerdo é quase
+   quatro vezes o direito. Igualar os dois jogaria o vídeo para fora da máscara.
+
+   ⚠️ NÃO combine com `.foto-textura`, pela mesma razão do `.campo-prova`: o
+   parallax translada ±2,5% com `scale(1.08)`, e só o scale já pede 4% por lado
+   contra folga de 1,9%. Aqui o motivo é ainda mais direto: quem se move dentro
+   deste campo é o próprio conteúdo do vídeo.
+   ========================================================================== */
+
+@layer components {
+  .campo-prova-largo {
+    padding: 3% 4% 13% 15%;
   }
 }
