@@ -76,11 +76,16 @@
      1056 px, então um layout que vira neste ponto vira sempre nas mesmas
      medidas, em vez de atravessar uma faixa fluida que aperta coluna.
 
-     Quem usa: as DUAS provas de `Servicos`, que acima daqui ficam ao lado do
-     texto em vez de abaixo dele. As grades são espelhadas, porque um artefato é
-     deitado e o outro é em pé: `1,4fr / 1fr` no vídeo, com ele na coluna larga,
-     e `1fr / 1,4fr` no print de perfil, com ele na estreita. Os números e o
-     custo de cada uma estão no `Servicos.tsx`.
+     Quem usa: as DUAS provas de `Servicos`. ⚠️ Ele NÃO é o ponto em que elas vão
+     para o lado do texto: isso acontece no `md`, 768px, junto com a foto de
+     Captação. Aqui é onde a divisão delas deixa de ser meio a meio e vira
+     ASSIMÉTRICA, `1,4fr / 1fr` no vídeo (coluna larga) e `1fr / 1,4fr` no print
+     de perfil (coluna estreita), porque um artefato é deitado e o outro é em pé.
+
+     A assimetria espera até aqui justamente por causa da regra acima: abaixo
+     deste ponto a coluna estreita ficaria pequena demais para o artefato que
+     vive nela. Com o container travado, ela sempre renderiza igual. Os números
+     e o custo de cada uma estão no `Servicos.tsx`.
 
      ⚠️ Ele é REGISTRADO, e não um `min-[1152px]:` arbitrário, e a razão custou
      um passe visual: o Tailwind v4 emite o bloco de um `min-[...]` arbitrário

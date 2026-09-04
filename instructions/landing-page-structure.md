@@ -331,9 +331,22 @@ Cinco serviços, direto da copy, **e a copy diz qual é o centro**: *"Gestão de
     cliente rolando (03/09). Nos dois casos a máscara **emoldura** o artefato em vez de recortá-lo,
     porque cada aresta deles carrega conteúdo: `.campo-prova` no retrato e `.campo-prova-largo` no
     deitado, os dois medidos no `globals.css`. O componente é o `CampoProva`.
-  - ✅ **Acima de 1152px as duas provas ficam AO LADO do texto** (04/09), em grades **espelhadas**,
-    porque um artefato é deitado e o outro é em pé: o vídeo em `1,4fr / 1fr`, na coluna larga, e o
-    print de perfil em `1fr / 1,4fr`, na estreita. Abaixo de 1152px os dois seguem empilhados.
+  - ✅ **Os três slots de mídia empilham no mesmo ponto, e só no celular** (04/09). Antes não era
+    assim: a `foto` de Captação ia para o lado em 768px e as duas provas só em 1152px, então num
+    tablet a foto aparecia ao lado do texto e as provas caíam para baixo. Dois comportamentos para a
+    mesma coisa, na mesma seção. **A `foto` é a referência e não mudou nada**; as provas passaram a
+    virar em 768px também. Abaixo disso os três empilham.
+  - ✅ **A divisão das provas tem dois estágios**, porque a assimetria não cabe em tablet:
+    - **768 a 1151px:** `1fr / 1fr`, meio a meio, as duas iguais. Em 768 isso dá 264 px de print e
+      cerca de 39 caracteres por linha no texto. Com a grade assimétrica o print cairia para 220 px,
+      ou seja, o Instagram a 0,51x.
+    - **1152px acima:** **espelhadas**, porque um artefato é deitado e o outro é em pé. O vídeo em
+      `1,4fr / 1fr`, na coluna larga, e o print de perfil em `1fr / 1,4fr`, na estreita. O 1152 é
+      onde o container trava, então a assimetria sempre renderiza nas mesmas medidas.
+    - ⚠️ **Degrau invertido conhecido:** em 1151 o print sai a 409 px e em 1152 encolhe para 342. É
+      o encontro das duas decisões, está registrado na `DESIGN-GUIDELINES.md` §8, e a correção
+      (deixar o print meio a meio também acima de 1152) contraria a escolha da coluna estreita, que
+      é do Douglas.
     - No vídeo a conta melhora: 484 px de conteúdo e densidade de 1,48x para 1,99x.
     - ⚠️ **No print ela piora, e isso é escolha registrada do Douglas**, tomada com o custo na mesa.
       O bullet aqui dizia o contrário até 04/09 ("o print de retrato não vai junto, é nas legendas

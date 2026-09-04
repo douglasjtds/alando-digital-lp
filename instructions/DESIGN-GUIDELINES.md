@@ -713,10 +713,8 @@ falha em vez de estourá-la. As três medições que seguraram o número estão 
 `.campo-prova-largo`. Os números e o porquê de não ser a `crista-retrato` (que é a mais econômica e
 já está na mesma seção) estão no `globals.css`.
 
-**Acima de 1152px o vídeo fica AO LADO do texto, e não abaixo dele** (04/09). Ele vira a coluna
-larga de um grid de 1,4fr / 1fr, com o texto na estreita, e 1152 é o ponto exato em que o
-`max-w-6xl` para de crescer, então a divisão sempre renderiza nas mesmas medidas. Abaixo disso
-segue empilhado, inclusive nos 390px.
+**A partir de 768px o vídeo fica AO LADO do texto, e não abaixo dele** (04/09). Ele empilha só
+abaixo disso, em largura de celular.
 
 A conta melhora para o vídeo: a coluna de 597 px deixa 484 px de conteúdo, e a densidade dos mesmos
 964 sobe de 1,48x para **1,99x**. O campo largo perde tamanho de tela e ganha nitidez. A coluna do
@@ -735,7 +733,7 @@ lado, e escolheu para ele a coluna **estreita**, com o custo apresentado antes d
 | coluna da prova | 597 px | 427 px |
 | conteúdo dentro do campo | 484 px (81%) | 342 px (80%) |
 | densidade sobre o arquivo | 1,99x de 964 | 3,77x de 1290 |
-| coluna do texto | 427 px, 39-51 car. | 597 px, cerca de 62 car. |
+| coluna do texto | 427 px, 39-51 car. | 597 px, 66-75 car. |
 
 ⚠️ **O custo do print está na linha que a tabela não tem, e ele é de legibilidade, não de
 densidade.** Densidade sobra (3,77x), só que num artefato ela não é a medida certa: o print é a
@@ -758,7 +756,43 @@ contra 336 de texto, em vez de o bloco medir 1318 px empilhado.
 mudança: o utilitário `medida` é `62ch`, e em Montserrat 1ch mede 10,6 px, ou seja, 62ch dá 657 px e
 rende até 79 caracteres. Vale uma decisão à parte, para a seção toda, e não aqui.
 
-Abaixo de 1152px nada disso vale, e os dois seguem empilhados, inclusive nos 390px.
+### ⚠️ E o breakpoint mudou de novo, no mesmo dia: as provas empilham SÓ no celular
+
+**O que estava escrito acima descreve o estágio 2. Ele deixou de ser o único.** Até aqui as duas
+provas iam para o lado do texto em 1152px, e a `foto` de Captação ia em 768px. Ou seja, a mesma
+seção tinha **dois comportamentos de empilhamento para a mesma coisa**: num tablet a foto ficava ao
+lado do texto e as duas provas caíam para baixo. O Douglas apontou a incoerência, e a `foto` é quem
+estava certa.
+
+**As provas passam a ir para o lado a partir de 768px também.** A `foto` de Captação não mudou nada,
+porque ela é a referência. O que estava errado era o breakpoint das provas, não a proporção delas:
+proporção diferente por slot continua legítima e continua registrada, porque uma é fotografia que
+sangra até a máscara e as outras são artefatos que a máscara emoldura.
+
+**A divisão passa a ter dois estágios**, e o segundo é o que já estava descrito acima:
+
+| | 768 a 1151px | 1152px acima |
+|---|---|---|
+| grade das duas provas | `1fr / 1fr`, meio a meio | espelhadas, `1,4fr / 1fr` e `1fr / 1,4fr` |
+| cada coluna | 330 px em 768, 512 px em 1151 | 597 px de mídia larga, 427 px de estreita |
+| print, conteúdo | 264 px (0,61x) a 409 px (0,95x) | 342 px (0,79x) |
+| vídeo, conteúdo | 267 px a 414 px | 484 px |
+| coluna do texto | 330 px (~39 car.) a 512 px (~60 car.) | 427 px no vídeo, 597 px no print |
+
+**Por que a assimetria não desce até 768.** Porque ali ela não cabe: o `1fr / 1,4fr` deixaria o
+print com 220 px de conteúdo, ou seja, a interface do Instagram a **0,51x**, metade de um celular
+real. Meio a meio ele fica com 264 px e o texto com cerca de 39 caracteres por linha, e esse é o
+único arranjo em que nenhum dos dois inviabiliza o outro. A assimetria entra quando existe largura
+para ela, e o 1152 continua sendo escolhido pelo mesmo motivo de sempre: é onde o container trava.
+
+⚠️ **Um degrau invertido, registrado porque é visível e não é bug.** Em 1151px o print sai a 409 px
+e em 1152px ele **encolhe para 342**, ou seja, a imagem diminui quando a tela aumenta. É o encontro
+das duas decisões: meio a meio embaixo e coluna estreita em cima. Ele desapareceria se o print
+ficasse em `1fr / 1fr` também acima de 1152 (o que lhe daria 409 px lá), e isso contraria a escolha
+da coluna estreita, que é do Douglas. Fica anotado para ele decidir, não para ser corrigido por
+conta própria.
+
+Abaixo de 768px nada disso vale, e os três slots seguem empilhados, inclusive nos 390px.
 
 **Risco em aberto, para julgar na página montada:** a página da cliente usa o mesmo vocabulário
 visual desta (serifada display, neutros quentes, botão escuro), então ela pode ler como um pedaço da
