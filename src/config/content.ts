@@ -173,9 +173,9 @@ export const content = {
     {
       titulo: "Identidade Visual",
       corpo:
-        "A identidade visual é muito mais do que um logotipo bonito. Ela é a primeira impressão que as pessoas terão sobre a sua empresa.\n\nPor isso, antes de pensar em cores, tipografia ou símbolos, buscamos entender quem é a sua marca, quais sensações ela deve transmitir e como deseja ser lembrada. O resultado é uma identidade que representa sua essência e acompanha o crescimento do seu negócio.",
+        "Criamos identidades visuais que traduzem a essência da sua marca e ajudam a construir uma presença mais forte, coerente e memorável.",
       fechamento:
-        "Ideal para empresas que estão começando ou passando por um reposicionamento",
+        "Ideal para marcas que estão começando ou passando por um reposicionamento.",
       destaque: false,
       foto: "",
       fotoAlt: "",
@@ -185,8 +185,9 @@ export const content = {
     {
       titulo: "Estruturação de Perfil",
       corpo:
-        "Antes de publicar conteúdo, existe um perfil inteiro que precisa comunicar confiança.\n\nAnalisamos cada detalhe do seu Instagram para que ele deixe claro quem é a sua empresa, o que ela faz e por que alguém deveria escolher você. Ajustamos biografia, destaques, identidade visual, organização das informações e toda a experiência de quem chega ao seu perfil pela primeira vez.\n\nPorque, muitas vezes, o cliente decide se continua navegando ou fecha o Instagram em poucos segundos.",
-      fechamento: "",
+        "Estruturamos seu Instagram para comunicar com clareza quem é a sua marca, o que ela oferece e seus diferenciais, cuidando da bio, destaques, identidade e conteúdos iniciais.",
+      fechamento:
+        "Ideal para marcas que estão começando no digital ou precisam profissionalizar sua presença.",
       destaque: false,
       foto: "",
       fotoAlt: "",
@@ -220,8 +221,9 @@ export const content = {
     {
       titulo: "Captação e edição de vídeos",
       corpo:
-        "Sabemos que aparecer na câmera nem sempre é fácil.\n\nPor isso, nossa equipe conduz toda a gravação de forma leve e natural, criando um ambiente em que você se sinta confortável para falar sobre aquilo que faz todos os dias.\n\nTambém pensamos em cada cena, enquadramento e roteiro para que os vídeos reflitam a essência da sua marca, e não apenas acompanhem tendências.\n\nDepois da gravação, todo o material passa pela edição para transformar boas imagens em conteúdos estratégicos.",
-      fechamento: "",
+        "Cuidamos da produção dos seus vídeos do roteiro à edição, com uma captação leve e direcionada para criar conteúdos naturais, estratégicos e alinhados à essência da sua marca.",
+      fechamento:
+        "Ideal para marcas que querem se posicionar através de vídeos profissionais sem perder a naturalidade.",
       destaque: false,
       /* A foto que casa com o serviço que ela mostra: literalmente uma câmera
          enquadrando a cena. Desde 02/09 ela é o QUADRO EM REPOUSO de uma
@@ -261,8 +263,9 @@ export const content = {
     {
       titulo: "Landing Pages",
       corpo:
-        "Uma boa campanha merece uma página que continue a conversa iniciada no anúncio.\n\nDesenvolvemos landing pages pensadas para apresentar sua empresa, transmitir confiança e conduzir o visitante até a ação que realmente importa, seja solicitar um orçamento, preencher um formulário ou realizar uma compra.\n\nAssim como todo o nosso trabalho, cada página é construída de forma personalizada, respeitando a identidade e o posicionamento da sua marca.",
-      fechamento: "",
+        "Criamos páginas estratégicas e personalizadas para apresentar sua marca, valorizar sua oferta e conduzir o visitante até a ação desejada, sempre respeitando sua identidade e posicionamento.",
+      fechamento:
+        "Ideal para campanhas, lançamentos, vendas de serviços e geração de leads.",
       destaque: false,
       foto: "",
       fotoAlt: "",
@@ -313,7 +316,7 @@ export const content = {
   servicosTitulo: "Serviços",
   maisQueContratarTitulo: "Mais do que contratar um serviço",
   maisQueContratar:
-    "Você passa a contar com uma equipe que se preocupa em entender sua empresa como ela realmente é.\n\nPorque acreditamos que nenhuma estratégia funciona quando tenta encaixar todas as marcas na mesma fórmula.\n\nNosso trabalho é justamente o contrário: descobrir o que torna o seu negócio único e transformar isso em uma comunicação que faça sentido para você e para quem está do outro lado da tela.",
+    "Você passa a contar com uma equipe que busca **entender sua empresa de verdade**. **Mergulhamos na essência da sua marca** para descobrir o que a torna única e transformar isso em uma **comunicação estratégica, autêntica e coerente com quem você é.**",
   servicosCTA: "Quero conhecer o processo",
   servicosFaixaRepeticoes: 6,
 
@@ -383,8 +386,19 @@ export const content = {
   },
 
   /**
-   * Processo. Copy inexistente, apenas marcadores de pendência. Prazo é
-   * promessa contratual: nunca inventar, sempre confirmar com a cliente.
+   * Processo. ✅ Copy da Andressa, trazida pelo Douglas em 08/09. Eram dois
+   * marcadores (o passo a passo e os prazos) e agora não há nenhum.
+   *
+   * As quatro etapas estão transcritas sem uma palavra alterada. O `01.` do
+   * texto original dela NÃO entra no `titulo`: a numeração é o
+   * `String(i + 1).padStart(2, "0")` que o `Processo` deriva do índice do
+   * `<ol>`, e digitá-la aqui duplicaria o número na tela.
+   *
+   * ⚠️ NÃO existe prazo nesta seção, e a ausência é decisão, não esquecimento.
+   * A Andressa disse como quer a seção e não citou nenhum; prazo e duração são
+   * promessa contratual, então a página não carrega marcador para um dado que
+   * ninguém pediu para exibir. Se um dia ela mandar prazos, eles voltam como
+   * campo novo, nunca estimados aqui. Ver landing-page-structure.md §5.7.
    *
    * É o ÚNICO lugar da página onde 01/02/03 se justifica, porque o conteúdo é de
    * fato uma sequência, e por isso vem em `<ol>`. Em qualquer outra seção a
@@ -394,9 +408,27 @@ export const content = {
     titulo: "Como funciona",
     tituloPalavraItalica: "funciona",
     etapas: [
-      "<<A CONFIRMAR: o processo real, passo a passo, com as palavras dela>>",
+      {
+        titulo: "Fale com a gente",
+        texto:
+          "Clique no link e conte um pouco sobre sua marca e o que você está buscando. Esse primeiro contato acontece pelo WhatsApp.",
+      },
+      {
+        titulo: "Vamos nos conhecer",
+        texto:
+          "Marcamos uma reunião para ouvir mais sobre sua marca, entender seu momento e apresentar a Alando, nossa forma de trabalhar e nossos serviços.",
+      },
+      {
+        titulo: "Encontramos o melhor caminho",
+        texto:
+          "Depois de entendermos juntos o que sua marca precisa, preparamos uma proposta personalizada para o projeto.",
+      },
+      {
+        titulo: "Começamos a imersão",
+        texto:
+          "Com o contrato fechado, iniciamos com nossa reunião de imersão: o momento de mergulhar na sua marca, entender sua essência e dar início ao trabalho.",
+      },
     ],
-    prazos: "<<A CONFIRMAR: prazos reais de cada etapa>>",
     processoCTA: "Quero começar agora",
     processoCTAOrigem: "processo",
     faixaRepeticoes: 6,
@@ -405,90 +437,168 @@ export const content = {
   /**
    * Sobre, em dois movimentos, na ordem da copy.
    *
-   * ⚠️ Os dois `fotoAlt` são texto DESCRITIVO escrito aqui, não copy da
-   * Andressa: `alt` descreve o que a foto mostra e é obrigação de
-   * acessibilidade. Ambos dizem só o que está no quadro. O da equipe em especial
-   * NÃO afirma que as duas pessoas são da Alando, porque a foto é de uma
-   * captação em cliente e não dá para saber quem é quem.
+   * ⚠️ AS DUAS IMAGENS TROCARAM DE LUGAR EM 09/09, por decisão do Douglas. O
+   * retrato da Andressa estava em "Nossa história" e passou para "Quem está por
+   * trás da Alando", que é o movimento que a nomeia em texto. A foto de captação
+   * que estava ali saiu da página, e o slot de "Nossa história" passou a ser
+   * ocupado pela marca até ele escolher a foto definitiva.
+   *
+   * ⚠️ `fotoAlt` é texto DESCRITIVO escrito aqui, não copy da Andressa: `alt`
+   * descreve o que a foto mostra e é obrigação de acessibilidade. Ele desceu
+   * junto com o retrato, porque `alt` pertence à imagem e não ao slot.
+   *
+   * `historia.fotoPendencia` é a legenda do slot vago. Ela existe pela regra 1 do
+   * CLAUDE.md: placeholder sem marcador é o tipo de coisa que chega em produção
+   * sem ninguém notar. Sai numa linha quando a foto chegar.
    */
   sobre: {
     historia: {
       titulo: "Nossa história",
       palavraItalica: "história",
-      fotoAlt:
-        "Andressa Lando, fundadora da Alando Digital, de pé em frente a uma estante com plantas.",
+      fotoPendencia:
+        "<<A CONFIRMAR: qual foto entra em Nossa história. Por enquanto o slot é ocupado pela marca>>",
       corpo: [
-        "A Alando nasceu oficialmente em 2022, mas a nossa história com marcas começou muito antes.\n\nDesde 2017, cuidamos da comunicação de empresas que acreditavam que marketing poderia ser mais do que apenas estar presente nas redes sociais. Ao longo desses anos, percebemos algo que mudaria completamente a nossa forma de trabalhar: muitas empresas investiam em conteúdo, mas poucas realmente construíam uma marca.\n\nFoi dessa inquietação que nasceu a Alando.\n\nCriamos uma agência que escolheu fazer diferente. Em vez de começar perguntando quantos posts o cliente queria publicar por mês, passamos a fazer perguntas muito mais importantes: qual é a essência da sua marca? O que faz sua empresa ser única? Como você quer ser lembrado pelas pessoas?\n\nPorque acreditamos que uma comunicação forte não nasce de tendências. Ela nasce de entendimento.\n\nHoje, esse continua sendo o ponto de partida de todos os nossos projetos. Antes de pensar em estratégias, campanhas ou conteúdos, mergulhamos na história de cada empresa para construir uma comunicação que realmente faça sentido para quem ela é.\n\nÉ por isso que dizemos que criamos e gerenciamos marcas de forma artesanal. Não porque fazemos menos, mas porque fazemos com atenção, intenção e respeito aos detalhes que tornam cada negócio único.",
+        "A Alando nasceu oficialmente em 2022, mas nossa história com marcas começou em 2017. Ao longo desses anos, percebemos que muitas empresas investiam em conteúdo, mas poucas realmente construíam uma marca.\n\nFoi dessa inquietação que nasceu nossa forma de trabalhar: antes de criar, buscamos entender. Queremos conhecer a essência da marca, seus diferenciais, sua história e como ela deseja ser lembrada.\n\nHoje, esse continua sendo o ponto de partida de cada projeto. **Criamos e gerenciamos marcas de forma artesanal**, com atenção, intenção e cuidado com os detalhes que tornam cada negócio único.",
       ],
     },
     equipe: {
       titulo: "Quem está por trás da Alando",
       fotoAlt:
-        "Captação em andamento: uma pessoa organiza os doces na bancada enquanto outra enquadra a cena na câmera.",
+        "Andressa Lando, fundadora da Alando Digital, de pé em frente a uma estante com plantas.",
       corpo: [
-        "A Alando foi fundada por Andressa Lando, estrategista de marketing e especialista em Branding, com MBA pela ESPM.",
-        "Mas, embora a Alando tenha começado com um sonho individual, ela nunca foi construída para depender de uma única pessoa.\n\nHoje somos uma equipe composta por profissionais experientes em cada setor, que acreditam que boas ideias nascem da troca, da proximidade e da vontade genuína de entender cada cliente. Gostamos de relações leves, reuniões em que as pessoas se sintam à vontade para compartilhar suas ideias e de acompanhar de perto o crescimento de cada marca que passa por aqui.\n\nAfinal, quando conhecemos verdadeiramente uma empresa, deixamos de produzir conteúdo para ela e passamos a cuidar da sua comunicação.",
+        "Fundada por **Andressa Lando, estrategista de marketing e especialista em Branding com MBA pela ESPM**, hoje a Alando é formada por profissionais especializados em diferentes áreas da comunicação.\n\nSomos uma equipe próxima, humana e que acredita na troca. Gostamos de ouvir, entender e construir junto com cada cliente, porque quanto mais conhecemos uma marca, mais conseguimos cuidar da sua comunicação com verdade e intenção.",
       ],
     },
     sobreFaixaRepeticoes: 6,
   },
 
   /**
-   * FAQ. Copy inexistente. As objeções são conhecimento tácito da Andressa e
-   * são melhores que qualquer lista genérica.
+   * FAQ. ✅ Copy da Andressa, trazida pelo Douglas em 09/09. Eram DOIS
+   * marcadores num par só de pergunta/resposta, e agora são SETE pares reais,
+   * sem marcador nenhum. Com isso o nó `FAQPage` do grafo passa a ser emitido
+   * pela primeira vez (ver `lib/schema.ts`).
    *
-   * ⚠️ UM item, não cinco slots vazios. A §5.9 pede 5 a 7 perguntas, e a Fase 5D
-   * montou a estrutura com o único par que existe: um marcador de pergunta e um
-   * de resposta. Repetir o marcador sete vezes para "ver o layout cheio" daria
-   * uma falsa impressão de seção pronta, e a §5.9 é explícita: o que falta é a
-   * lista real de objeções dela.
+   * As sete estão transcritas sem uma palavra alterada. A única higiene foi
+   * tirar o espaço à esquerda que cada resposta trazia da quebra de linha do
+   * WhatsApp: nenhuma letra do texto dela mudou.
    *
-   * `resposta` deixou de ser string vazia na Fase 5D: com ela vazia, o
-   * `<details>` abria em nada e a pendência sumia justamente no lugar onde
-   * alguém iria procurá-la.
+   * ⚠️ Nenhum `**` aqui, e é decisão. O texto dela não tem ênfase nenhuma, e a
+   * DESIGN-GUIDELINES.md §6 é avara com negrito de propósito: acrescentar seria
+   * inventar entonação que ela não escreveu.
    *
-   * ⚠️ Quando as perguntas chegarem, elas e o JSON-LD `FAQPage` da Fase 6
-   * precisam bater PALAVRA POR PALAVRA. Se divergirem, o Google detecta e passa
-   * a ignorar o markup inteiro (landing-page-structure.md §7).
+   * ⚠️ As perguntas e o JSON-LD `FAQPage` precisam bater PALAVRA POR PALAVRA, e
+   * batem porque o `schema.ts` lê ESTE array, não uma segunda cópia. Se um dia
+   * alguém duplicar a lista, o Google detecta a divergência e passa a ignorar o
+   * markup inteiro (landing-page-structure.md §7).
    *
-   * ⚠️⚠️ `titulo` NÃO É COPY DA ANDRESSA, e é o TERCEIRO caso do arquivo, junto
-   * com `momentos.titulo` e `servicosTitulo`. A copy não tem seção de dúvidas
-   * nenhuma, então "Dúvidas" veio da âncora `#duvidas` da estrutura (§7). Fica
-   * na mesma lista de decisões de copy esperando o Douglas.
+   * ⚠️ Desvio de spec registrado: a §5.9 pede respostas "em prosa real, 2 a 4
+   * frases", e as dela têm de 1 a 3. É copy da cliente, então quem cede é a
+   * spec, não o texto. A contagem de perguntas (7) está no teto da §5.9.
+   *
+   * ✅ `titulo` PASSOU A SER COPY DELA. Era o terceiro caso do arquivo que não
+   * era, junto com `momentos.titulo` e `servicosTitulo`: "Dúvidas" tinha vindo
+   * da âncora `#duvidas` da estrutura (§7). A mensagem de 09/09 intitula o
+   * bloco de "Dúvidas frequentes", e é isso que a faixa passa a repetir. O
+   * rótulo do header continua "Dúvidas" (`header.nav.duvidas`), porque ali é
+   * navegação e não título de seção.
    */
   faq: {
-    titulo: "Dúvidas",
+    titulo: "Dúvidas frequentes",
+    tituloPalavraItalica: "frequentes",
     perguntas: [
       {
-        pergunta: "<<A CONFIRMAR: as 5-7 objeções que a Andressa mais ouve>>",
+        pergunta: "Vocês atendem apenas empresas de Indaiatuba?",
         resposta:
-          "<<A CONFIRMAR: a resposta de cada objeção, em prosa, 2 a 4 frases, com as palavras dela>>",
+          "Não. Atendemos marcas de todo o Brasil de forma online e, presencialmente, Indaiatuba, Campinas e região.",
+      },
+      {
+        pergunta: "Como sei qual serviço é ideal para a minha marca?",
+        resposta:
+          "Você não precisa chegar com isso definido. No nosso primeiro contato, entendemos seu momento, objetivos e necessidades para, juntos, encontrarmos o melhor caminho.",
+      },
+      {
+        pergunta: "A Alando atende qualquer segmento?",
+        resposta:
+          "Atendemos marcas de diferentes segmentos, desde que exista alinhamento com a nossa forma de trabalhar. Antes de qualquer proposta, fazemos questão de conhecer sua empresa e entender se podemos contribuir de verdade.",
+      },
+      {
+        pergunta: "Vocês trabalham com pacotes prontos?",
+        resposta:
+          "Temos escopos definidos para nossos serviços, mas entendemos as necessidades de cada marca antes de indicar uma solução. Não acreditamos em encaixar empresas diferentes na mesma fórmula.",
+      },
+      {
+        /* ⚠️ Os nomes de serviço aqui divergem em caixa e número dos da seção
+           `Servicos` ("Captação e edição de vídeos", "Landing Pages"). É a
+           transcrição literal dela, mantida por decisão do Douglas em 09/09:
+           uniformizar seria alterar copy, e isso é decisão dele, não daqui. */
+        pergunta: "Preciso contratar a gestão completa?",
+        resposta:
+          "Não. Você pode contratar serviços como Identidade Visual, Estruturação de Perfil, Captação e Edição de Vídeos ou Landing Page separadamente, de acordo com o momento da sua marca.",
+      },
+      {
+        pergunta: "Como funciona a contratação?",
+        resposta:
+          "O primeiro contato acontece pelo WhatsApp. Depois, marcamos uma reunião para conhecer sua marca e apresentar a Alando. A partir dessa conversa, enviamos uma proposta e, com o contrato fechado, iniciamos o projeto com nossa imersão.",
+      },
+      {
+        pergunta: "Quanto custa trabalhar com a Alando?",
+        resposta:
+          "O investimento varia de acordo com o serviço e o escopo do projeto. Depois de entendermos o que sua marca precisa, apresentamos a proposta mais adequada.",
       },
     ],
     faixaRepeticoes: 6,
   },
 
   /**
-   * CTA Final. Copy do título e rótulo do botão pendentes. O rótulo deve ser
-   * diferente do herói: no herói a pessoa decide se vale a pena; aqui ela já
-   * decidiu.
+   * CTA Final.
    *
-   * ⚠️ O título precisa nomear a ÚLTIMA objeção, que numa agência raramente é o
-   * serviço: costuma ser "será que eu preciso disso agora" ou "será que dá para
-   * começar pequeno" (§5.10). Material da própria marca para inspirar, no deck
-   * p. 24: "Será um prazer fazer parte da próxima fase da sua marca." e "Vamos
-   * construir isso juntos?". Não transcrevi nenhuma das duas para cá: escolher
-   * uma seria decidir a copy do fechamento no lugar do Douglas.
+   * ✅ **A copy chegou em 09/09**, com as palavras da Andressa, trazida pelo
+   * Douglas. Era a última seção da página feita SÓ de marcador, e agora não tem
+   * nenhum. `faixaRepeticoes` sobe de 1 para 6 junto: ele estava travado em 1
+   * porque repetir um `<<A CONFIRMAR>>` seis vezes numa faixa full-bleed seria
+   * ruído, não pendência.
    *
-   * ⚠️ `faixaRepeticoes` em 1 enquanto o título for marcador: a faixa rende só
-   * a instância legível, sem cópias. **Sobe para 6 junto com o título real**, e
-   * é a única mudança necessária para a seção ganhar a titulação da marca.
+   * ── Por que o título dela virou DUAS chaves ──────────────────────────────
+   *
+   * Ela mandou o título em duas frases: *"Sua marca tem uma história. Vamos
+   * cuidar de como ela será lembrada?"*, 67 caracteres somados. **Nenhuma
+   * palavra mudou**, o que mudou foi o papel tipográfico de cada frase.
+   *
+   * O motivo é mecânico e está medido: o `.faixa-trilho > h2` do `globals.css`
+   * deixa a instância legível quebrar linha, e o comentário de lá registra o
+   * efeito colateral, título em duas linhas empurra as cópias decorativas para
+   * fora da tela e A TEXTURA DA FAIXA SOME. Com as duas frases juntas no `<h2>`
+   * isso aconteceria em toda largura, inclusive 1440px, e o fechamento seria a
+   * única seção da página sem a assinatura da marca. Justamente onde o deck
+   * dela fecha com `juntos?juntos?juntos?` (p. 24).
+   *
+   * **Decidido pelo Douglas em 09/09: a pergunta é que repete.** A afirmação
+   * vira `lead`, na linha de lead com tracking largo que é traço do deck
+   * (§4, utilitário `lead-tracked`, que fora daqui só o `Footer` usa).
+   *
+   * `tituloPalavraItalica` é **lembrada**, e é a palavra da bio da marca
+   * ("para marcas que desejam ser lembradas"). "história" não serviria: já é a
+   * `palavraItalica` de "Nossa história", em `sobre`, e a §6 é avara com ênfase.
+   *
+   * ── O rótulo do botão ────────────────────────────────────────────────────
+   *
+   * "Quero apresentar minha marca para a Alando", diferente do herói ("Quero
+   * conversar com a Alando"), que é a exigência da §11: no herói a pessoa
+   * decide se vale a pena, aqui ela já decidiu e está começando.
+   *
+   * `mensagens["cta-final"]` NÃO acompanhou o rótulo, e é de propósito: ela
+   * existe para revelar a ORIGEM no celular da Andressa, não para ecoar o
+   * botão, e continua distinguível das outras cinco (§6 da estrutura).
    */
   ctaFinal: {
-    titulo: "<<A CONFIRMAR: copy do fechamento>>",
-    ctaLabel: "<<A CONFIRMAR: rótulo do botão diferente do herói>>",
+    lead: "Sua marca tem uma história.",
+    titulo: "Vamos cuidar de como ela será lembrada?",
+    tituloPalavraItalica: "lembrada",
+    texto:
+      "Se você busca uma equipe que queira entender sua empresa antes de começar a se comunicar por ela, queremos conhecer sua marca. Conte um pouco sobre o seu momento e vamos descobrir juntos qual é o melhor caminho.",
+    ctaLabel: "Quero apresentar minha marca para a Alando",
     ctaOrigem: "cta-final",
-    faixaRepeticoes: 1,
+    faixaRepeticoes: 6,
   },
 
   /**

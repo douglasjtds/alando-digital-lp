@@ -472,6 +472,32 @@ No deck, *construir*, *juntos?* e *números* aparecem em itálico serifado enqua
 **Regra: exatamente uma palavra por título display ganha o itálico**, e é a palavra que carrega o
 peso do argumento. Uma só, duas viram decoração. Definida em `content.ts`, nunca hardcoded.
 
+### A segunda gramática: o negrito em corpo de texto
+
+São **duas** gramáticas de ênfase, e elas não se misturam nem se substituem:
+
+| | Onde | Quanto | Como |
+|---|---|---|---|
+| **Itálico Playfair** | Só em título display (`h1`, `h2`, `display-md`) | Exatamente uma palavra | Chave `palavraItalica` no `content.ts`, `lib/italico.ts` |
+| **Negrito 600** | Só em corpo de texto | Um trecho curto, no máximo dois por seção | `**assim**` dentro da string, `lib/prosa.tsx` |
+
+Itálico em parágrafo e negrito em título são os dois erros que esta tabela existe para impedir.
+
+A notação `**` não é invenção: o `ref-files/Landing Page copy.md` é markdown e já traz negrito
+inline (linha 41). A página descartava isso em silêncio até a marcação existir.
+
+**A disciplina vale igual aqui.** A §6 é avara com ênfase de propósito, e o motivo não muda de
+gramática: um parágrafo com três negritos vira índice, não argumento, e a terceira ênfase apaga o
+peso das duas primeiras. Se um trecho precisa de negrito para o argumento funcionar, o problema
+costuma ser a frase.
+
+⚠️ Negrito dentro de um bloco que já é `font-semibold` (os `fechamento` dos serviços) **não muda
+nada na tela**, porque `strong` também é 600. Não é bug, é a frase inteira já sendo a ênfase.
+
+⚠️ O `**` sai do JSON-LD e de todo texto lido por máquina (`semNegrito`, em `lib/negrito.ts`).
+Asterisco literal num `description` de Schema.org é sujeira publicada para o crawler, e é um
+defeito que não aparece na tela: a página renderiza o negrito certinho enquanto o grafo apodrece.
+
 ### Formas orgânicas
 
 - Fotos mascaradas por `clipPath` SVG assimétrico. Linguagem: **crista de montanha aplicada a uma
@@ -934,11 +960,33 @@ usa `sharp` sem `withMetadata()` e escreve JPEG. Isso remove o EXIF das fotos de
 carregam data e aparelho) e a credencial C2PA das duas da Andressa, num passo só. **Nenhuma imagem
 vai para `public/` sem passar por ali.**
 
-**A equipe, e a repetição do motivo.** A copy afirma que a Alando *"nunca foi construída para
-depender de uma única pessoa"*. Se `Sobre` trouxer só o rosto da fundadora, **a imagem contradiz o
-texto ao lado dela**, e as fotos de captação são o que resolve. Só que as nove repetem o mesmo
-enquadramento (mão segurando a câmera, tela mostrando a cena): usar duas em seções vizinhas lê como
-padrão. **Distribuir entre seções distantes e variar o recorte dentro da máscara.**
+**A equipe, e a repetição do motivo.** A copy afirmava que a Alando *"nunca foi construída para
+depender de uma única pessoa"*. Se `Sobre` trouxesse só o rosto da fundadora, **a imagem
+contradiria o texto ao lado dela**, e as fotos de captação eram o que resolvia. Só que as nove
+repetem o mesmo enquadramento (mão segurando a câmera, tela mostrando a cena): usar duas em seções
+vizinhas lê como padrão. **Distribuir entre seções distantes e variar o recorte dentro da máscara.**
+
+### ⚠️ Esta regra foi revertida em 09/09, e o registro é o que importa
+
+**Hoje `Sobre` traz exatamente o que o parágrafo acima proibia:** só o retrato da Andressa, no
+movimento "Quem está por trás da Alando", e a foto de captação saiu da página. Decisão do Douglas,
+tomada com este texto na mesa.
+
+**O que mudou por baixo:** a frase que sustentava a regra não está mais na página. A copy de
+`sobre.equipe` foi reescrita e não diz mais *"nunca foi construída para depender de uma única
+pessoa"*. O que ela diz hoje é *"hoje a Alando é formada por profissionais especializados em
+diferentes áreas da comunicação"* e *"Somos uma equipe próxima, humana e que acredita na troca"*.
+
+**O que continua verdadeiro, e é o custo:** a afirmação de equipe continua lá, em outras palavras, e
+o retrato da fundadora passou a ser a única imagem de gente na seção. O que caiu foi a contradição
+literal, não o desconforto inteiro. Se a foto definitiva de "Nossa história" for uma de captação, o
+desconforto se resolve sozinho; se for outro retrato da Andressa, ele dobra. Vale relembrar isto na
+hora de escolher.
+
+**E o argumento original continua valendo para qualquer volta atrás:** a foto que resolvia era a
+`servico-gestao.jpg`, a única das nove com duas pessoas e nenhum rosto identificável. Ela continua
+em `public/images/` e continua na tabela do `processar-fotos.mjs`, marcada como sem uso, justamente
+para essa volta custar uma linha.
 
 ### Regras
 
@@ -1064,6 +1112,8 @@ Intervalos numéricos usam hífen simples ou a palavra "a": `60-72 caracteres`, 
 - [ ] Faixa de repetição em toda seção titulada, alternando direção
 - [ ] Só uma instância da faixa é semântica; as repetições são `aria-hidden`
 - [ ] Exatamente uma palavra em itálico por título display
+- [ ] Nenhum itálico em parágrafo e nenhum negrito em título display
+- [ ] Nenhum `**` sobrevivendo no JSON-LD nem em `meta description`
 - [ ] `Servicos` é hierárquico, Gestão dominante, não cinco blocos iguais
 - [ ] As três ideias da marca NÃO viraram três cards com ícone
 - [ ] Nenhum grid simétrico de 3 ou 5 colunas com ícone

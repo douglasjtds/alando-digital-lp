@@ -15,6 +15,7 @@ import {
 } from "@/config/brand";
 import { formatarRazao, razaoDeContraste, veredito } from "@/lib/contrast";
 import { partirNoItalico } from "@/lib/italico";
+import { renderizarProsa } from "@/lib/prosa";
 
 /**
  * /styleguide: a página que prova que o sistema fecha.
@@ -384,6 +385,44 @@ function Assinatura() {
                 </li>
               );
             })}
+          </ul>
+        </div>
+
+        {/* ── A OUTRA gramática de ênfase ─────────────────────────────────────
+            Negrito em corpo de texto, `**assim**`, e é coisa DIFERENTE do
+            itálico acima: aquele é uma palavra em título display, este é um
+            trecho em prosa. As duas nunca se misturam (DESIGN-GUIDELINES §6).
+
+            O último caso é o que importa aqui: negrito e marcador de pendência
+            no MESMO parágrafo. Se um dia alguém quebrar a composição das duas
+            camadas do `renderizarProsa`, é esta linha que acusa. */}
+        <div>
+          <p className="eyebrow text-tinta-suave">
+            o negrito em corpo de texto · <Cod>**assim**</Cod>
+          </p>
+          <ul className="mt-3 space-y-4">
+            <li className="bg-papel p-4">
+              <p className="body medida text-tinta">
+                {renderizarProsa(
+                  "Um trecho **em negrito** no meio da prosa, sobre papel.",
+                )}
+              </p>
+            </li>
+            <li className="bg-ancora-quente p-4">
+              <p className="body medida text-papel">
+                {renderizarProsa(
+                  "O mesmo trecho **em negrito**, agora sobre superfície escura: o peso 600 vem do globals.css e a cor vem por herança.",
+                  "escuro",
+                )}
+              </p>
+            </li>
+            <li className="bg-papel p-4">
+              <p className="body medida text-tinta">
+                {renderizarProsa(
+                  "As duas camadas juntas: **um trecho em negrito** e uma <<A CONFIRMAR: pendência no mesmo parágrafo>>, que continua realçada.",
+                )}
+              </p>
+            </li>
           </ul>
         </div>
 

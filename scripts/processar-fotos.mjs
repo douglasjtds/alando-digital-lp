@@ -118,7 +118,13 @@ const FOTOS = [
     largura: 1100,
     saturacao: 0.72,
     brilho: 1.01,
-    nota: "Serviços: Gestão de Redes Sociais",
+    /* ⚠️ SEM USO NA PÁGINA desde 09/09, e continua aqui de propósito. Ela era a
+       foto de "Quem está por trás da Alando" e saiu quando o retrato da Andressa
+       desceu para aquele slot (decisão do Douglas). Apagar a linha faria o
+       tratamento se perder no dia em que ela voltar, e ela é a única do acervo
+       que mostra trabalho acontecendo a mais de um par de mãos sem rosto
+       identificável, que é o motivo de ela ter sido escolhida em primeiro lugar. */
+    nota: "Sem uso na página desde 09/09. Era Sobre, movimento da equipe",
   },
   {
     de: "drive-files/Fotos captações/AC271526-600C-4C27-8D42-D901AD22D74E_1_105_c.jpeg",

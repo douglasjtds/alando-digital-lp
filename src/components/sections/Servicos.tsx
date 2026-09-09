@@ -5,6 +5,7 @@ import { Revelar } from "@/components/motion/Revelar";
 import { SequenciaDeQuadros } from "@/components/motion/SequenciaDeQuadros";
 import { CampoProva } from "@/components/ui/CampoProva";
 import { cn } from "@/lib/cn";
+import { renderizarProsa } from "@/lib/prosa";
 
 type Servico = (typeof content.servicos)[number];
 
@@ -149,7 +150,7 @@ export function Servicos() {
               <div className="space-y-4">
                 {servicoDestaque.corpo.split("\n\n").map((paragrafo) => (
                   <p key={paragrafo} className="body-lg text-ancora medida">
-                    {paragrafo}
+                    {renderizarProsa(paragrafo)}
                   </p>
                 ))}
               </div>
@@ -159,7 +160,7 @@ export function Servicos() {
                   tamanho de leitura. */}
               {servicoDestaque.fechamento && (
                 <p className="body-lg text-ancora medida mt-6 font-semibold">
-                  {servicoDestaque.fechamento}
+                  {renderizarProsa(servicoDestaque.fechamento)}
                 </p>
               )}
             </Revelar>
@@ -217,13 +218,13 @@ export function Servicos() {
                     <div className="space-y-4">
                       {servico.corpo.split("\n\n").map((paragrafo) => (
                         <p key={paragrafo} className="body text-tinta medida">
-                          {paragrafo}
+                          {renderizarProsa(paragrafo)}
                         </p>
                       ))}
                     </div>
                     {servico.fechamento && (
                       <p className="caption text-tinta-suave medida mt-4 font-semibold">
-                        {servico.fechamento}
+                        {renderizarProsa(servico.fechamento)}
                       </p>
                     )}
                   </div>
@@ -393,7 +394,7 @@ export function Servicos() {
           <div className="space-y-4">
             {content.maisQueContratar.split("\n\n").map((paragrafo) => (
               <p key={paragrafo} className="body-lg text-papel medida">
-                {paragrafo}
+                {renderizarProsa(paragrafo, "escuro")}
               </p>
             ))}
           </div>

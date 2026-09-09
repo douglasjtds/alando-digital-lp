@@ -4,6 +4,7 @@ import { content } from "@/config/content";
 import { FaixaRepetida } from "@/components/ui/FaixaRepetida";
 import { Revelar } from "@/components/motion/Revelar";
 import { renderizarPendencia } from "@/lib/pendencia";
+import { renderizarProsa } from "@/lib/prosa";
 
 /**
  * "Dúvidas": a seção que mais rende cauda longa em busca, porque as perguntas
@@ -19,16 +20,23 @@ import { renderizarPendencia } from "@/lib/pendencia";
  * Consequência prática: esta seção é server component, sem uma linha de JS.
  * A rotação do chevron é CSS puro, via a variante `group-open`.
  *
- * ── O marcador que ainda não é conteúdo ──────────────────────────────────────
+ * ── ✅ A copy chegou em 09/09, e ela pediu exatamente isto ───────────────────
  *
- * ⚠️ A copy não existe. O que está aqui é UM par pergunta/resposta, os dois
- * marcadores, e a estrutura definitiva em volta. As objeções reais são
- * conhecimento tácito da Andressa e valem mais que qualquer lista genérica:
- * ela sabe de cor quais são.
+ * Eram UM par pergunta/resposta e dois marcadores; agora são SETE pares reais,
+ * com as palavras da Andressa. Ficam registrados os dois pontos que a próxima
+ * pessoa vai querer saber:
  *
- * ⚠️ Quando chegarem, o JSON-LD `FAQPage` da Fase 6 tem que espelhá-las palavra
- * por palavra. Se as duas fontes divergirem, o Google detecta e passa a ignorar
- * o markup inteiro.
+ * 1. Junto com a copy ela perguntou se "as dúvidas podem aparecer com a
+ *    resposta oculta, e a pessoa clica para ver cada uma". **É o que o
+ *    `<details>` acima já fazia desde a Fase 5D**, e nenhuma linha desta
+ *    estrutura mudou por causa do pedido. Fica escrito para ninguém achar que
+ *    falta implementar accordion: o comportamento que ela quer é o nativo, e
+ *    trocá-lo por JS custaria os três ganhos do bloco anterior.
+ *
+ * 2. O JSON-LD `FAQPage` espelha as sete palavra por palavra, e espelha porque
+ *    o `lib/schema.ts` lê o MESMO `content.faq.perguntas` que este `map`. Uma
+ *    fonte só não tem como divergir; duas divergem, e o Google passa a ignorar
+ *    o markup inteiro quando isso acontece.
  */
 export function Faq() {
   return (
@@ -42,6 +50,7 @@ export function Faq() {
           <FaixaRepetida
             id="faixa-faq"
             texto={content.faq.titulo}
+            palavraItalica={content.faq.tituloPalavraItalica}
             repeticoes={content.faq.faixaRepeticoes}
             direcao="esquerda"
           />
@@ -77,7 +86,7 @@ export function Faq() {
               <div className="space-y-4 pb-6">
                 {resposta.split("\n\n").map((paragrafo) => (
                   <p key={paragrafo} className="body text-tinta medida">
-                    {renderizarPendencia(paragrafo)}
+                    {renderizarProsa(paragrafo)}
                   </p>
                 ))}
               </div>

@@ -1,5 +1,6 @@
 import { local, redes, whatsapp } from "@/config/brand";
 import { content } from "@/config/content";
+import { semNegrito } from "@/lib/negrito";
 import { criarColeta } from "@/lib/pendencias";
 import { canonicalPendente, siteUrl, urlAbsoluta } from "@/lib/site-url";
 
@@ -47,9 +48,22 @@ function urlPublica(caminho: string): string | undefined {
   return canonicalPendente ? undefined : urlAbsoluta(caminho);
 }
 
-/** Primeiro parágrafo de um corpo em prosa. É o que vira `description` de `Service`. */
-function primeiroParagrafo(texto: string): string {
-  return texto.split("\n\n")[0] ?? texto;
+/**
+ * O portão por onde a prosa do `content.ts` entra no grafo: primeiro parágrafo,
+ * e sem os `**` do negrito.
+ *
+ * ⚠️ O `semNegrito` não é detalhe de formatação. Sem ele, o dia em que alguém
+ * marcasse negrito num `servico.corpo` o grafo passaria a publicar
+ * `"description": "...uma comunicação **estratégica**..."`, e asterisco literal
+ * em Schema.org é sujeira publicada para máquina, exatamente a classe de erro
+ * que o `<<A CONFIRMAR>>` existe para evitar. E é um erro que não aparece na
+ * tela: a página renderiza o negrito certinho enquanto o JSON-LD apodrece.
+ *
+ * Fica aqui, dentro do portão que TODO corpo de serviço já atravessa, e não
+ * espalhado por cada campo, porque um portão esquecido é o que gera o defeito.
+ */
+function prosaParaMaquina(texto: string): string {
+  return semNegrito(texto.split("\n\n")[0] ?? texto);
 }
 
 /**
@@ -136,7 +150,7 @@ export function construirGrafo() {
         "@type": "Service",
         name: c(servico.titulo, `Service[${i}].name`),
         description: c(
-          primeiroParagrafo(servico.corpo),
+          prosaParaMaquina(servico.corpo),
           `Service[${i}].description`,
         ),
         provider: { "@id": ID_NEGOCIO },
@@ -145,21 +159,30 @@ export function construirGrafo() {
   };
 
   /**
-   * ⚠️ Hoje este nó NÃO é emitido, e isso é o comportamento certo.
+   * ✅ Desde 09/09 este nó É emitido, com as sete perguntas da Andressa.
    *
-   * O `content.faq` tem um par só, e os dois campos são marcador. `FAQPage` com
-   * `mainEntity` vazio é inválido, então emitir um nó vazio seria trocar "não
-   * tenho FAQ" por "tenho um FAQ quebrado".
+   * Até então o `content.faq` tinha um par só e os dois campos eram marcador,
+   * então o `filter` abaixo esvaziava a lista e o nó não saía: `FAQPage` com
+   * `mainEntity` vazio é inválido, e emitir um nó vazio seria trocar "não tenho
+   * FAQ" por "tenho um FAQ quebrado". **Nenhuma linha de código mudou quando a
+   * copy chegou**, e é assim que se sabe que o portão está certo: ele abriu
+   * sozinho porque o dado deixou de ser pendência.
    *
-   * ⚠️ Quando as perguntas reais chegarem, elas têm que bater PALAVRA POR PALAVRA
-   * com o `<details>` da tela. É por isso que este `map` lê o mesmo
-   * `content.faq.perguntas` que o componente: uma fonte só não tem como divergir.
-   * Se as duas divergissem, o Google passaria a ignorar o markup inteiro.
+   * ⚠️ As sete batem PALAVRA POR PALAVRA com o `<details>` da tela porque este
+   * `map` lê o mesmo `content.faq.perguntas` que o componente: uma fonte só não
+   * tem como divergir. Se alguém duplicar a lista, o Google detecta a
+   * divergência e passa a ignorar o markup inteiro.
    */
   const perguntas = content.faq.perguntas
     .map(({ pergunta, resposta }) => ({
-      pergunta: coleta.confirmado(pergunta, "FAQPage.mainEntity"),
-      resposta: coleta.confirmado(resposta, "FAQPage.acceptedAnswer"),
+      /* `semNegrito` e não `prosaParaMaquina`: aqui a resposta INTEIRA vira o
+         `text` do `Answer`, com todos os parágrafos, e cortar no primeiro
+         faria o markup divergir do `<details>` da tela. Só os `**` saem. */
+      pergunta: coleta.confirmado(semNegrito(pergunta), "FAQPage.mainEntity"),
+      resposta: coleta.confirmado(
+        semNegrito(resposta),
+        "FAQPage.acceptedAnswer",
+      ),
     }))
     .filter((p) => p.pergunta !== undefined && p.resposta !== undefined);
 

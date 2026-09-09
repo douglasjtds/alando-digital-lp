@@ -484,8 +484,8 @@ Regra sua: nenhuma alteração de texto sem confirmar. Então segue a lista.
 | 2 | **Parágrafo longo no herói** | Mover para o Manifesto, **sem trocar uma palavra**. Confirmar |
 | 3 | **Serviços divergem entre copy e PDF** | A copy lista 5 (Identidade Visual, Estruturação de Perfil, Gestão, Captação/Edição, Landing Pages). O PDF lista outros: Gestão Completa, Consultoria, Consultoria 2.0, Branding de Marca, Google Meu Negócio, Design avulso. **Qual é o portfólio atual?** Estou seguindo a copy, que é a fonte de verdade que você definiu |
 | 4 | **`Processo` não tem copy** | Matéria-prima existe no PDF ("Todo mês começa com estratégia", diagnóstico → planejamento → roteiros → captação → edição → publicação → acompanhamento). Não vou escrever: preciso do seu ok e do processo real dela |
-| 5 | **`Faq` não tem copy** | Precisa das objeções que ela ouve de verdade, não de uma lista genérica. É a seção que mais rende cauda longa em busca, justamente porque as perguntas são o que as pessoas digitam |
-| 6 | **`CtaFinal` não tem copy** | A copy termina em "passamos a cuidar da sua comunicação", sem fechamento. O título precisa nomear a **última objeção**: que numa agência raramente é o serviço, e quase sempre é "será que eu preciso disso agora" |
+| 5 | ✅ **RESOLVIDO em 09/09: `Faq` tem copy** | A Andressa mandou **sete perguntas com as respostas dela**, e o título do bloco, "Dúvidas frequentes". Nenhuma é genérica: cobrem região de atendimento, escolha de serviço, segmento, pacote pronto, contratação avulsa, como contratar e investimento. Nenhuma cita valor, prazo ou número |
+| 6 | ✅ **`CtaFinal`: resolvido em 09/09** | O texto original desta linha ("a copy termina em 'passamos a cuidar da sua comunicação', sem fechamento; o título precisa nomear a última objeção") fica como registro datado. A Andressa mandou o fechamento, e ele **não** nomeia a última objeção: responde pelo lado do convite. Quem cedeu foi a spec. Detalhe em `landing-page-structure.md` §5.10 |
 | 7 | **"Logos clientes aqui"** | Placeholder explícito na copy |
 | 8 | **Nenhuma cidade é citada** | Peso em busca local. Precisa aparecer em title, description, footer e JSON-LD |
 
@@ -516,9 +516,22 @@ BLOQUEIA SEÇÕES ESPECÍFICAS
     inclusive a criança que aparece na tela de uma delas.      → Servicos
  8. Autorização de cada cliente cujo material de identidade
     visual vire thumbnail de portfólio.                        → Servicos
- 9. O processo real, passo a passo, com prazos reais.          → Processo
-10. As 5 a 7 objeções que ela mais ouve.                       → Faq
-11. Copy do fechamento.                                        → CtaFinal
+ 9. ✅ RESOLVIDO em 08/09: a Andressa mandou as quatro etapas, com
+    as palavras dela, e a seção não tem mais marcador nenhum.
+    Ela não citou prazo, e a linha de prazos SAIU da página por
+    decisão do Douglas: prazo é promessa contratual e não se
+    marca o que ninguém pediu para exibir.                      → Processo
+10. ✅ RESOLVIDO em 09/09: a Andressa mandou sete perguntas com as
+    respostas dela, e o título "Dúvidas frequentes". A seção não tem
+    mais marcador nenhum, e o nó FAQPage do grafo passou a ser emitido.
+    A resposta oculta que ela pediu já era o <details> nativo.        → Faq
+11. ✅ RESOLVIDO em 09/09: a Andressa mandou o fechamento, com o título
+    em duas frases, o parágrafo e o rótulo do botão. A seção não tem mais
+    marcador nenhum, e a faixa repetida subiu de 1 para 6 cópias junto.
+    A afirmação virou linha de lead e a PERGUNTA é que repete, decisão do
+    Douglas: as duas frases no <h2> dariam 67 caracteres, ele quebraria em
+    duas linhas em toda largura e a textura da faixa sumiria. Nenhuma
+    palavra da copy mudou.                                       → CtaFinal
 12. Depoimentos reais autorizados, se existirem.               → (opcional)
 
 CONFIRMAÇÕES DE COPY (você, não ela)

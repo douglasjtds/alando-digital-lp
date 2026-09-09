@@ -36,13 +36,18 @@ const ESTILOS: Record<Variante, string> = {
 /**
  * A superfície do BOTÃO, para o marcador de pendência ser legível dentro dele.
  *
- * ⚠️ Rótulo pendente existe: o `CtaFinal` tem
- * `<<A CONFIRMAR: rótulo do botão diferente do herói>>`. Sem passar por
- * `renderizarPendencia`, ele saía como texto normal dentro do botão, e era o
+ * ⚠️ **Hoje NENHUM rótulo da página é marcador**, desde que a copy do
+ * fechamento chegou em 09/09. Este caminho existia por causa do `CtaFinal`, que
+ * tinha `<<A CONFIRMAR: rótulo do botão diferente do herói>>`: sem passar por
+ * `renderizarPendencia` ele saía como texto normal dentro do botão, e era o
  * único marcador da página inteira sem realce, ou seja, o mais fácil de chegar
- * em produção sem ninguém ver. Como o telefone já está confirmado, o portão do
- * "estado pendente" da §6 não pega este caso: ele cobre destinatário faltando,
- * não copy faltando.
+ * em produção sem ninguém ver.
+ *
+ * **Fica, e não é código morto por precaução.** Rótulo de botão é a copy que a
+ * cliente mais troca, e o dia em que um voltar a ser marcador é justamente o dia
+ * em que ninguém vai lembrar de reintroduzir o realce. Como o telefone já está
+ * confirmado, o portão do "estado pendente" da §6 não cobriria: ele pega
+ * destinatário faltando, não copy faltando.
  */
 const SUPERFICIE_DO_MARCADOR: Record<Variante, "claro" | "escuro"> = {
   primario: "escuro",

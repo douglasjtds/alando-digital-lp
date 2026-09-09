@@ -2,6 +2,7 @@ import { content } from "@/config/content";
 import { FaixaRepetida } from "@/components/ui/FaixaRepetida";
 import { WhatsappCta } from "@/components/ui/WhatsappCta";
 import { Revelar } from "@/components/motion/Revelar";
+import { renderizarProsa } from "@/lib/prosa";
 
 /**
  * O fechamento: faixa full-bleed em `ancora-quente`, o momento mais quente da
@@ -31,20 +32,32 @@ import { Revelar } from "@/components/motion/Revelar";
  * continuam desatualizados, e precisam ser corrigidos antes da Fase 8, senão o
  * mesmo debate volta na auditoria.
  *
- * ── O título ─────────────────────────────────────────────────────────────────
+ * ── O título, e por que ele chega em três blocos ─────────────────────────────
  *
- * ⚠️ Copy inexistente, e `faixaRepeticoes` está em 1: hoje a `FaixaRepetida`
- * rende só a instância legível, com o marcador realçado, sem cópias
- * decorativas. Repetir `<<A CONFIRMAR>>` seis vezes numa faixa full-bleed seria
- * ruído, não pendência.
+ * ✅ **A copy chegou em 09/09**, e a seção não tem mais nenhum marcador. Ela
+ * mandou o título em duas frases, e elas ocupam papéis tipográficos
+ * diferentes. **Nenhuma palavra mudou.** O porquê está no `content.ts`, e é
+ * mecânico: as duas juntas no `<h2>` dariam 67 caracteres, o
+ * `.faixa-trilho > h2` do `globals.css` quebraria em duas linhas em toda
+ * largura, e a quebra empurra as cópias decorativas para fora da tela. O
+ * fechamento ficaria sendo a única seção sem a faixa, justamente onde o deck
+ * fecha com `juntos?juntos?juntos?` (p. 24).
  *
- * **Quando o título real chegar, subir `faixaRepeticoes` para 6 devolve a
- * titulação da marca**, que é como o próprio deck fecha (p. 22, "Solicite seu
- * orçamento!" ×3; p. 24, "juntos?juntos?juntos?"). É a única mudança
- * necessária: um número.
+ * A ordem na tela, que é também a ordem de leitura para quem usa leitor de
+ * tela:
  *
- * O rótulo do botão também é marcador, e tem que ser DIFERENTE do herói: lá a
- * pessoa está decidindo se vale a pena, aqui ela já decidiu e está começando.
+ * 1. `lead`, a afirmação, em `lead-tracked`. É o traço de lead do deck (§4), e
+ *    fora daqui só o `Footer` o usa. **Não é caixa alta:** o `eyebrow` é o
+ *    único elemento em caixa alta da página.
+ * 2. o `<h2>`, a pergunta, repetido 6 vezes, com "lembrada" em Playfair
+ *    itálico. É a palavra da bio da marca.
+ * 3. `texto`, o parágrafo, em `medida`. A seção não tinha corpo nenhum até
+ *    agora.
+ *
+ * O corpo e o lead vão em `superficie-2` (6,10:1 sobre `ancora-quente`), que é
+ * o mesmo par que o `Manifesto` usa. O `papel` (11,54:1) fica com o `<h2>`,
+ * pela `variante="escuro"` da faixa: assim a hierarquia dos três blocos é a
+ * própria diferença de contraste, sem uma cor nova.
  */
 export function CtaFinal() {
   return (
@@ -53,10 +66,20 @@ export function CtaFinal() {
       aria-labelledby="faixa-cta-final"
     >
       <div className="container-lp">
-        <Revelar className="mb-12 md:mb-16">
+        <Revelar>
+          {/* O lead entra no MESMO `Revelar` da faixa porque ele é a primeira
+              metade da mesma frase. Revelado à parte, a afirmação apareceria
+              sozinha e a pergunta chegaria depois, que é o momento coreografado
+              do `Manifesto` acontecendo uma segunda vez. A §8 dá esse gesto uma
+              vez só na página inteira. */}
+          <p className="lead-tracked text-superficie-2 mb-4 md:mb-6">
+            {content.ctaFinal.lead}
+          </p>
+
           <FaixaRepetida
             id="faixa-cta-final"
             texto={content.ctaFinal.titulo}
+            palavraItalica={content.ctaFinal.tituloPalavraItalica}
             repeticoes={content.ctaFinal.faixaRepeticoes}
             direcao="direita"
             variante="escuro"
@@ -64,6 +87,15 @@ export function CtaFinal() {
         </Revelar>
 
         <Revelar>
+          {/* `renderizarProsa` mesmo sem `**` e sem marcador no texto de hoje:
+              a função devolve a string quando não há nem um nem outro, e deixa
+              a seção pronta para uma ênfase que a Andressa mande depois. */}
+          <p className="body-lg text-superficie-2 medida mt-8 md:mt-12">
+            {renderizarProsa(content.ctaFinal.texto, "escuro")}
+          </p>
+        </Revelar>
+
+        <Revelar className="mt-12 md:mt-16">
           <WhatsappCta
             origem="cta-final"
             label={content.ctaFinal.ctaLabel}

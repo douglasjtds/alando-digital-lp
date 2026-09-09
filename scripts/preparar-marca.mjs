@@ -1,5 +1,5 @@
 /**
- * Prepara o monograma da Alando para `public/brand/`.
+ * Prepara o monograma e o lockup da Alando para `public/brand/`.
  *
  * Mesma filosofia do `processar-fotos.mjs` ao lado: o tratamento fica
  * versionado, não é passo de build, e roda à mão quando a fonte mudar.
@@ -32,12 +32,18 @@ import sharp from "sharp";
 const raiz = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 
 /**
- * `altura: 512` cobre com folga o maior uso previsto (footer a 40px em telas
- * 3x = 120px) e ainda deixa margem para a marca d'água estática, se ela for
- * usada. Guardar o 1080 original não compraria nada: o `next/image` redimensiona
- * a partir do que estiver aqui, e o arquivo grande só pesaria no repositório.
+ * A altura padrão de saída.
+ *
+ * `512` cobre com folga o maior uso previsto do monograma (footer a 40px em
+ * telas 3x = 120px) e ainda deixa margem para a marca d'água estática, se ela
+ * for usada. Guardar o 1080 original não compraria nada: o `next/image`
+ * redimensiona a partir do que estiver aqui, e o arquivo grande só pesaria no
+ * repositório.
+ *
+ * Cada entrada pode pedir outra altura, e o lockup vertical pede: ele não é
+ * ícone de header, ocupa um slot de coluna no `Sobre` e precisa de resolução.
  */
-const ALTURA = 512;
+const ALTURA_PADRAO = 512;
 
 const MARCAS = [
   {
@@ -49,6 +55,25 @@ const MARCAS = [
     de: "ref-files/Ícones /2.png",
     para: "public/brand/monograma-claro.png",
     nota: "Versão negativa (branca). Para ancora, ancora-quente e tinta.",
+  },
+  /* O LOCKUP VERTICAL, que ocupa o slot de "Nossa história" no `Sobre` enquanto
+     o Douglas escolhe a foto definitiva (09/09).
+
+     ⚠️ O `19.png` não foi escolhido pela numeração: amostrei a média RGB dos
+     pixels opacos dos oito arquivos de `Logos/17-24`, e a deste dá exatamente
+     `#102f15`, na mesma ordem de cores que o cabeçalho acima já documenta para
+     os `Ícones /`. Deduzir da numeração teria acertado, mas acertar por sorte
+     num arquivo que ninguém abre de novo não é verificação.
+
+     A caixa opaca mede 717×905 dentro do canvas de 1080, então `altura: 905`
+     sai em tamanho nativo depois do `trim`. É mais que os 512 do monograma
+     porque a marca renderiza a cerca de 250 CSS px naquele slot: com 512 de
+     altura a largura cairia para 406, abaixo dos 2x que a densidade pede. */
+  {
+    de: "ref-files/Logos/19.png",
+    para: "public/brand/lockup-vertical-escuro.png",
+    altura: 905,
+    nota: "Lockup vertical com tagline, em ancora (#102F15). Slot de Nossa história.",
   },
 ];
 
@@ -63,7 +88,7 @@ for (const marca of MARCAS) {
        `trim`, um logo pedido a 32px renderiza a marca a ~22px cercada de ar, e
        ninguém entende por que o header parece torto. */
     .trim({ threshold: 1 })
-    .resize({ height: ALTURA, withoutEnlargement: true })
+    .resize({ height: marca.altura ?? ALTURA_PADRAO, withoutEnlargement: true })
     /* Sem `withMetadata()`: é isto que remove os metadados do arquivo de saída. */
     .png({ compressionLevel: 9, palette: true })
     .toFile(saida);

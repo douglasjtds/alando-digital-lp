@@ -179,6 +179,23 @@ export const marca = {
     largura: 447,
     altura: 512,
   },
+  /**
+   * O lockup vertical, marca mais tagline, em `ancora` `#102F15`.
+   *
+   * Entrou em 09/09 para ocupar o slot de "Nossa história" no `Sobre` enquanto a
+   * foto definitiva não é escolhida. É outro arquivo, e não o monograma em outro
+   * tamanho: aqui a marca aparece grande e sozinha num campo, então ela precisa
+   * trazer o nome e a tagline, que é o que o lockup tem e o monograma não.
+   *
+   * Só existe a versão escura porque só existe o uso sobre `papel`. Se um dia
+   * ela for para superfície escura, a negativa é o `ref-files/Logos/18.png` e a
+   * linha nova é no `preparar-marca.mjs`.
+   */
+  lockupVertical: {
+    escuro: "/brand/lockup-vertical-escuro.png",
+    largura: 716,
+    altura: 905,
+  },
   /** As alturas de uso, em px. Alvo de toque de 44px é do link, não da imagem. */
   alturas: { header: 32, footer: 40 },
 } as const;

@@ -3,6 +3,7 @@ import { FaixaRepetida } from "@/components/ui/FaixaRepetida";
 import { ManifestoTimeline } from "@/components/motion/ManifestoTimeline";
 import { Revelar } from "@/components/motion/Revelar";
 import { partirNoItalico } from "@/lib/italico";
+import { renderizarProsa } from "@/lib/prosa";
 
 /**
  * A seção-assinatura, e a única da página com movimento coreografado.
@@ -78,7 +79,7 @@ export function Manifesto() {
                   : "body-lg text-superficie-2 mb-6"
               }
             >
-              {paragrafo}
+              {renderizarProsa(paragrafo, "escuro")}
             </p>
           ))}
 

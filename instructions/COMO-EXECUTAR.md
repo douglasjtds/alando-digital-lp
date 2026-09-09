@@ -156,9 +156,6 @@ BLOQUEIA SEÇÕES
   logos autorizados                        -> FaixaClientes
   autorização escrita dos números de caso  -> Resultados
   autorização dos clientes p/ thumbnails   -> Servicos
-  o processo real, com prazos reais        -> Processo
-  as 5 a 7 objeções que ela mais ouve      -> Faq
-  a copy do fechamento                     -> CtaFinal
 ```
 
 **Pare o Claude Code na hora se ele:**

@@ -17,6 +17,16 @@ Inventário completo em `instructions/AUDITORIA-FASE-0.md` §4.
 | `drive-files/captação e edição de vídeo/` | **11 bastidores de captação**, iPhone, 9:16. Nove usados | `Servicos`, sequência de quadros |
 | `drive-files/landing pages/` | **captura da landing page de uma cliente**, 1928×16824 | `Servicos`, prova do serviço (pôster do vídeo) |
 
+## Arquivos que continuam aqui sem estar na página
+
+- **`servico-gestao.jpg`** (09/09). Era a foto de captação de "Quem está por trás da Alando", e saiu
+  quando o retrato da Andressa desceu para aquele slot, por decisão do Douglas. **Não foi apagada de
+  propósito:** é material com autorização escrita, e o slot que ela ocupava pode voltar a pedir uma
+  foto de trabalho acontecendo. Continua na tabela do `processar-fotos.mjs`, então refazer o
+  tratamento não depende de ninguém lembrar dela.
+- **`retrato-hero.jpg`** (26/08). A outra foto da Andressa, fora do herói desde que ele passou a ser
+  o bastidor da captação. É candidata natural ao slot de "Nossa história", que hoje está com a marca.
+
 ## Três restrições que decidem o recorte
 
 **1. Os retratos não têm folga de resolução.** 1023×1537 é o que existe. A coluna da imagem em

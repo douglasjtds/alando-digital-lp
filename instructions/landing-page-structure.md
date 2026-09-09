@@ -419,14 +419,32 @@ expectativa é promessa de resultado.
 **O único lugar da página onde 01/02/03 se justifica**, porque o conteúdo é de fato uma sequência,
 e por isso vem em `<ol>`. Em qualquer outra seção a numeração é decoração.
 
-⚠️ **Copy inexistente.** Matéria-prima no PDF (p. 17-18): *"Todo mês começa com estratégia"* →
-diagnóstico → planejamento estratégico → roteiros e direcionamento → captação → edição → design →
-publicação → acompanhamento.
+✅ **A copy chegou em 08/09**, com as palavras da Andressa, trazida pelo Douglas. São **quatro
+etapas, cada uma com título e um parágrafo**, e por isso `etapas` passou de lista de strings para
+`{ titulo, texto }` no `content.ts`. **A seção não tem mais nenhum `<<A CONFIRMAR>>`.**
 
-`<<A CONFIRMAR: o processo real, passo a passo, com as palavras dela>>`
-`<<A CONFIRMAR: prazos reais de cada etapa>>`
+| # | Etapa | O que ela diz |
+|---|---|---|
+| 01 | Fale com a gente | O primeiro contato acontece pelo WhatsApp |
+| 02 | Vamos nos conhecer | Reunião para ouvir a marca e apresentar a Alando |
+| 03 | Encontramos o melhor caminho | Proposta personalizada para o projeto |
+| 04 | Começamos a imersão | Com o contrato fechado, a reunião de imersão |
 
-**Prazo e duração são promessa contratual. Marcar e perguntar; nunca estimar.**
+O texto dela numera as etapas ("01. Fale com a gente"), e **o `titulo` no `content.ts` não leva
+esse prefixo**: a numeração é derivada do índice do `<ol>` pelo componente, e digitá-la duplicaria
+o número na tela. Cada etapa ganhou um `<h3>` em `display-md`, que é o mesmo papel tipográfico dos
+blocos de `Momentos`: subtítulo de seção já tinha gramática nesta página.
+
+A matéria-prima do PDF (p. 17-18: *"Todo mês começa com estratégia"* → diagnóstico → planejamento
+→ roteiros → captação → edição → design → publicação → acompanhamento) **não entrou**, e nunca
+deveria ter entrado: aquilo descreve o mês de trabalho depois do contrato, e esta seção responde
+"o que acontece se eu mandar essa mensagem?". São duas perguntas diferentes.
+
+⚠️ **A linha de prazos SAIU, e a ausência é decisão do Douglas, de 08/09.** A seção tinha um
+`<<A CONFIRMAR: prazos reais de cada etapa>>` abaixo das etapas, e a Andressa disse como quer a
+seção sem citar prazo nenhum. **Prazo e duração são promessa contratual:** a página não carrega
+marcador para um dado que ninguém pediu para exibir, e continua valendo que estimar aqui está
+proibido. Se ela mandar prazos um dia, a linha volta como campo novo.
 
 CTA ao fim da seção, com mensagem de WhatsApp própria.
 
@@ -456,14 +474,35 @@ por isso que dizemos que", ela cita o slogan explicitamente e precisa citá-lo c
 Branding, MBA pela ESPM. E o parágrafo sobre a equipe, que é importante: *"nunca foi construída
 para depender de uma única pessoa."*
 
-Layout 5/7, invertendo o herói. Foto: **a segunda** de `drive-files/Dêssa/`, com máscara orgânica
-**diferente** da do herói. `medida` no texto.
+Layout 5/7, invertendo o herói. `medida` no texto.
 
-⚠️ **Atenção ao parágrafo da equipe.** A copy diz que a Alando *"nunca foi construída para depender
-de uma única pessoa"*. Só o rosto da fundadora aqui faz a imagem contradizer o texto ao lado dela.
-As fotos de captação de `drive-files/Fotos captações/` resolvem isso: mostram o trabalho
-acontecendo, que é o que o parágrafo afirma. Como as nove repetem o mesmo enquadramento, usar aqui
-uma que não apareça em `Servicos`.
+✅ **As duas imagens trocaram de lugar em 09/09, por decisão do Douglas.** O retrato da Andressa
+estava no movimento **a** e passou para o **b**, que é o que a nomeia em texto. Ficou assim:
+
+| Movimento | Imagem | Máscara | Coluna |
+|---|---|---|---|
+| **a) Nossa história** | o **lockup vertical da marca**, num campo emoldurado | `crista-serra` | 5/12, à esquerda |
+| **b) Quem está por trás** | o retrato da Andressa (`retrato-sobre.jpg`) | `crista-vale` | 4/12, à direita |
+
+⚠️ **A máscara viajou com a foto, e não é detalhe.** A `crista-serra` estava no movimento b e tem a
+crista no TOPO de propósito, porque ali era foto de captação e "não há cabeça a proteger". Deixá-la
+no slot e passar o retrato por baixo cortaria o alto do rosto. Então o retrato desceu com a
+`crista-vale`, que é a máscara desenhada para ele, e a `crista-serra` subiu para emoldurar a marca.
+
+⚠️ **A foto de "Nossa história" é pendência aberta**, com marcador visível abaixo do campo. O
+lockup ocupa o lugar até o Douglas escolher. `retrato-hero.jpg`, a outra foto da Andressa, está
+livre desde 26/08 e é a candidata mais óbvia; a contrapartida está no parágrafo abaixo.
+
+⚠️ **O parágrafo da equipe, e o que mudou nele.** Este bloco dizia que só o rosto da fundadora aqui
+faz a imagem contradizer o texto ao lado dela, e o argumento era a frase *"nunca foi construída para
+depender de uma única pessoa"*. **Essa frase saiu da copy**, que foi reescrita, e hoje a afirmação
+de equipe é outra: *"hoje a Alando é formada por profissionais especializados em diferentes áreas da
+comunicação"*. A contradição literal caiu; o desconforto não caiu inteiro, porque o retrato da
+fundadora é agora a única imagem de gente da seção. Registro completo em `DESIGN-GUIDELINES.md` §9.
+
+A foto que resolvia era `servico-gestao.jpg`, a única das nove de captação com duas pessoas e
+nenhum rosto identificável. Ela continua em `public/images/`, marcada como sem uso, para a volta
+atrás custar uma linha.
 
 Nada de trajetória inventada. Inventar credencial é a mesma classe de erro que inventar depoimento.
 
@@ -471,15 +510,37 @@ Nada de trajetória inventada. Inventar credencial é a mesma classe de erro que
 
 ### 5.9: `Faq`
 
-`<details>`/`<summary>` nativo. 5 a 7 perguntas. Respostas em prosa real, 2 a 4 frases. Espelha
-**exatamente** o JSON-LD `FAQPage`: se divergirem, o Google passa a ignorar o markup inteiro.
+`<details>`/`<summary>` nativo. 5 a 7 perguntas. Espelha **exatamente** o JSON-LD `FAQPage`: se
+divergirem, o Google passa a ignorar o markup inteiro.
 
-⚠️ **Copy inexistente.** `<<A CONFIRMAR: as 5-7 objeções que a Andressa mais ouve>>`
+✅ **A copy chegou em 09/09**, com as palavras da Andressa, trazida pelo Douglas. São **sete
+perguntas**, cada uma com uma resposta, e **a seção não tem mais nenhum `<<A CONFIRMAR>>`**. Com
+isso o nó `FAQPage` do grafo passa a ser emitido pela primeira vez, e sem nenhuma alteração no
+`lib/schema.ts`: o portão que segurava o nó abriu sozinho quando o dado deixou de ser pendência.
 
-**Peça as objeções reais dela: ela sabe de cor, e são muito melhores que qualquer lista genérica.**
-Temas prováveis, a validar com ela: valor/investimento, prazo de contrato, o que ela precisa
-fornecer, atendimento remoto para outros estados, quem grava os vídeos, o que acontece se ela não
-gostar do conteúdo.
+| # | Pergunta | O que a resposta diz |
+|---|---|---|
+| 1 | Vocês atendem apenas empresas de Indaiatuba? | Brasil todo online; presencial em Indaiatuba, Campinas e região |
+| 2 | Como sei qual serviço é ideal para a minha marca? | Não precisa chegar com isso definido |
+| 3 | A Alando atende qualquer segmento? | Sim, desde que exista alinhamento com a forma de trabalhar |
+| 4 | Vocês trabalham com pacotes prontos? | Escopos definidos, mas sem fórmula única |
+| 5 | Preciso contratar a gestão completa? | Não, os serviços podem ser contratados separadamente |
+| 6 | Como funciona a contratação? | WhatsApp, reunião, proposta, contrato, imersão |
+| 7 | Quanto custa trabalhar com a Alando? | Varia por serviço e escopo. **Nenhum número na página** |
+
+⚠️ **Um desvio desta própria §5.9, registrado:** a linha acima pedia "respostas em prosa real, 2 a
+4 frases", e as dela têm de **1 a 3**. É copy da cliente, então quem cede é a spec, não o texto. A
+exigência de prosa (em vez de lista ou fragmento) continua satisfeita.
+
+✅ **O título passou a ser copy dela.** Era "Dúvidas", vindo da âncora `#duvidas` (§7), e é um dos
+três títulos que ninguém tinha escrito. A mensagem de 09/09 intitula o bloco de **"Dúvidas
+frequentes"**, e é isso que a faixa repete, com **"frequentes"** em Playfair itálico
+(`DESIGN-GUIDELINES.md` §6). O rótulo do header continua "Dúvidas": ali é navegação, não titulação.
+
+✅ **A resposta oculta que ela pediu já era o comportamento.** Junto com a copy ela perguntou se as
+dúvidas podiam aparecer com a resposta escondida, e a pessoa clicar para ver cada uma. É
+exatamente o que o `<details>` nativo faz desde a Fase 5D, e nenhuma linha do componente mudou por
+causa do pedido.
 
 ---
 
@@ -494,16 +555,41 @@ quente do arco, e foi a mudança que respondeu ao "muito verde" da Andressa. CTA
 > `DESIGN-GUIDELINES.md` §3, que já tinha trocado para sage com o motivo escrito. Decidido pelo
 > Douglas: fica sage, e a variante `invertido` saiu do `WhatsappCta`.
 
-⚠️ **Copy inexistente.** O título precisa nomear a **última objeção**, que numa agência raramente é
-o serviço, costuma ser *"será que eu preciso disso agora"* ou *"será que dá para começar pequeno"*.
+✅ **A copy chegou em 09/09**, com as palavras da Andressa, trazida pelo Douglas. Era a última
+seção da página feita **só de marcador**, e agora não tem nenhum. `faixaRepeticoes` subiu de 1 para
+6 junto, que era a única mudança que faltava para a seção ganhar a titulação da marca.
 
-Rótulo do botão **diferente** do herói: no herói a pessoa está decidindo se vale a pena; aqui ela
-já decidiu e está começando.
+| Papel | Texto | Como |
+|---|---|---|
+| `lead` | *"Sua marca tem uma história."* | `lead-tracked`, `superficie-2` |
+| `titulo` (`<h2>`, faixa ×6) | *"Vamos cuidar de como ela será lembrada?"* | `display-lg`, `papel`, itálico em **lembrada** |
+| `texto` | *"Se você busca uma equipe que queira entender sua empresa antes de começar a se comunicar por ela…"* | `body-lg`, `superficie-2`, `medida` |
+| `ctaLabel` | *"Quero apresentar minha marca para a Alando"* | `WhatsappCta` variante `sage` |
 
-`<<A CONFIRMAR: copy do fechamento>>`
+⚠️ **O título dela é UMA frase e virou DUAS chaves, e o motivo é mecânico.** Nenhuma palavra mudou.
+As duas sentenças somam 67 caracteres; o `.faixa-trilho > h2` do `globals.css` deixa a instância
+legível quebrar linha, e o comentário de lá já registrava o efeito colateral disso: **título em duas
+linhas empurra as cópias decorativas para fora da tela e a textura da faixa some.** Juntas no `<h2>`,
+as duas frases quebrariam em toda largura, inclusive 1440px, e o fechamento seria a única seção da
+página sem a assinatura da marca. Justamente onde o deck fecha com `juntos?juntos?juntos?` (p. 24).
 
-Material da própria marca para inspirar (deck, p. 24): *"Será um prazer fazer parte da próxima fase
-da sua marca."* e *"Vamos construir isso juntos?"*
+**Decidido pelo Douglas em 09/09: quem repete é a pergunta**, e a afirmação vira a linha de lead.
+A pergunta repetida é o device do deck no lugar exato onde o deck o usa, e **lembrada** é a palavra
+da bio da marca (*"para marcas que desejam ser lembradas"*), ainda não gasta em itálico: "história"
+não serviria, porque já é a palavra itálica de "Nossa história", na §5.8.
+
+A §5.10 pedia que o título nomeasse a **última objeção** (*"será que eu preciso disso agora"*). A
+copy dela não faz isso, e não é defeito: ela responde à objeção pelo lado do convite, dizendo o que
+acontece se a pessoa mandar mensagem, em vez de nomear o medo. **Quem cede é a spec, não o texto.**
+
+Rótulo do botão **diferente** do herói, como a §11 exige: no herói a pessoa está decidindo se vale
+a pena ("Quero conversar com a Alando"); aqui ela já decidiu e está começando. ⚠️ A mensagem de
+WhatsApp de `cta-final` **não** acompanhou o rótulo, de propósito: ela existe para revelar a origem
+no celular da Andressa (§6), não para ecoar o botão.
+
+Material da própria marca que estava aqui para inspirar (deck, p. 24): *"Será um prazer fazer parte
+da próxima fase da sua marca."* e *"Vamos construir isso juntos?"*. Nenhuma das duas foi usada, e
+elas ficam registradas porque explicam a escolha da pergunta repetida.
 
 ---
 
@@ -712,9 +798,19 @@ Lista completa e organizada em `AUDITORIA-FASE-0.md` §9. Resumo do que trava o 
 | Autorização dos números de caso | `Resultados` |
 | Autorização de imagem nas fotos de captação, inclusive da criança | `Servicos` |
 | Autorização de cada cliente cujo material vire thumbnail | `Servicos` |
-| Processo real + prazos | `Processo` |
-| Objeções reais | `Faq` |
-| Copy do fechamento | `CtaFinal` |
 
 **Resolvido na Fase 0, e fora da lista:** fotos da Andressa e da equipe, licença da `asimilates`,
 existência de ícones proprietários, logo e monograma, e preço na página.
+
+**Resolvido depois, e também fora da lista:** WhatsApp e cidade; o **processo real** (08/09, §5.7),
+que saiu da tabela junto com os prazos, porque a Andressa descreveu as quatro etapas e não citou
+prazo; as **sete perguntas do FAQ** (09/09, §5.9); e a **copy do fechamento** (09/09, §5.10).
+
+✅ **Com o fechamento, nenhuma seção VISÍVEL da página espera copy da Andressa.** O que sobra na
+tabela é dado (domínio) e autorização de terceiros.
+
+⚠️ Sobra **uma** pendência de copy no `content.ts`, e ela não é independente: a linha de
+enquadramento de `Resultados` (*"a linha que enquadra os números como história de um cliente, não
+como previsão"*). A seção nasce `exibir: false` e só liga com as autorizações da §5.6, então essa
+linha vem depois delas, não antes. Escrevê-la agora seria redigir a moldura de números que ninguém
+autorizou publicar.

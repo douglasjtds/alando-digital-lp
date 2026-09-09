@@ -80,7 +80,6 @@ Sem estas, algumas fases não fecham. Lista completa em `AUDITORIA-FASE-0.md` §
 | Cidade | Fase 4, Fase 6 |
 | Autorização dos clientes para thumbnails de portfólio | Fase 3, Fase 5B |
 | Autorização de imagem nas fotos de captação, inclusive da criança | Fase 3, Fase 5B |
-| Copy de `Processo`, `Faq`, `CtaFinal` | Fase 4, Fase 5C, Fase 5D |
 | Logos de clientes em SVG + autorização dos números de caso | Fase 5A, Fase 5C |
 
 **Resolvido na Fase 0:** fotos da Andressa e da equipe, licença da `asimilates`, existência de

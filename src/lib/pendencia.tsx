@@ -16,7 +16,7 @@ import { marcadorGlobal } from "@/lib/pendencias";
  * sobre `ancora-quente`, e o `acento` fica só no fundo e no sublinhado, papéis
  * decorativos onde contraste de texto não se aplica.
  */
-type Variante = "claro" | "escuro";
+export type Variante = "claro" | "escuro";
 
 const ESTILOS: Record<Variante, string> = {
   claro: "text-acento-texto bg-acento/15",

@@ -19,13 +19,22 @@ import { renderizarPendencia } from "@/lib/pendencia";
  * tela, e sem isso ele ouviria "item 1, 01, ...". É a mesma disciplina das
  * repetições da `FaixaRepetida`.
  *
- * ── A copy não existe, e a estrutura fica ────────────────────────────────────
+ * ── A copy chegou, e ela tem título por etapa ────────────────────────────────
  *
- * ⚠️ `etapas` traz UM marcador, não as etapas. O material do PDF (p. 17-18)
- * descreve diagnóstico → planejamento → roteiros → captação → edição → design →
- * publicação → acompanhamento, e **não foi transcrito para cá de propósito**:
- * prazo e duração são promessa contratual, e o passo a passo tem que vir com as
- * palavras dela. Ver landing-page-structure.md §5.7.
+ * ✅ Quatro etapas com as palavras da Andressa, trazidas pelo Douglas em 08/09.
+ * `etapas` deixou de ser uma lista de parágrafos e passou a ser
+ * `{ titulo, texto }`, então cada item ganhou um `<h3>`.
+ *
+ * O `<h3>` é `display-md`, que é o mesmo papel tipográfico dos blocos de
+ * `Momentos`: subtítulo de seção já tem gramática nesta página e ela não muda
+ * aqui. Cor `papel` (8,29:1 sobre `tinta`, 11,54:1 no fim da travessia), e não
+ * `superficie-2`, que só passaria por ser texto grande.
+ *
+ * ⚠️ A linha de prazos SAIU, e a ausência é decisão. Ela era
+ * `<<A CONFIRMAR: prazos reais de cada etapa>>`, e a Andressa disse como quer a
+ * seção sem citar prazo nenhum. Prazo é promessa contratual: a página não
+ * carrega marcador para um dado que ninguém pediu para exibir. Se um dia ela
+ * mandar prazos, a linha volta; estimar aqui, nunca.
  *
  * ── A superfície ─────────────────────────────────────────────────────────────
  *
@@ -73,7 +82,7 @@ export function Processo() {
           <Revelar as="ol" como="lista" className="mb-12 space-y-8 md:space-y-12">
             {content.processo.etapas.map((etapa, i) => (
               <li
-                key={etapa}
+                key={etapa.titulo}
                 className="grid grid-cols-[auto_1fr] items-baseline gap-4 md:gap-8"
               >
                 <span
@@ -82,19 +91,16 @@ export function Processo() {
                 >
                   {String(i + 1).padStart(2, "0")}
                 </span>
-                <p className="body-lg text-papel medida">
-                  {renderizarPendencia(etapa, "escuro")}
-                </p>
+                <div>
+                  <h3 className="display-md text-papel mb-3">
+                    {renderizarPendencia(etapa.titulo, "escuro")}
+                  </h3>
+                  <p className="body-lg text-papel medida">
+                    {renderizarPendencia(etapa.texto, "escuro")}
+                  </p>
+                </div>
               </li>
             ))}
-          </Revelar>
-
-          {/* Prazo é promessa contratual. Fica visível como pendência, nunca
-              estimado. */}
-          <Revelar className="mb-12">
-            <p className="caption text-papel medida">
-              {renderizarPendencia(content.processo.prazos, "escuro")}
-            </p>
           </Revelar>
 
           <Revelar>
