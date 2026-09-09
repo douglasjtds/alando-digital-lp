@@ -504,6 +504,12 @@ defeito que não aparece na tela: a página renderiza o negrito certinho enquant
   faixa vertical deslocada**, as duas fontes de forma do material (§2.2).
 - 4 variações no total, definidas uma vez em `<svg>` oculto e reusadas por `id`. Cada foto com uma
   forma diferente; as que cobrem retrato precisam de borda superior limpa, é onde está a cabeça.
+  > ⚠️ **Desde 09/09 a `crista-serra` aparece duas vezes**, e é a única forma repetida da página.
+  > São quatro máscaras para cinco slots, então a repetição era inevitável, e ela cai no lugar menos
+  > ruim: os **dois slots vagos ocupados pela marca**, "Nossa história" no `Sobre` e "Identidade
+  > Visual" no `Servicos`. Repetir a forma nos dois faz o campo da marca ler como **uma convenção da
+  > página** em vez de duas improvisações para o mesmo problema. Quando as fotos definitivas
+  > chegarem, a repetição some sozinha.
 - Blobs de fundo em `decor` com opacidade **6-12%**, sempre atrás do conteúdo, sempre `aria-hidden`.
 - **Nunca** blob e `border-radius` na mesma imagem. Nunca `rounded-*` em foto.
 
@@ -827,6 +833,55 @@ prova existe para sustentar. A contenção 2 reduz o efeito; ela não o elimina.
 
 ---
 
+### ✅ NÃO É UM TERCEIRO DESVIO: a sequência manual de Identidade Visual (09/09)
+
+O Douglas viu o campo da marca que ocupa o slot vago de "Nossa história", gostou, e pediu o mesmo
+tratamento em **Identidade Visual**, já preparado para virar uma sequência de várias fotos quando
+elas forem escolhidas. Este bloco existe para que ninguém encontre a segunda pilha de quadros numa
+auditoria e a conte como a terceira exceção.
+
+**Ela não é exceção porque não há movimento autônomo nenhum: quem avança é a pessoa**, em dois
+botões ("Anterior" e "Próxima"). O eixo em que a sequência de Captação desvia é o **gatilho**, um
+relógio no lugar da posição do scroll. Aqui não existe gatilho de movimento: existe alguém clicando,
+e clique não é animação. O gesto de transição continua sendo o **Gesto 3**, com a mesma crista, a
+mesma classe `.revelar`, o mesmo `TEMPO.revelacao` e a mesma `CURVA.revelacao`. Nenhum CSS novo,
+nenhum keyframe novo, nenhuma máscara nova, nenhum subpath novo do anime.js.
+
+**A versão autônoma foi apresentada e recusada**, e o registro importa mais que a decisão. A opção
+de simplesmente reusar o componente de Captação como ele é (troca a cada 3,1 s, botão de pausa)
+estava na mesa com o custo escrito: seria o **terceiro desvio** desta §8, e seria exatamente o
+"carrossel de template" que a §2.5 veta, porque numa seção de identidade visual a autonomia não é
+argumento de nada. O que sustenta o desvio em Captação é a seção ser a que vende imagem em
+movimento, e por isso ele para lá. O Douglas escolheu o avanço manual em 09/09.
+
+**As três diferenças do modo manual, e cada uma tem motivo:**
+
+1. **Sem relógio, e portanto sem botão de pausa.** A WCAG 2.2.2 pede um jeito de parar o que anda
+   sozinho por mais de cinco segundos. Aqui nada anda sozinho.
+2. **`prefers-reduced-motion: reduce` NÃO desliga o modo manual**, e esta é a diferença mais fácil
+   de errar. Em Captação desligar é o certo, porque o que se desliga é movimento autônomo e sobra a
+   foto em repouso. Aqui desligar **esconderia fotos** de quem pediu menos movimento, que é o pior
+   desfecho segundo a §9 ("estática **e** 100% visível"). Então os botões, o contador e a pilha
+   continuam, e a troca é **seca**, sem a varredura da crista. Verificado no navegador com a
+   preferência ligada: os três quadros continuam alcançáveis.
+3. **"Anterior" fica desabilitado no primeiro quadro**, e é engenharia de bytes, não gosto: o DOM da
+   sequência só cresce e é um prefixo, então dar a volta do 01 para o último montaria todas as fotos
+   de uma vez. "Próxima" volta ao 01 no fim sem custo nenhum, porque o 01 já está no HTML do
+   servidor. O botão desabilitado perde o sublinhado e **mantém a cor** (`tinta-suave`, 5,76:1):
+   apagar o texto para sinalizar "inativo" trocaria um sinal por uma perda de contraste.
+
+⚠️ **Pendência de acessibilidade registrada, e ela depende das fotos.** Os quadros que não são o de
+repouso são `alt=""` e `aria-hidden`, com o argumento de que dez descrições enfileiradas são ruído.
+Num carrossel que a **pessoa** opera o argumento enfraquece: quem clica em "Próxima" deveria receber
+a descrição do que chegou. A correção é escrever `alt` real para cada foto, e as fotos de Identidade
+Visual ainda não existem.
+
+⚠️ **O que este bloco NÃO autoriza:** estender a pilha de quadros para um terceiro slot, nem trocar
+o gatilho de nenhum dos dois. Uma sequência a mais precisa do mesmo tipo de argumento que estes dois
+tiveram.
+
+---
+
 **O momento coreografado: Resolução.** Uma vez só, na entrada do `Manifesto`.
 
 *"Antes de falar sobre redes sociais…"* aparece, e *"…queremos falar sobre pessoas."* resolve depois.
@@ -1125,6 +1180,11 @@ Intervalos numéricos usam hífen simples ou a palavra "a": `60-72 caracteres`, 
       no gatilho) e o vídeo da prova de Landing Pages (03/09, desvia no gatilho, na mídia e no
       gesto). As duas param em `Servicos` e as duas vivem no que a seção vende. **Uma terceira
       precisa de argumento melhor que "já tem duas"**
+- [ ] A segunda pilha de quadros, a de Identidade Visual (09/09), **avança pela pessoa e nunca
+      sozinha**. Ela não entra na conta acima: sem relógio não há movimento autônomo, e clique não é
+      animação. Se um dia ela andar sozinha, virou a terceira exceção
+- [ ] Com `prefers-reduced-motion`, a sequência **manual** continua alcançável (troca seca), e a
+      **automática** para no quadro em repouso. Desligar a manual esconderia fotos
 - [ ] O reveal da página é revelação por máscara, **não** `fade + translateY`
 - [ ] A travessia de cor mantém contraste em 0%, 25%, 50%, 75% e 100% do progresso
 - [ ] Faixas se movem só com scroll, nunca em loop autônomo

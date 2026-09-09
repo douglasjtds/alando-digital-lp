@@ -89,22 +89,105 @@ import { CURVA, TEMPO, carregarAnime } from "./anime";
  * div mataria a textura de scroll em silêncio, sem erro nenhum. Por isso todos os
  * quadros usam `fill`, que é o que faz o `next/image` renderizar um `<img>` como
  * filho direto do wrapper.
+ *
+ * ── ⚠️ O SEGUNDO SLOT, E POR QUE ELE NÃO É UM TERCEIRO DESVIO (09/09) ────────
+ *
+ * "Identidade Visual" passou a usar este mesmo componente, e tudo que está
+ * escrito acima continua valendo LÁ MENOS UMA COISA: o relógio. Lá quem avança
+ * é a PESSOA, em dois botões.
+ *
+ * Isso não abre exceção nova no vocabulário de movimento, e a diferença é
+ * exatamente a que a DESIGN-GUIDELINES.md §8 usa para medir desvio. O desvio de
+ * Captação está no GATILHO: um relógio, e não a posição do scroll. Aqui não há
+ * gatilho nenhum de movimento, há uma pessoa clicando, e clique não é animação.
+ * O gesto continua sendo o Gesto 3, com a mesma crista, a mesma classe
+ * `.revelar`, o mesmo `TEMPO.revelacao` e a mesma `CURVA.revelacao`.
+ *
+ * A alternativa autônoma foi apresentada ao Douglas com este argumento na mesa,
+ * em 09/09, e recusada por ele: um carrossel que anda sozinho num bloco de
+ * identidade visual seria o TERCEIRO desvio da §8, e seria o "carrossel de
+ * template" que a §2.5 veta. O que sustenta a autonomia em Captação é a seção
+ * ser a que vende imagem em movimento, e isso não se estende.
+ *
+ * As diferenças do modo manual, e cada uma tem motivo:
+ *
+ * 1. **Sem relógio, e portanto sem botão de pausa.** A WCAG 2.2.2 pede um jeito
+ *    de parar o que anda sozinho; aqui nada anda sozinho.
+ * 2. **`prefers-reduced-motion` NÃO desliga o modo manual.** Em Captação
+ *    desligar é o certo, porque o que se desliga é movimento autônomo e sobra a
+ *    foto em repouso. Aqui desligar ESCONDERIA fotos de quem pediu menos
+ *    movimento, que é o pior desfecho segundo a §9 ("estática E 100% visível").
+ *    Então os botões, o contador e a pilha continuam, e a troca é SECA, sem a
+ *    varredura da crista.
+ * 3. **"Anterior" fica desabilitado no primeiro quadro.** É engenharia de bytes
+ *    e não gosto: `montados` só cresce e é um PREFIXO, então dar a volta do 01
+ *    para o último montaria a sequência inteira de uma vez, que é o burst que o
+ *    bloco sobre bytes, acima, existe para evitar. "Próxima" volta ao 01 no fim
+ *    sem custo nenhum, porque o 01 já está montado desde o HTML do servidor.
+ *
+ * ⚠️ Pendência de acessibilidade registrada, e ela depende das fotos: os quadros
+ * que não são o de repouso são `alt=""` e `aria-hidden`, com o argumento de que
+ * dez descrições enfileiradas são ruído. Num carrossel que a PESSOA opera o
+ * argumento enfraquece, porque quem clica em "Próxima" deveria receber a
+ * descrição do que chegou. A correção é escrever `alt` real para cada foto, e
+ * as fotos de "Identidade Visual" ainda não existem.
  */
 
-type Props = {
+type Base = {
   /** O quadro em repouso: o único no HTML do servidor e o único com `alt`. */
   foto: string;
   fotoAlt: string;
   /** Os demais quadros, na ordem em que entram. Vazio desliga a sequência. */
   quadros: readonly string[];
   sizes: string;
-  rotulos: {
-    pausar: string;
-    retomar: string;
-    pausarDescricao: string;
-    retomarDescricao: string;
-  };
 };
+
+/**
+ * Quem avança a sequência, e com que rótulos.
+ *
+ * É UMA UNIÃO DISCRIMINADA pelo `modo`, e os rótulos moram DENTRO dela, num
+ * objeto só, em vez de virem como prop irmã: cada modo tem exatamente um par de
+ * botões, e é a união que impede alguém passar "Pausar" para um slot que não
+ * pausa nada, ou "Próxima" para um que anda sozinho.
+ */
+export type ControleDaSequencia =
+  | {
+      modo: "automatico";
+      rotulos: {
+        pausar: string;
+        retomar: string;
+        pausarDescricao: string;
+        retomarDescricao: string;
+      };
+    }
+  | {
+      modo: "manual";
+      rotulos: {
+        anterior: string;
+        proxima: string;
+        anteriorDescricao: string;
+        proximaDescricao: string;
+      };
+    };
+
+type Props = Base & { controle: ControleDaSequencia };
+
+/**
+ * O desenho dos controles, um só para os três botões: pausar, anterior e
+ * próxima. Eles pertencem ao mesmo sistema e precisam ler como o mesmo sistema,
+ * e é o mesmo desenho do botão do `CampoProva`.
+ *
+ * O estado desabilitado tira o sublinhado e NÃO mexe na cor: `tinta-suave` sobre
+ * `papel` dá 5,76:1, e apagar o texto para sinalizar "inativo" trocaria um
+ * sinal por uma perda de contraste. Sem sublinhado ele deixa de ler como
+ * acionável, que é o que precisava ser dito.
+ */
+const BOTAO =
+  "inline-flex min-h-11 items-center caption font-ui text-tinta-suave " +
+  "decoration-acento underline underline-offset-4 " +
+  "hover:text-acento-texto transition-colors " +
+  "focus-visible:outline-acento-texto focus-visible:outline-2 focus-visible:outline-offset-3 " +
+  "disabled:no-underline disabled:cursor-default disabled:hover:text-tinta-suave";
 
 /**
  * A proporção do slot, fixada no wrapper para a troca de quadro não mexer na
@@ -121,8 +204,10 @@ export function SequenciaDeQuadros({
   fotoAlt,
   quadros,
   sizes,
-  rotulos,
+  controle,
 }: Props) {
+  const manual = controle.modo === "manual";
+
   const movimentoReduzido = usePrefersReducedMotion();
 
   const raiz = useRef<HTMLDivElement>(null);
@@ -149,13 +234,25 @@ export function SequenciaDeQuadros({
   const [abaVisivel, setAbaVisivel] = useState(true);
 
   const total = quadros.length + 1;
-  const sequenciaLigada = total > 1 && !movimentoReduzido;
+  /* O modo manual sobrevive ao movimento reduzido, e o cabeçalho diz por quê:
+     desligá-lo esconderia fotos de quem pediu menos movimento. */
+  const sequenciaLigada = total > 1 && (manual || !movimentoReduzido);
 
-  /* Com movimento reduzido a sequência volta ao quadro em repouso sem passar
-     pelo estado: quem troca a preferência com a aba aberta não pode ficar preso
-     no quadro do meio, e derivar é o que garante isso sem render em cascata. */
-  const indiceVisivel = movimentoReduzido ? 0 : indice;
-  const entrandoVisivel = movimentoReduzido ? null : entrando;
+  /* Com movimento reduzido a sequência AUTOMÁTICA volta ao quadro em repouso sem
+     passar pelo estado: quem troca a preferência com a aba aberta não pode ficar
+     preso no quadro do meio, e derivar é o que garante isso sem render em
+     cascata. No modo manual não se força nada: o quadro na tela foi escolhido
+     pela pessoa, e voltá-lo ao 01 seria desfazer o clique dela. */
+  const repousoForcado = movimentoReduzido && !manual;
+  /* E no manual com movimento reduzido não há varredura, então o quadro que
+     estava ENTRANDO já é o quadro: é isso que resolve a preferência mudando no
+     meio de uma varredura sem deixar o contador e a pilha uma casa atrás. */
+  const indiceVisivel = repousoForcado
+    ? 0
+    : movimentoReduzido
+      ? (entrando ?? indice)
+      : indice;
+  const entrandoVisivel = repousoForcado || movimentoReduzido ? null : entrando;
 
   /* `?? foto` nunca deveria acontecer (`montados` é limitado a `total - 1`),
      e existe para o índice ser um tipo estreito em vez de um `!`. */
@@ -190,10 +287,12 @@ export function SequenciaDeQuadros({
       )
     : [];
 
-  /* Só anda quando as quatro condições valem juntas. Nenhuma delas é a mesma
-     coisa que outra: a pessoa pode ter pausado E ter saído do bloco. */
+  /* Só anda quando as condições valem juntas. Nenhuma delas é a mesma coisa que
+     outra: a pessoa pode ter pausado E ter saído do bloco. O `!manual` é a
+     primeira porque no modo manual não existe relógio nenhum para gatilhar. */
   const andando =
     sequenciaLigada &&
+    !manual &&
     naTela &&
     abaVisivel &&
     !pausadoPelaPessoa &&
@@ -234,29 +333,70 @@ export function SequenciaDeQuadros({
     return () => document.removeEventListener("visibilitychange", aoTrocar);
   }, [sequenciaLigada]);
 
-  /* ── O relógio ─────────────────────────────────────────────────────────── */
+  /* ── A troca de quadro, com um dono só ──────────────────────────────────── */
+
+  /**
+   * Manda a crista varrer até `proximo`. É o ÚNICO caminho para trocar de
+   * quadro, e por isso ele é compartilhado pelos dois gatilhos, o relógio do
+   * modo automático e os botões do manual: em duas versões, o `setMontados`
+   * divergiria na primeira vez que alguém mexesse numa delas.
+   *
+   * Um clique durante uma varredura é ignorado (`entrando !== null`), em vez de
+   * cancelar a varredura em curso: cancelar deixaria o quadro anterior a meio
+   * caminho da máscara.
+   */
+  const irPara = useCallback(
+    (proximo: number) => {
+      if (proximo === indiceVisivel) return;
+
+      /* Um de antecedência, pelo mesmo motivo do observer. No último quadro isto
+         satura em `total - 1`, e daí em diante a sequência inteira está montada:
+         a volta do laço não refaz requisição nenhuma. E ele nunca fica ABAIXO de
+         `proximo`, que é o que garante que o quadro pedido esteja no DOM. */
+      setMontados((atual) => Math.max(atual, Math.min(proximo + 1, total - 1)));
+
+      /* Com movimento reduzido não há varredura, então o quadro é assumido no
+         próprio clique. A decisão fica AQUI, no gatilho, e não num efeito que
+         olha para `entrando` depois: setState síncrono dentro de efeito é
+         render em cascata, e o `eslint` reprova com razão.
+
+         O `setEntrando(null)` também destrava o caso de a preferência mudar no
+         meio de uma varredura: sem ele, o guarda logo abaixo veria um `entrando`
+         pendurado para sempre e o botão nunca mais responderia. */
+      if (movimentoReduzido) {
+        setIndice(proximo);
+        setEntrando(null);
+        return;
+      }
+
+      /* Um clique durante a varredura é ignorado em vez de cancelá-la: cancelar
+         deixaria o quadro anterior a meio caminho da máscara. */
+      setEntrando((atual) => (atual === null ? proximo : atual));
+    },
+    [indiceVisivel, total, movimentoReduzido],
+  );
+
+  /* ── O relógio, que só existe no modo automático ────────────────────────── */
 
   useEffect(() => {
     if (!andando || entrando !== null) return;
 
-    const id = window.setTimeout(() => {
-      const proximo = (indice + 1) % total;
-      setEntrando(proximo);
-      /* Um de antecedência, pelo mesmo motivo do observer. No último quadro isto
-         satura em `total - 1`, e daí em diante a sequência inteira está montada:
-         a volta do laço não refaz requisição nenhuma. */
-      setMontados((atual) => Math.max(atual, Math.min(proximo + 1, total - 1)));
-    }, TEMPO.permanencia);
+    const id = window.setTimeout(
+      () => irPara((indice + 1) % total),
+      TEMPO.permanencia,
+    );
 
     return () => window.clearTimeout(id);
-  }, [andando, entrando, indice, total]);
+  }, [andando, entrando, indice, total, irPara]);
 
   /* ── A varredura, que é o Gesto 3 sem uma linha de CSS nova ─────────────── */
 
   useEffect(() => {
     /* `movimentoReduzido` aqui não é redundante com o `andando` do relógio: ele
        é o que DESFAZ uma varredura já em curso quando a preferência muda no meio
-       dela, pelo cleanup logo abaixo. */
+       dela, pelo cleanup logo abaixo. Quem assume o quadro nesse caso não é este
+       efeito: no automático o `repousoForcado` leva a tela ao quadro em repouso,
+       e no manual o `indiceVisivel` já conta o `entrando` como chegado. */
     if (entrando === null || movimentoReduzido) return;
 
     const alvo = refsDosQuadros.current[entrando];
@@ -344,11 +484,13 @@ export function SequenciaDeQuadros({
   );
 
   return (
+    /* Hover e foco param o relógio, então no modo manual eles não têm o que
+       fazer: sem os `undefined`, focar um botão dispararia um render por nada. */
     <div
-      onMouseEnter={() => setInteragindo(true)}
-      onMouseLeave={() => setInteragindo(false)}
-      onFocus={() => setInteragindo(true)}
-      onBlur={() => setInteragindo(false)}
+      onMouseEnter={manual ? undefined : () => setInteragindo(true)}
+      onMouseLeave={manual ? undefined : () => setInteragindo(false)}
+      onFocus={manual ? undefined : () => setInteragindo(true)}
+      onBlur={manual ? undefined : () => setInteragindo(false)}
     >
       {/* A pilha. A classe do padding só entra com a sequência ligada: sem
           placas para acomodar, o leque não existe e a foto não tem por que
@@ -459,26 +601,58 @@ export function SequenciaDeQuadros({
               {String(total).padStart(2, "0")}
             </p>
 
-            {/* O controle da WCAG 2.2.2. */}
-            <button
-              type="button"
-              onClick={alternarPausa}
-              aria-pressed={pausadoPelaPessoa}
-              aria-label={
-                pausadoPelaPessoa
-                  ? rotulos.retomarDescricao
-                  : rotulos.pausarDescricao
-              }
-              className={cn(
-                "inline-flex min-h-11 items-center",
-                "caption font-ui text-tinta-suave",
-                "decoration-acento underline underline-offset-4",
-                "hover:text-acento-texto transition-colors",
-                "focus-visible:outline-acento-texto focus-visible:outline-2 focus-visible:outline-offset-3",
-              )}
-            >
-              {pausadoPelaPessoa ? rotulos.retomar : rotulos.pausar}
-            </button>
+            {/* Os controles, e são dois desenhos para dois modos.
+
+                ⚠️ O teste é `controle.modo`, e não a variável `manual`, porque é
+                ele que ESTREITA o tipo do `rotulos`: um booleano derivado não
+                estreita nada, e aí os dois ramos veriam as oito chaves de
+                rótulo como possíveis. */}
+            {controle.modo === "manual" ? (
+              /* Modo manual: quem avança é a pessoa, então não há o que pausar.
+                 O gap de 24 mantém os dois alvos de 44px separados em 390px. */
+              <div className="flex items-center gap-6">
+                <button
+                  type="button"
+                  /* Desabilitado no primeiro quadro, e o motivo é byte e não
+                     gosto: dar a volta daqui para o último montaria a sequência
+                     inteira de uma vez. Ver o cabeçalho. */
+                  disabled={indiceVisivel === 0}
+                  onClick={() => irPara(indiceVisivel - 1)}
+                  aria-label={controle.rotulos.anteriorDescricao}
+                  className={BOTAO}
+                >
+                  {controle.rotulos.anterior}
+                </button>
+
+                <button
+                  type="button"
+                  /* "Próxima" volta ao 01 no fim, e isso não custa nada: o
+                     quadro em repouso já está montado desde o servidor. */
+                  onClick={() => irPara((indiceVisivel + 1) % total)}
+                  aria-label={controle.rotulos.proximaDescricao}
+                  className={BOTAO}
+                >
+                  {controle.rotulos.proxima}
+                </button>
+              </div>
+            ) : (
+              /* Modo automático: o controle da WCAG 2.2.2. */
+              <button
+                type="button"
+                onClick={alternarPausa}
+                aria-pressed={pausadoPelaPessoa}
+                aria-label={
+                  pausadoPelaPessoa
+                    ? controle.rotulos.retomarDescricao
+                    : controle.rotulos.pausarDescricao
+                }
+                className={BOTAO}
+              >
+                {pausadoPelaPessoa
+                  ? controle.rotulos.retomar
+                  : controle.rotulos.pausar}
+              </button>
+            )}
           </div>
         )}
       </div>

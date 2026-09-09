@@ -1,10 +1,9 @@
 import Image from "next/image";
 import { content } from "@/config/content";
-import { marca } from "@/config/brand";
+import { CampoMarca } from "@/components/ui/CampoMarca";
 import { FaixaRepetida } from "@/components/ui/FaixaRepetida";
 import { Revelar } from "@/components/motion/Revelar";
 import { renderizarProsa } from "@/lib/prosa";
-import { renderizarPendencia } from "@/lib/pendencia";
 
 /**
  * "Sobre": humanizar. A proximidade tem que ser SENTIDA, não afirmada.
@@ -43,26 +42,18 @@ import { renderizarPendencia } from "@/lib/pendencia";
  * (topo quase reto, degrau à esquerda), e a `crista-serra` sobe para emoldurar a
  * marca, onde a crista no topo não atropela nada.
  *
- * ⚠️ E os dois literais de classe precisam continuar escritos por extenso neste
- * arquivo. O comentário de `CampoProva.tsx` explica: o Tailwind só gera
- * `[clip-path:url(#crista-vale)]` e `[clip-path:url(#crista-serra)]` porque
- * alguém os escreve inteiros em algum lugar, e apagar um daqui apagaria a máscara
- * das provas de `Servicos` SEM ERRO NENHUM.
+ * ⚠️ O literal `[clip-path:url(#crista-vale)]` precisa continuar escrito por
+ * extenso neste arquivo. O comentário de `CampoProva.tsx` explica: o Tailwind só
+ * gera a classe arbitrária porque alguém escreve o literal inteiro em algum
+ * lugar, e apagá-lo daqui apagaria a máscara da prova larga de `Servicos` SEM
+ * ERRO NENHUM. O da `crista-serra` mudou de endereço em 09/09 e hoje mora no
+ * `CampoMarca.tsx`, que é o único lugar onde ele aparece.
  *
  * ── O campo da marca ─────────────────────────────────────────────────────────
  *
- * `.campo-marca` (globals.css) emoldura a marca em vez de recortá-la: logo dentro
- * de máscara orgânica é logo deformado. Sem `.foto-textura`, porque parallax
- * chega no mesmo lugar por outro caminho.
- *
- * A proporção da caixa (4/5) e a largura da marca (56%) foram medidas e
- * comparadas na página montada, e o bloco do `globals.css` traz os números e as
- * candidatas descartadas. O resumo: com a proporção do retrato que saiu, a
- * `crista-serra` esticava num entalhe e parava de ler como crista.
- *
- * A legenda de pendência abaixo dele não é decoração de processo. É a regra 1 do
- * CLAUDE.md aplicada: placeholder sem marcador chega em produção sem ninguém
- * notar, e este é literalmente o slot mais visível da seção.
+ * Ele virou componente em 09/09, quando "Identidade Visual" ganhou o mesmo slot
+ * vago: o porquê da moldura, os dois números medidos, a legenda de pendência e o
+ * literal da máscara estão todos no `CampoMarca.tsx`. Aqui fica só a coluna.
  *
  * ── Layout ───────────────────────────────────────────────────────────────────
  *
@@ -79,10 +70,10 @@ import { renderizarPendencia } from "@/lib/pendencia";
  */
 export function Sobre() {
   const paragrafosDaHistoria = content.sobre.historia.corpo.flatMap((bloco) =>
-    bloco.split("\n\n")
+    bloco.split("\n\n"),
   );
   const paragrafosDaEquipe = content.sobre.equipe.corpo.flatMap((bloco) =>
-    bloco.split("\n\n")
+    bloco.split("\n\n"),
   );
 
   return (
@@ -105,22 +96,14 @@ export function Sobre() {
         {/* Movimento a: Nossa história. Campo da marca à esquerda, 5/12. */}
         <Revelar className="grid grid-cols-1 gap-8 md:grid-cols-12 md:gap-12">
           <div className="md:col-span-5">
-            <div
-              className="campo-marca bg-decor/12 [clip-path:url(#crista-serra)]"
-              aria-hidden="true"
-            >
-              <Image
-                src={marca.lockupVertical.escuro}
-                alt=""
-                width={marca.lockupVertical.largura}
-                height={marca.lockupVertical.altura}
-                sizes="(max-width: 768px) 56vw, (max-width: 1200px) 24vw, 17vw"
-              />
-            </div>
-
-            <p className="caption text-tinta-suave mt-4">
-              {renderizarPendencia(content.sobre.historia.fotoPendencia)}
-            </p>
+            {/* O campo da marca saiu daqui para o `CampoMarca` em 09/09, quando
+                "Identidade Visual" ganhou o mesmo slot vago. O `sizes` continua
+                sendo o desta coluna: a marca ocupa 56% da caixa, e a coluna é
+                5/12 do container. */}
+            <CampoMarca
+              pendencia={content.sobre.historia.fotoPendencia}
+              sizes="(max-width: 768px) 56vw, (max-width: 1200px) 24vw, 17vw"
+            />
           </div>
 
           <div className="space-y-6 md:col-span-7">

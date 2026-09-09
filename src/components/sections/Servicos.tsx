@@ -2,12 +2,75 @@ import { content } from "@/config/content";
 import { FaixaRepetida } from "@/components/ui/FaixaRepetida";
 import { WhatsappCta } from "@/components/ui/WhatsappCta";
 import { Revelar } from "@/components/motion/Revelar";
-import { SequenciaDeQuadros } from "@/components/motion/SequenciaDeQuadros";
+import {
+  SequenciaDeQuadros,
+  type ControleDaSequencia,
+} from "@/components/motion/SequenciaDeQuadros";
+import { CampoMarca } from "@/components/ui/CampoMarca";
 import { CampoProva } from "@/components/ui/CampoProva";
 import { cn } from "@/lib/cn";
 import { renderizarProsa } from "@/lib/prosa";
 
 type Servico = (typeof content.servicos)[number];
+type TituloDeServico = Servico["titulo"];
+
+/**
+ * QUEM AVANÇA CADA SEQUÊNCIA, e é presentation, igual à `APRESENTACAO` abaixo:
+ * no `content.ts` vive o que o slot É (os caminhos das fotos), aqui vive como
+ * ele se comporta na página.
+ *
+ * ⚠️ Os dois slots NÃO se comportam igual, e a diferença é a linha que a
+ * DESIGN-GUIDELINES.md §8 protege:
+ *
+ *   Captação          automático   troca sozinho a cada 3,1 s, com botão de pausa
+ *   Identidade Visual manual       troca quando a pessoa clica, sem relógio
+ *
+ * O desvio registrado da §8 é a AUTONOMIA de Captação, e ele se sustenta porque
+ * a seção é a que vende imagem em movimento: "não estenda para outro serviço"
+ * está escrito lá. Quando o Douglas pediu o mesmo slot em Identidade Visual, em
+ * 09/09, a versão autônoma foi apresentada com esse custo na mesa (seria o
+ * TERCEIRO desvio, e seria o carrossel de template que a §2.5 veta) e ele
+ * escolheu o avanço manual. Clique não é animação, então nada de novo entrou no
+ * vocabulário de movimento.
+ *
+ * ⚠️ A anotação de tipo é `Partial<Record<TituloDeServico, ...>>` de propósito,
+ * e não um `satisfies`: com ela, renomear um serviço no `content.ts` quebra ESTA
+ * tabela no `typecheck`, em vez de a sequência sumir da página em silêncio.
+ * Serviço fora da tabela não ganha sequência nenhuma, mesmo com `foto`
+ * preenchida: um modo padrão seria escolher sozinho entre os dois, e um deles é
+ * uma decisão de design que não se toma por omissão.
+ */
+const CONTROLE_DA_SEQUENCIA: Partial<
+  Record<TituloDeServico, ControleDaSequencia>
+> = {
+  "Identidade Visual": {
+    modo: "manual",
+    rotulos: content.identidadeQuadrosRotulos,
+  },
+  "Captação e edição de vídeos": {
+    modo: "automatico",
+    rotulos: content.quadrosRotulos,
+  },
+};
+
+/**
+ * O `sizes` do campo da marca, e ele NÃO é o da coluna: o `.campo-marca > img`
+ * ocupa 56% da caixa, então quem pede imagem é a marca, não o slot.
+ *
+ * Medido na grade de três colunas com `md:gap-8`, mesma disciplina dos `sizes`
+ * da `APRESENTACAO`:
+ *
+ *   até 767px     campo = container, 90vw          56% = 50,4vw   -> 56vw
+ *   768 a 1151    campo = (90vw - 32px) / 3        56% de 334px em 1151, 16,3vw
+ *                 334px na ponta larga da faixa                   -> 17vw
+ *   1152 acima    campo = (1056 - 64) / 3 = 330,7  56% = 185,2px  -> 186px
+ *
+ * ⚠️ O 767 é inclusivo de propósito, pelo mesmo motivo já registrado no bloco da
+ * `APRESENTACAO`: escrito 768, ele casaria com o `md:` do Tailwind e o navegador
+ * usaria o valor de empilhado para um slot que já está ao lado do texto.
+ */
+const SIZES_DO_CAMPO_MARCA =
+  "(max-width: 767px) 56vw, (max-width: 1151px) 17vw, 186px";
 
 /**
  * As duas apresentações do campo de prova.
@@ -166,8 +229,20 @@ export function Servicos() {
             </Revelar>
           )}
 
-          {/* Os quatro em órbita: alternam de lado, larguras desiguais, e só um
-              deles tem foto. A lacuna é o que impede a leitura em grade.
+          {/* Os quatro em órbita: alternam de lado e em larguras desiguais.
+
+              ⚠️ DESDE 09/09 OS QUATRO TÊM MÍDIA, e isso contraria a §5.5, que
+              pede "foto em alguns, não em todos, a lacuna quebra o ritmo de
+              grade". É decisão do Douglas, tomada com o custo na mesa, e fica
+              escrita porque é onde mora o clichê nº 2 do `CLAUDE.md`.
+
+              Duas coisas seguram a seção, e nenhuma anula o custo. A lacuna não
+              sumiu, ela mudou de lugar: o bloco DOMINANTE, que é o maior da
+              seção, continua sem imagem nenhuma. E as quatro mídias se
+              renderizam de quatro jeitos, campo da marca, print emoldurado,
+              sequência com pilha e vídeo, então não é uma coluna de imagem
+              repetida quatro vezes. Se em 390px a seção passar a ler como grade,
+              quem sai é a mídia de Identidade Visual, não a hierarquia.
 
               A lista é mais alta que uma tela, então cada bloco abre quando
               chega a sua vez, em vez de os quatro escalonarem de uma vez com os
@@ -184,6 +259,15 @@ export function Servicos() {
                   ? APRESENTACAO.largo
                   : APRESENTACAO.retrato
                 : null;
+
+              /* O slot estreito ao lado do texto, e ele tem TRÊS estados: a
+                 sequência quando as fotos existem, o campo da marca enquanto
+                 elas não foram escolhidas, e nada quando o serviço não tem slot
+                 nenhum. Quem decide é a presença dos campos no `content.ts`. */
+              const controle = CONTROLE_DA_SEQUENCIA[servico.titulo];
+              const temSequencia = Boolean(servico.foto && controle);
+              const temSlotEstreito =
+                temSequencia || Boolean(servico.fotoPendencia);
 
               return (
                 <article
@@ -229,10 +313,24 @@ export function Servicos() {
                     )}
                   </div>
 
-                  {/* A foto ocupa a coluna que o texto deixou, do lado oposto a
-                      ele. `crista-faixa` é a quarta máscara e a única ainda não
-                      usada na página: o herói tem `crista-retrato` e o `Sobre`
-                      tem `crista-vale` e `crista-serra`.
+                  {/* O SLOT ESTREITO ocupa a coluna que o texto deixou, do lado
+                      oposto a ele, e desde 09/09 ele existe em DOIS serviços.
+
+                      "Identidade Visual" é o índice 0 dos quatro em órbita e
+                      "Captação" é o 2, os dois pares, então nos dois o texto
+                      está à esquerda e a mídia cai à DIREITA. As duas provas são
+                      ímpares e caem à esquerda, e é isso que mantém a seção
+                      alternando em diagonal: direita, esquerda, direita,
+                      esquerda. Nenhuma classe de posicionamento mudou.
+
+                      A máscara da sequência é a `crista-faixa` e a do campo da
+                      marca é a `crista-serra`, as duas dentro dos respectivos
+                      componentes. ⚠️ A `crista-serra` passa a aparecer duas
+                      vezes na página (aqui e no `Sobre`), e é a única forma
+                      repetida: são quatro máscaras para cinco slots, e a
+                      repetição cai nos dois SLOTS VAGOS, onde ela lê como uma
+                      convenção só em vez de duas improvisações. O registro está
+                      no `CampoMarca.tsx`.
 
                       Desde 02/09 o slot é uma SEQUÊNCIA de quadros, não uma foto
                       só. O `clip-path` e o `foto-textura` mudaram de arquivo e
@@ -241,7 +339,7 @@ export function Servicos() {
                       wrapper, que é o que mantém o parallax vivo. O componente
                       atende os dois casos, e um serviço sem `quadros` continua
                       renderizando uma imagem estática só. */}
-                  {servico.foto && (
+                  {temSlotEstreito && (
                     <div
                       className={
                         textoNaEsquerda
@@ -249,15 +347,32 @@ export function Servicos() {
                           : "md:col-start-1 md:row-start-1"
                       }
                     >
-                      <SequenciaDeQuadros
-                        foto={servico.foto}
-                        fotoAlt={servico.fotoAlt}
-                        quadros={servico.quadros}
-                        /* 24vw, medido: a coluna dá 331 CSS px em 1440, e 30vw
-                           pedia o candidato de 432 sem precisar. */
-                        sizes="(max-width: 768px) 100vw, 24vw"
-                        rotulos={content.quadrosRotulos}
-                      />
+                      {temSequencia && controle ? (
+                        <SequenciaDeQuadros
+                          foto={servico.foto}
+                          fotoAlt={servico.fotoAlt}
+                          quadros={servico.quadros}
+                          /* 24vw, medido: a coluna dá 331 CSS px em 1440, e 30vw
+                             pedia o candidato de 432 sem precisar. */
+                          sizes="(max-width: 768px) 100vw, 24vw"
+                          controle={controle}
+                        />
+                      ) : (
+                        /* O SLOT VAGO, ocupado pela marca até as fotos serem
+                           escolhidas. Mesmo tratamento de "Nossa história" no
+                           `Sobre`, a pedido do Douglas em 09/09, e o marcador
+                           embaixo é a regra 1 do `CLAUDE.md`: placeholder sem
+                           marcador chega em produção sem ninguém notar.
+
+                           Quando as fotos chegarem, nada muda aqui: preencher
+                           `foto`, `fotoAlt` e `quadros` no `content.ts` e
+                           esvaziar `fotoPendencia` faz este mesmo slot virar a
+                           sequência, na mesma coluna e do mesmo lado. */
+                        <CampoMarca
+                          pendencia={servico.fotoPendencia}
+                          sizes={SIZES_DO_CAMPO_MARCA}
+                        />
+                      )}
                     </div>
                   )}
 

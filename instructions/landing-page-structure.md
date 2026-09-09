@@ -303,7 +303,7 @@ Cinco serviços, direto da copy, **e a copy diz qual é o centro**: *"Gestão de
 | Serviço | Peso no layout |
 |---|---|
 | **Gestão de Redes Sociais** | **Bloco dominante**, largura cheia, o texto mais longo, foto |
-| Identidade Visual | órbita |
+| Identidade Visual | órbita, **slot vago ocupado pela marca**, preparado para sequência manual |
 | Estruturação de Perfil | órbita |
 | Captação e edição de vídeos | órbita, **sequência de quadros** (ver DESIGN-GUIDELINES.md §8) |
 | Landing Pages | órbita |
@@ -363,6 +363,31 @@ Cinco serviços, direto da copy, **e a copy diz qual é o centro**: *"Gestão de
     classe de erro que inventar depoimento. Confirmado pelo Douglas em 02/09 e 03/09.
   - ⚠️ **O vídeo é o segundo desvio registrado da `DESIGN-GUIDELINES.md` §8**, e ele é maior que o
     primeiro. Leia a §8 antes de propor um terceiro.
+- ✅ **Identidade Visual ganhou slot de mídia em 09/09, e ele nasce VAGO.** Pedido do Douglas,
+  depois de ver o campo da marca de "Nossa história" (§5.8). Enquanto as fotos não forem escolhidas,
+  o slot mostra o **lockup vertical emoldurado** pela `crista-serra`, com o marcador visível
+  embaixo. É o mesmo componente do `Sobre`, o `CampoMarca`, e é a razão de a `crista-serra` passar a
+  aparecer duas vezes na página (registro na `DESIGN-GUIDELINES.md` §6).
+  - **Quando as fotos chegarem, a troca é só no `content.ts`:** preencher `foto`, `fotoAlt` e
+    `quadros` e esvaziar `fotoPendencia` faz o mesmo slot virar a **sequência de quadros**, na mesma
+    coluna e do mesmo lado. Nenhum componente muda.
+  - ⚠️ **A sequência de Identidade Visual avança PELA PESSOA**, em dois botões, e não sozinha. A
+    versão autônoma foi apresentada e recusada em 09/09 porque seria o terceiro desvio da
+    `DESIGN-GUIDELINES.md` §8. O registro inteiro, com as três diferenças do modo manual, está lá.
+    **Quem decide qual slot é qual é a tabela `CONTROLE_DA_SEQUENCIA`** no topo do `Servicos.tsx`,
+    e ela é presentation, não conteúdo.
+  - ⚠️ **Ela depende de autorização escrita de cada cliente cujo material aparecer**, igual às duas
+    provas, e essa pendência continua na §10, que é onde ela é cobrada. **O marcador da tela não a
+    cita**, por decisão do Douglas em 09/09: ele pergunta uma coisa só, que é a que ele resolve,
+    qual foto entra.
+- ⚠️ **COM ISSO OS QUATRO BLOCOS EM ÓRBITA TÊM MÍDIA**, e a regra do bullet acima ("foto em alguns,
+  não em todos") passa a ser contrariada. É decisão do Douglas, tomada com o custo na mesa, e fica
+  escrita porque é onde mora o clichê nº 2 do `CLAUDE.md`. Duas coisas seguram a seção, e nenhuma
+  anula o custo: a lacuna **mudou de lugar** em vez de sumir, porque o bloco dominante continua sem
+  imagem e é o maior da seção; e as quatro mídias se renderizam de quatro jeitos (campo da marca,
+  print emoldurado, sequência com pilha, vídeo), então não é uma coluna de imagem repetida quatro
+  vezes. Se em 390px a seção passar a ler como grade, quem sai é a mídia de Identidade Visual, não a
+  hierarquia.
 - ⚠️ **Passe visual obrigatório em 390px.** É aqui que o clichê volta: em mobile tudo empilha, e
   cinco blocos empilhados com título em cima leem como cinco cards iguais, por mais que o código
   do desktop esteja certo.
