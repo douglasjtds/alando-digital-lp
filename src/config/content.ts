@@ -253,16 +253,20 @@ export const content = {
         "Ideal para marcas que querem se posicionar através de vídeos profissionais sem perder a naturalidade.",
       destaque: false,
       /* A foto que casa com o serviço que ela mostra: literalmente uma câmera
-         enquadrando a cena. Desde 02/09 ela é o QUADRO EM REPOUSO de uma
-         sequência de dez, e continua sendo a única que sai no HTML do servidor,
-         a única que quem tem `prefers-reduced-motion` vê e a única que carrega
-         `alt` de verdade. `alt` descritivo, escrito aqui, não é copy da cliente. */
+         enquadrando a cena. É o QUADRO EM REPOUSO de uma sequência de onze, e
+         continua sendo a única que sai no HTML do servidor, a única que quem tem
+         `prefers-reduced-motion` vê e a única que carrega `alt` de verdade. `alt`
+         descritivo, escrito aqui, não é copy da cliente.
+
+         Desde 10/09, a pedido do Douglas, a foto é a do escritório (câmera no
+         tripé gravando uma cliente à mesa). A da mesa posta, que era o repouso
+         desde 02/09, virou o primeiro dos `quadros` abaixo. */
       foto: "/images/servico-video.jpg",
       fotoAlt:
-        "Mão segurando uma câmera cuja tela mostra a mesa posta que está sendo fotografada, um dos bastidores de captação da Alando.",
+        "Câmera no tripé com a tela mostrando a mulher sentada à mesa que está sendo gravada, um dos bastidores de captação da Alando.",
       fotoPendencia: "",
       /* ── A SEQUÊNCIA DE QUADROS ────────────────────────────────────────────
-         Os nove que se revezam com a foto acima, no mesmo slot, trocando no
+         Os dez que se revezam com a foto acima, no mesmo slot, trocando no
          tempo. Mecanismo em `SequenciaDeQuadros.tsx`; o desvio de movimento que
          ele representa está registrado na DESIGN-GUIDELINES.md §8.
 
@@ -271,11 +275,12 @@ export const content = {
          por pelo menos dois outros, porque quem para de rolar no meio da
          sequência tem que ver duas fotos DIFERENTES em seguida.
 
-         ⚠️ Nenhum `alt` aqui, e é decisão, não esquecimento: os nove são
+         ⚠️ Nenhum `alt` aqui, e é decisão, não esquecimento: os dez são
          `alt=""` e `aria-hidden`, pela mesma regra da `FaixaRepetida` (uma
-         instância semântica só). Dez descrições de mãos segurando câmera
+         instância semântica só). Onze descrições de mãos segurando câmera
          enfileiradas dentro de um bloco de serviço são ruído, não informação. */
       quadros: [
+        "/images/video-quadro-00.jpg",
         "/images/video-quadro-01.jpg",
         "/images/video-quadro-02.jpg",
         "/images/video-quadro-03.jpg",

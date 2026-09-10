@@ -126,21 +126,32 @@ const FOTOS = [
        identificável, que é o motivo de ela ter sido escolhida em primeiro lugar. */
     nota: "Sem uso na página desde 09/09. Era Sobre, movimento da equipe",
   },
+  /* O quadro em repouso de Captação desde 10/09, a pedido do Douglas: a IMG_4868,
+     câmera no tripé gravando uma cliente à mesa do escritório. É material de
+     TERCEIRO com rosto identificável (na mesa e na tela da câmera), e só entra em
+     `public/` porque a autorização escrita existe, confirmada pelo Douglas em
+     10/09. A fonte já é 9:16 exato (3213×5712), igual ao slot, então o `inside`
+     não corta nada. A foto que ocupava este papel, a da mesa posta, desceu para
+     `video-quadro-00.jpg`, no bloco da sequência logo abaixo. */
   {
-    de: "drive-files/Fotos captações/AC271526-600C-4C27-8D42-D901AD22D74E_1_105_c.jpeg",
+    de: "drive-files/captação e edição de vídeo/novas/IMG_4868.jpeg",
     para: "images/servico-video.jpg",
     largura: 1100,
     saturacao: 0.72,
     brilho: 1.01,
-    nota: "Serviços: Produção de vídeo",
+    nota: "Serviços: Captação, quadro em repouso (escritório)",
   },
   /* ── A SEQUÊNCIA DE QUADROS de Captação e edição de vídeos (02/09) ───────────
    *
-   * Nove fotos que entram no MESMO slot do `servico-video.jpg` acima, trocando no
-   * tempo. Ele continua sendo o quadro em repouso (o único que sai no HTML do
-   * servidor), e estas nove são as posições 2 a 10 da sequência. O mecanismo está
-   * em `SequenciaDeQuadros.tsx`, e o desvio de movimento que ele representa está
+   * Dez fotos que entram no MESMO slot do `servico-video.jpg` acima, trocando no
+   * tempo. Ele é o quadro em repouso (o único que sai no HTML do servidor), e
+   * estas dez são as posições 2 a 11 da sequência. O mecanismo está em
+   * `SequenciaDeQuadros.tsx`, e o desvio de movimento que ele representa está
    * registrado na DESIGN-GUIDELINES.md §8.
+   *
+   * O `video-quadro-00.jpg` é a antiga foto em repouso (a mesa posta). Ela desceu
+   * para cá em 10/09, quando a IMG_4868 assumiu o repouso, e o `00` é o que evita
+   * renumerar os nove arquivos que já existiam.
    *
    * ── Por que elas LEVAM o tratamento de cor ───────────────────────────────────
    *
@@ -170,18 +181,19 @@ const FOTOS = [
    * de salão, as duas de mesa). Quem para de rolar no meio da sequência tem que
    * ver duas fotos DIFERENTES em seguida.
    *
-   * ⚠️ Sete das nove são material de TERCEIRO com pessoa identificável ou marca de
+   * ⚠️ Sete das dez são material de TERCEIRO com pessoa identificável ou marca de
    * cliente legível, e só entram em `public/` porque a autorização escrita existe,
    * confirmada pelo Douglas em 02/09. Mesma linha que liberou o
    * `servico-estruturacao.jpg`.
    *
    * ── Por que 800 px e qualidade 76, e não os 1100/82 do resto ────────────────
    *
-   * Porque aqui o peso é somado NOVE VEZES no mesmo bloco, e essa é a diferença
+   * Porque aqui o peso é somado DEZ VEZES no mesmo bloco, e essa é a diferença
    * entre uma foto e uma sequência. Nos valores do `servico-video.jpg` (1100/82)
-   * as nove davam **1,15 MB** numa seção só, com duas passando de 180 KB, numa
-   * página cujo canal principal é link na bio do Instagram. A 800/76 elas somam
-   * **766 KB**, e a mais pesada cai de 188 para 125 KB.
+   * as nove originais davam **1,15 MB** numa seção só, com duas passando de 180
+   * KB, numa página cujo canal principal é link na bio do Instagram. A 800/76 elas
+   * somam **766 KB**, e a mais pesada cai de 188 para 125 KB. Com o
+   * `video-quadro-00.jpg` (10/09), as dez somam **826 KB**.
    *
    * O que 800 px cobre, medido: o slot dá 330 CSS px em desktop (a coluna de um
    * grid de 3 sobre um container de 1056) e ~350 px em 390. São 2,4x em desktop e
@@ -193,6 +205,15 @@ const FOTOS = [
    * que sai no HTML do servidor e o único que quem tem `prefers-reduced-motion` vê:
    * esse é olhado de verdade, e continua em 1100/82.
    */
+  {
+    de: "drive-files/Fotos captações/AC271526-600C-4C27-8D42-D901AD22D74E_1_105_c.jpeg",
+    para: "images/video-quadro-00.jpg",
+    largura: 800,
+    qualidade: 76,
+    saturacao: 0.72,
+    brilho: 1.01,
+    nota: "Quadro 00: mesa posta, era o repouso até 10/09",
+  },
   {
     de: "drive-files/captação e edição de vídeo/IMG_5979.jpg",
     para: "images/video-quadro-01.jpg",
@@ -597,3 +618,25 @@ console.log("");
 }
 
 console.log("");
+
+/* ── Os caches de imagem do Next, e por que o script os apaga ─────────────────
+ *
+ * O `next/image` guarda cada variante otimizada pela URL, largura, qualidade e
+ * formato, e NÃO pelo conteúdo do arquivo. Por 4 h (`minimumCacheTTL` do Next 16)
+ * ele serve a variante guardada sem olhar o arquivo. Como aqui o nome é o papel
+ * da foto, trocar a foto mantendo o nome é o caso normal deste script, e sem isto
+ * a página continua mostrando a antiga.
+ *
+ * Achado em 10/09: a IMG_4868 entrou em `servico-video.jpg` e o navegador do
+ * Douglas seguiu recebendo a mesa posta, porque a largura que ele pede (384) já
+ * estava em cache desde antes da troca. As larguras que ninguém tinha pedido
+ * vinham certas, e é isso que torna a falha difícil de ver.
+ *
+ * `.next/cache/images` é o do `next start` e `.next/dev/cache/images` o do
+ * `next dev`. Os dois se regeneram sozinhos, e o `next dev` lê do disco a cada
+ * pedido, então não é preciso reiniciar o servidor.
+ */
+for (const cache of [".next/cache/images", ".next/dev/cache/images"]) {
+  await rm(resolve(raiz, cache), { recursive: true, force: true });
+}
+console.log("  Caches de imagem do Next apagados (.next/cache/images e .next/dev/cache/images).\n");

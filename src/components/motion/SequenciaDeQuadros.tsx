@@ -46,10 +46,10 @@ import { CURVA, TEMPO, carregarAnime } from "./anime";
  *
  * ── Bytes: só se monta o que já tocou, mais os dois seguintes ────────────────
  *
- * Dez quadros empilhados no HTML seriam ~840 KB baixados de uma vez, num bloco
+ * Onze quadros empilhados no HTML seriam ~1 MB baixado de uma vez, num bloco
  * só, numa página cujo canal principal é link na bio do Instagram. Então o DOM
  * cresce com a sequência: quem passa rolando pela seção em quatro segundos baixa
- * três fotos, não dez. O próximo quadro é montado com um de antecedência, para
+ * três fotos, não onze. O próximo quadro é montado com um de antecedência, para
  * chegar carregado na hora de a crista passar por ele. Quadro já montado fica
  * montado: a volta do laço não refaz requisição.
  *
@@ -62,7 +62,7 @@ import { CURVA, TEMPO, carregarAnime } from "./anime";
  *
  * Duas placas atrás da foto, em leque, com os próximos dois quadros da
  * sequência. Pedido do Douglas em 04/09: o contador diz em texto que existem
- * outras nove, e a pilha diz o mesmo em imagem, antes de qualquer movimento.
+ * outras dez, e a pilha diz o mesmo em imagem, antes de qualquer movimento.
  *
  * ⚠️ Não é chrome de carrossel. As placas ficam ATRÁS e nunca por cima (§9),
  * usam a MESMA `crista-faixa` da foto da frente (nenhum `border-radius`) e são
@@ -73,14 +73,14 @@ import { CURVA, TEMPO, carregarAnime } from "./anime";
  * Elas viram no COMEÇO da varredura, junto com a foto da frente, e não junto com
  * o contador: a base delas é o quadro que ENTRA. O porquê está no `baseDaPilha`,
  * mais abaixo. E somem inteiras com `prefers-reduced-motion`, pela mesma razão
- * do contador: prometer em imagem nove fotos que não chegam é o erro que o
- * `/ 10` cometeria.
+ * do contador: prometer em imagem dez fotos que não chegam é o erro que o
+ * `/ 11` cometeria.
  *
  * ── Acessibilidade da sequência ──────────────────────────────────────────────
  *
- * O quadro em repouso carrega o `alt` real; os nove são `alt=""` e
+ * O quadro em repouso carrega o `alt` real; os dez são `alt=""` e
  * `aria-hidden`. É a mesma regra da `FaixaRepetida` ("uma instância semântica
- * só"), pelo mesmo motivo: dez descrições de mãos segurando câmera enfileiradas
+ * só"), pelo mesmo motivo: onze descrições de mãos segurando câmera enfileiradas
  * dentro de um bloco de serviço são ruído, não informação.
  *
  * ── O DOM é ditado pelo parallax que já existia ──────────────────────────────
@@ -193,8 +193,8 @@ const BOTAO =
  * A proporção do slot, fixada no wrapper para a troca de quadro não mexer na
  * altura do bloco.
  *
- * Os nove quadros são 9:16 exatos (o `servico-video.jpg` é 668×1177, 1% de
- * diferença que o `object-cover` absorve). Sem isto, cada quadro traria a própria
+ * Os quadros são 9:16 exatos, o de repouso inclusive (o `video-quadro-00.jpg` é
+ * 668×1177, 1% de diferença que o `object-cover` absorve). Sem isto, cada quadro traria a própria
  * altura e a coluna pularia a cada 3,1 s.
  */
 const PROPORCAO = "9 / 16";
@@ -563,13 +563,13 @@ export function SequenciaDeQuadros({
               Sem ele, nos primeiros 2,2 s o bloco é indistinguível de uma foto
               estática: a única pista de que ali tem mais coisa era o botão
               "Pausar", que diz que algo se move e não diz que existem outras
-              fotos. O `/ 10` diz, antes de qualquer movimento.
+              fotos. O `/ 11` diz, antes de qualquer movimento.
 
               ⚠️ Ele NÃO sai no HTML do servidor, e isso é correto, não defeito:
               o `usePrefersReducedMotion` devolve `true` no servidor de
               propósito, então a linha inteira só existe depois que a hidratação
               confirma que a sequência vai mesmo rodar. Sem JS não há sequência,
-              e um `/ 10` ali prometeria nove fotos que nunca chegam, do mesmo
+              e um `/ 11` ali prometeria dez fotos que nunca chegam, do mesmo
               jeito que um botão de pausa sem nada para pausar. Na prática o
               visitante nunca vê a falta: a seção está bem abaixo da dobra.
 
@@ -589,8 +589,8 @@ export function SequenciaDeQuadros({
               manda é o `indiceVisivel`: o contador anuncia o quadro que
               chegou, nunca o que ainda está chegando.
 
-              `aria-hidden` pela mesma razão que os nove quadros são: anunciar
-              "1 de 10" a quem tem um `alt` só é prometer nove coisas que a
+              `aria-hidden` pela mesma razão que os dez quadros são: anunciar
+              "1 de 11" a quem tem um `alt` só é prometer dez coisas que a
               pessoa não alcança. Quem lê a página com leitor de tela recebe
               uma foto descrita, que é a verdade dela. */}
             <p aria-hidden="true" className="eyebrow text-tinta-suave">

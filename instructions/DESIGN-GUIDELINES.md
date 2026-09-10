@@ -607,7 +607,7 @@ Ferramenta: **anime.js `onScroll({ sync })`** + `stagger`.
 com esta seção na mesa. Fica escrito aqui para ninguém o encontrar numa auditoria e tratar como
 defeito, e para ninguém o usar como precedente.
 
-**O que é:** no slot lateral de "Captação e edição de vídeos", dez quadros se revezam sozinhos, um
+**O que é:** no slot lateral de "Captação e edição de vídeos", onze quadros se revezam sozinhos, um
 a cada 3,1 s (2,2 s parado + 0,9 s de troca). Eram 4,3 s até 04/09: naquele dia o Douglas viu o
 bloco rodar duas vezes e pediu duas reduções, primeiro 0,2 s (que não se notou) e depois 1 s.
 
@@ -635,12 +635,12 @@ qualquer carrossel, e adotá-lo seria desviar em dois eixos em vez de um.
    e inteiro.
 
 **O contador, e por que ele não é bolinha.** Abaixo da foto, ao lado do botão, um rótulo
-`01 / 10` diz que existem outras fotos **antes de qualquer movimento**. Sem ele, nos primeiros
+`01 / 11` diz que existem outras fotos **antes de qualquer movimento**. Sem ele, nos primeiros
 2,2 s o bloco é indistinguível de uma foto estática, e o botão sozinho avisa que algo se move sem
 avisar que há mais o que ver.
 
 Como o botão, ele **não sai no HTML do servidor**: os dois só existem depois que a hidratação
-confirma que a sequência vai rodar. Sem JS não há sequência, e prometer dez fotos que não chegam
+confirma que a sequência vai rodar. Sem JS não há sequência, e prometer onze fotos que não chegam
 é pior do que não prometer. A seção fica bem abaixo da dobra, então na prática ninguém vê a falta.
 
 ⚠️ **Fileira de pontos está proibida aqui**, é a assinatura de carrossel que a §2.5 veta. O que
@@ -651,7 +651,7 @@ quadro que chegou, nunca o que está chegando.
 
 **A pilha, e por que ela não é chrome de carrossel (04/09).** Atrás da foto, duas placas em leque
 (8 px e 16 px de deslocamento, 1,5° e 3° de giro) mostram os **próximos dois quadros** da sequência.
-O contador diz em texto que existem outras nove; a pilha diz o mesmo em imagem, e as duas coisas
+O contador diz em texto que existem outras dez; a pilha diz o mesmo em imagem, e as duas coisas
 falam antes de qualquer movimento. As quatro razões de ela não ser chrome:
 
 1. As placas ficam **atrás**, nunca por cima: a §9 continua valendo inteira, nada boia sobre a
@@ -670,12 +670,12 @@ falam antes de qualquer movimento. As quatro razões de ela não ser chrome:
 O leque cabe **dentro** da coluna, por `padding` na pilha e não por sangria: em 390 px sobram 19,5 px
 de margem de página, e leque sangrando ali daria scroll horizontal. A conta está no bloco
 `.pilha-de-quadros` do `globals.css`. Como o contador e o botão, a pilha **some inteira** com
-`prefers-reduced-motion` e sem JS: prometer em imagem nove fotos que não chegam é o mesmo erro que o
-`/ 10` cometeria.
+`prefers-reduced-motion` e sem JS: prometer em imagem dez fotos que não chegam é o mesmo erro que o
+`/ 11` cometeria.
 
-**Acessibilidade:** o quadro em repouso carrega o `alt` real, os outros nove são `alt=""` e
+**Acessibilidade:** o quadro em repouso carrega o `alt` real, os outros dez são `alt=""` e
 `aria-hidden`, **as placas da pilha também**, e **o contador também é `aria-hidden`**. É a regra da `FaixaRepetida` (§6) aplicada
-aqui pelo mesmo motivo: anunciar "1 de 10" a quem recebe um `alt` só é prometer nove coisas que a
+aqui pelo mesmo motivo: anunciar "1 de 11" a quem recebe um `alt` só é prometer dez coisas que a
 pessoa não alcança.
 
 ---
