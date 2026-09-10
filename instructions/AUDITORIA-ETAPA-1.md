@@ -514,8 +514,10 @@ BLOQUEIA SEÇÕES ESPECÍFICAS
  6. Autorização de imagem dos profissionais citados.           → Resultados
  7. Autorização de imagem das pessoas nas fotos de captação,
     inclusive a criança que aparece na tela de uma delas.      → Servicos
- 8. Autorização de cada cliente cujo material de identidade
-    visual vire thumbnail de portfólio.                        → Servicos
+ 8. ✅ RESOLVIDO em 10/09: autorização escrita dos clientes cujas
+    identidades entraram na sequência de Identidade Visual (seis),
+    confirmada pelo Douglas. O logo aparece legível, por decisão
+    dele (DESIGN-GUIDELINES.md §3).                             → Servicos
  9. ✅ RESOLVIDO em 08/09: a Andressa mandou as quatro etapas, com
     as palavras dela, e a seção não tem mais marcador nenhum.
     Ela não citou prazo, e a linha de prazos SAIU da página por

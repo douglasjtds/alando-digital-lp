@@ -11,6 +11,10 @@ import { renderizarPendencia } from "@/lib/pendencia";
  * seção `Servicos`. Dois lugares com a mesma regra querem o mesmo componente:
  * duas cópias divergem na terceira vez que alguém mexe numa delas.
  *
+ * Desde 10/09 só o `Sobre` o usa, porque Identidade Visual ganhou as fotos. O
+ * componente continua no `Servicos` como o estado de qualquer serviço com
+ * `fotoPendencia` e sem `foto`.
+ *
  * ── Por que a marca é EMOLDURADA e não recortada ─────────────────────────────
  *
  * `.campo-marca` (globals.css) centra o lockup dentro da máscara em vez de
@@ -31,11 +35,11 @@ import { renderizarPendencia } from "@/lib/pendencia";
  * `[clip-path:url(#crista-retrato)]` (`Servicos.tsx`) e
  * `[clip-path:url(#crista-faixa)]` (`SequenciaDeQuadros.tsx`).
  *
- * ⚠️ A `crista-serra` aparece DUAS vezes na página desde 09/09, e é o único caso
- * de máscara repetida. São quatro formas para cinco slots, então a repetição era
- * inevitável, e ela cai no lugar menos ruim: os dois slots vagos. Repetir a
- * forma nos dois faz o campo da marca ler como UMA convenção da página, e não
- * como duas improvisações diferentes para o mesmo problema.
+ * A `crista-serra` apareceu DUAS vezes na página de 09/09 a 10/09, uma em cada
+ * slot vago, e o argumento era que repetir a forma fazia o campo da marca ler
+ * como UMA convenção da página, e não como duas improvisações para o mesmo
+ * problema. Desde 10/09 ela aparece uma vez só, no `Sobre`, e o argumento volta
+ * a valer se outro slot vago nascer.
  *
  * ── A legenda de pendência não é decoração de processo ───────────────────────
  *

@@ -19,19 +19,20 @@ type TituloDeServico = Servico["titulo"];
  * no `content.ts` vive o que o slot É (os caminhos das fotos), aqui vive como
  * ele se comporta na página.
  *
- * ⚠️ Os dois slots NÃO se comportam igual, e a diferença é a linha que a
- * DESIGN-GUIDELINES.md §8 protege:
+ * Desde 10/09 os dois slots são AUTOMÁTICOS, e a diferença que sobrou é o que
+ * acontece com `prefers-reduced-motion`:
  *
- *   Captação          automático   troca sozinho a cada 3,1 s, com botão de pausa
- *   Identidade Visual manual       troca quando a pessoa clica, sem relógio
+ *   Captação          automático   3,1 s com pausa; com movimento reduzido, para
+ *                                  no quadro em repouso
+ *   Identidade Visual automático   3,1 s com pausa; com movimento reduzido, vira
+ *                                  manual (Anterior/Próxima), pelo `reduzido`
  *
- * O desvio registrado da §8 é a AUTONOMIA de Captação, e ele se sustenta porque
- * a seção é a que vende imagem em movimento: "não estenda para outro serviço"
- * está escrito lá. Quando o Douglas pediu o mesmo slot em Identidade Visual, em
- * 09/09, a versão autônoma foi apresentada com esse custo na mesa (seria o
- * TERCEIRO desvio, e seria o carrossel de template que a §2.5 veta) e ele
- * escolheu o avanço manual. Clique não é animação, então nada de novo entrou no
- * vocabulário de movimento.
+ * ⚠️ A autonomia de Identidade Visual é o TERCEIRO desvio da §8, e ele não tem o
+ * argumento do primeiro: Captação anda sozinha porque vende imagem em movimento,
+ * e Identidade não vende. Em 09/09 a versão autônoma foi recusada por isso; em
+ * 10/09 o Douglas a pediu, com esse texto na mesa e duas alternativas sem
+ * desvio (troca presa ao scroll, manter o manual). O registro inteiro está na
+ * §8.
  *
  * ⚠️ A anotação de tipo é `Partial<Record<TituloDeServico, ...>>` de propósito,
  * e não um `satisfies`: com ela, renomear um serviço no `content.ts` quebra ESTA
@@ -44,8 +45,11 @@ const CONTROLE_DA_SEQUENCIA: Partial<
   Record<TituloDeServico, ControleDaSequencia>
 > = {
   "Identidade Visual": {
-    modo: "manual",
-    rotulos: content.identidadeQuadrosRotulos,
+    modo: "automatico",
+    rotulos: content.identidadeQuadrosRotulos.automatico,
+    /* O modo de reserva: com movimento reduzido a sequência não some, vira
+       manual. Ver o cabeçalho do `SequenciaDeQuadros`. */
+    reduzido: content.identidadeQuadrosRotulos.manual,
   },
   "Captação e edição de vídeos": {
     modo: "automatico",
@@ -238,11 +242,16 @@ export function Servicos() {
 
               Duas coisas seguram a seção, e nenhuma anula o custo. A lacuna não
               sumiu, ela mudou de lugar: o bloco DOMINANTE, que é o maior da
-              seção, continua sem imagem nenhuma. E as quatro mídias se
-              renderizam de quatro jeitos, campo da marca, print emoldurado,
-              sequência com pilha e vídeo, então não é uma coluna de imagem
-              repetida quatro vezes. Se em 390px a seção passar a ler como grade,
-              quem sai é a mídia de Identidade Visual, não a hierarquia.
+              seção, continua sem imagem nenhuma. E as mídias não são uma coluna
+              de imagem repetida: print emoldurado, vídeo e duas sequências com
+              pilha. ⚠️ Eram quatro desenhos até 10/09, quando Identidade Visual
+              trocou o campo da marca pela sequência, e desde então duas das
+              quatro têm o MESMO desenho, as duas à direita, e desde a tarde do
+              mesmo dia também o mesmo comportamento (as duas passam sozinhas).
+              O que as separa é só o conteúdo: marcas prontas contra bastidor de
+              câmera. Se em
+              390px a seção passar a ler como grade, quem sai é a mídia de
+              Identidade Visual, não a hierarquia.
 
               A lista é mais alta que uma tela, então cada bloco abre quando
               chega a sua vez, em vez de os quatro escalonarem de uma vez com os
@@ -323,14 +332,15 @@ export function Servicos() {
                       alternando em diagonal: direita, esquerda, direita,
                       esquerda. Nenhuma classe de posicionamento mudou.
 
-                      A máscara da sequência é a `crista-faixa` e a do campo da
-                      marca é a `crista-serra`, as duas dentro dos respectivos
-                      componentes. ⚠️ A `crista-serra` passa a aparecer duas
-                      vezes na página (aqui e no `Sobre`), e é a única forma
-                      repetida: são quatro máscaras para cinco slots, e a
-                      repetição cai nos dois SLOTS VAGOS, onde ela lê como uma
-                      convenção só em vez de duas improvisações. O registro está
-                      no `CampoMarca.tsx`.
+                      A máscara da sequência é a `crista-faixa`, dentro do
+                      `SequenciaDeQuadros`, e desde 10/09 os DOIS slots estreitos
+                      são sequência. O campo da marca (`crista-serra`) continua
+                      sendo o estado do slot vago, mas nenhum serviço está nele,
+                      então a `crista-serra` voltou a aparecer uma vez só na
+                      página, no `Sobre`. Quem se repete agora é a
+                      `crista-faixa`, nas duas sequências, e a repetição é do
+                      mesmo componente, não de duas formas escolhidas para
+                      lugares diferentes.
 
                       Desde 02/09 o slot é uma SEQUÊNCIA de quadros, não uma foto
                       só. O `clip-path` e o `foto-textura` mudaram de arquivo e
@@ -360,14 +370,15 @@ export function Servicos() {
                       ) : (
                         /* O SLOT VAGO, ocupado pela marca até as fotos serem
                            escolhidas. Mesmo tratamento de "Nossa história" no
-                           `Sobre`, a pedido do Douglas em 09/09, e o marcador
-                           embaixo é a regra 1 do `CLAUDE.md`: placeholder sem
-                           marcador chega em produção sem ninguém notar.
+                           `Sobre`, e o marcador embaixo é a regra 1 do
+                           `CLAUDE.md`: placeholder sem marcador chega em
+                           produção sem ninguém notar.
 
-                           Quando as fotos chegarem, nada muda aqui: preencher
-                           `foto`, `fotoAlt` e `quadros` no `content.ts` e
-                           esvaziar `fotoPendencia` faz este mesmo slot virar a
-                           sequência, na mesma coluna e do mesmo lado. */
+                           Nenhum serviço está aqui desde 10/09. Identidade
+                           Visual, que ocupou este ramo de 09/09 a 10/09, virou
+                           sequência só pelo `content.ts`, sem uma linha mudar
+                           neste arquivo. O ramo fica para o próximo slot que
+                           nascer sem foto. */
                         <CampoMarca
                           pendencia={servico.fotoPendencia}
                           sizes={SIZES_DO_CAMPO_MARCA}

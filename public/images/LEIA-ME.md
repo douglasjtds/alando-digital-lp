@@ -17,6 +17,7 @@ Inventário completo em `instructions/AUDITORIA-FASE-0.md` §4.
 | `drive-files/captação e edição de vídeo/` | **11 bastidores de captação**, iPhone, 9:16. Nove usados | `Servicos`, sequência de quadros |
 | `drive-files/captação e edição de vídeo/novas/` | **bastidor no escritório de uma cliente**, iPhone, 3213×5712 (9:16). Só a `IMG_4868` usada | `Servicos`, quadro em repouso da sequência |
 | `drive-files/landing pages/` | **captura da landing page de uma cliente**, 1928×16824 | `Servicos`, prova do serviço (pôster do vídeo) |
+| `drive-files/Identidades visuais/` | **apresentações de identidade visual de clientes**, PDF do Canva. Só as páginas de aplicação (mockup), uma por cliente, recortadas em 9:16 | `Servicos`, sequência manual de Identidade Visual |
 
 ## Arquivos que continuam aqui sem estar na página
 
@@ -84,14 +85,18 @@ dia o quadro de repouso mudar para uma seção com foto, meça de novo.
 - Tratamento cromático unificado: dessaturar na direção de `decor` (`#B3B793`) e aquecer
   levemente, ajustando pela **página montada**, nunca pela foto isolada. Os retratos pedem pouco,
   já vêm de parede clara com luz quente. As de captação é que brigam entre si.
-  - ⚠️ **Duas exceções, e as duas são nomeadas.** A regra existe para domar cor que é ruído. Onde a
+  - ⚠️ **Três exceções, e as três são nomeadas.** A regra existe para domar cor que é ruído. Onde a
     cor é o assunto, ela se inverte e come exatamente o que a imagem foi buscar:
     - `captacao-hero.jpg`, 26/08. O coral da caneca e o rosa da tela são o que a dessaturação come
       primeiro, e são o que a foto existe para mostrar. Custa 4 KB e vale.
     - `servico-estruturacao.jpg`, 02/09. O print prova um trabalho de identidade visual: os
       círculos terracota dos destaques e o feed em tons de terra são a entrega sendo mostrada. A
       média RGB medida do original é `146,132,119`, um neutro quente já dentro da família da paleta.
-    A regra continua valendo para as outras cinco.
+    - `servico-identidade.jpg` e os cinco `identidade-quadro-*.jpg`, 10/09. A sequência mostra seis
+      identidades diferentes, e o bordô, o dourado e o kraft de cada uma são a entrega. Dessaturar
+      puxaria as seis para a paleta da Alando, e o bloco existe para provar que cada marca tem a
+      sua. É uma família, mas nomeada: vale para estes seis arquivos e para nenhum outro.
+    A regra continua valendo para as outras.
 - **Trocar uma foto mantendo o nome não basta sozinho.** O `next/image` guarda as variantes pela URL,
   não pelo conteúdo, e serve a antiga por até 4 h. O `processar-fotos.mjs` apaga os dois caches de
   imagem do Next no fim (`.next/cache/images` e `.next/dev/cache/images`); quem trocar um arquivo
@@ -117,5 +122,10 @@ dia o quadro de repouso mudar para uma seção com foto, meça de novo.
   - `servico-video.jpg`, desde 10/09, é a `IMG_4868`: uma cliente gravando no escritório dela, com o
     rosto identificável na mesa e na tela da câmera, e certificados emoldurados na parede. Mesma
     linha: **a autorização escrita existe**, confirmada pelo Douglas em 10/09.
+  - `servico-identidade.jpg` e os cinco `identidade-quadro-*.jpg` (10/09) mostram a identidade visual
+    de seis clientes da Alando, com o **nome de cada uma legível no logo**. Mesma linha: **a
+    autorização escrita existe**, confirmada pelo Douglas em 10/09, e o logo legível é
+    decisão dele (`DESIGN-GUIDELINES.md` §3). Os PDFs de onde saem continuam em `drive-files/`:
+    o que chega aqui é o recorte em JPEG, sem metadado.
   - As duas que ficaram de fora das onze (`IMG_2333` e `IMG_7265`) saíram por serem quase o mesmo
     quadro das vizinhas, não por autorização. O critério está no `processar-fotos.mjs`.

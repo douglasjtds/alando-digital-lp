@@ -303,7 +303,7 @@ Cinco serviços, direto da copy, **e a copy diz qual é o centro**: *"Gestão de
 | Serviço | Peso no layout |
 |---|---|
 | **Gestão de Redes Sociais** | **Bloco dominante**, largura cheia, o texto mais longo, foto |
-| Identidade Visual | órbita, **slot vago ocupado pela marca**, preparado para sequência manual |
+| Identidade Visual | órbita, **sequência automática** de seis identidades criadas pela Alando (10/09), manual com movimento reduzido |
 | Estruturação de Perfil | órbita |
 | Captação e edição de vídeos | órbita, **sequência de quadros** (ver DESIGN-GUIDELINES.md §8) |
 | Landing Pages | órbita |
@@ -316,7 +316,8 @@ Cinco serviços, direto da copy, **e a copy diz qual é o centro**: *"Gestão de
   dez bastidores se revezam ali, trocando sozinhos. É o único movimento da página que não é preso ao
   scroll, e o desvio, o argumento e as quatro contenções estão registrados na
   `DESIGN-GUIDELINES.md` §8. **Não estenda para outro serviço:** o que sustenta o desvio é a seção
-  ser a que vende imagem em movimento.
+  ser a que vende imagem em movimento. ⚠️ Estendido a Identidade Visual em 10/09, por decisão do
+  Douglas e sem esse argumento: é o terceiro desvio, registrado na §8.
 - ⚠️ **A pilha entrou em 04/09**, e o layout continua sem mudar: atrás da foto, duas placas em leque
   mostram os próximos dois quadros, para o slot dizer em imagem o que o contador `01 / 10` já dizia
   em texto. Placas atrás e nunca por cima, mesma máscara, estáticas. Ver `DESIGN-GUIDELINES.md` §8.
@@ -363,23 +364,27 @@ Cinco serviços, direto da copy, **e a copy diz qual é o centro**: *"Gestão de
     classe de erro que inventar depoimento. Confirmado pelo Douglas em 02/09 e 03/09.
   - ⚠️ **O vídeo é o segundo desvio registrado da `DESIGN-GUIDELINES.md` §8**, e ele é maior que o
     primeiro. Leia a §8 antes de propor um terceiro.
-- ✅ **Identidade Visual ganhou slot de mídia em 09/09, e ele nasce VAGO.** Pedido do Douglas,
-  depois de ver o campo da marca de "Nossa história" (§5.8). Enquanto as fotos não forem escolhidas,
-  o slot mostra o **lockup vertical emoldurado** pela `crista-serra`, com o marcador visível
-  embaixo. É o mesmo componente do `Sobre`, o `CampoMarca`, e é a razão de a `crista-serra` passar a
-  aparecer duas vezes na página (registro na `DESIGN-GUIDELINES.md` §6).
-  - **Quando as fotos chegarem, a troca é só no `content.ts`:** preencher `foto`, `fotoAlt` e
-    `quadros` e esvaziar `fotoPendencia` faz o mesmo slot virar a **sequência de quadros**, na mesma
-    coluna e do mesmo lado. Nenhum componente muda.
-  - ⚠️ **A sequência de Identidade Visual avança PELA PESSOA**, em dois botões, e não sozinha. A
-    versão autônoma foi apresentada e recusada em 09/09 porque seria o terceiro desvio da
-    `DESIGN-GUIDELINES.md` §8. O registro inteiro, com as três diferenças do modo manual, está lá.
-    **Quem decide qual slot é qual é a tabela `CONTROLE_DA_SEQUENCIA`** no topo do `Servicos.tsx`,
-    e ela é presentation, não conteúdo.
-  - ⚠️ **Ela depende de autorização escrita de cada cliente cujo material aparecer**, igual às duas
-    provas, e essa pendência continua na §10, que é onde ela é cobrada. **O marcador da tela não a
-    cita**, por decisão do Douglas em 09/09: ele pergunta uma coisa só, que é a que ele resolve,
-    qual foto entra.
+- ✅ **Identidade Visual ganhou slot de mídia em 09/09, nasceu VAGO e foi preenchido em 10/09.** De
+  09/09 a 10/09 o slot mostrou o lockup vertical emoldurado pela `crista-serra` (o `CampoMarca`, o
+  mesmo do `Sobre`), com o marcador embaixo. Em 10/09 o Douglas decidiu que a escolha das fotos era
+  nossa, e o slot virou a **sequência de identidades criadas pela Alando** (oito de manhã, seis desde a
+  tarde, quando o Douglas tirou duas), uma por
+  cliente, recortadas das páginas de aplicação (mockup) das apresentações de identidade.
+  - A troca de conteúdo foi só no `content.ts`, como estava previsto, e nenhum componente de layout
+    mudou. O `SequenciaDeQuadros` mudou por outro motivo: ganhou `alt` por quadro no modo manual.
+  - Os oito recortes, a fonte de cada um e o que ficou de fora (o `Brand book` inteiro, rostos, a
+    criança no tablet da CR Fotografia) estão no bloco da tabela `FOTOS` do `processar-fotos.mjs`.
+  - A `crista-serra` voltou a aparecer uma vez só; quem se repete agora é a `crista-faixa`, nas duas
+    sequências (`DESIGN-GUIDELINES.md` §6).
+  - ⚠️ **Desde 10/09 a sequência de Identidade Visual passa SOZINHA**, no ritmo da Captação, e é o
+    **terceiro desvio** da `DESIGN-GUIDELINES.md` §8. Em 09/09 a versão autônoma tinha sido
+    recusada por isso; em 10/09 o Douglas a pediu, com esse texto e duas alternativas sem desvio
+    na mesa. Com movimento reduzido ela vira manual (Anterior/Próxima), em vez de parar no
+    repouso. **Quem decide o comportamento de cada slot é a tabela `CONTROLE_DA_SEQUENCIA`** no
+    topo do `Servicos.tsx`, e ela é presentation, não conteúdo.
+  - ✅ **Autorização escrita de cada um dos oito clientes confirmada pelo Douglas em 10/09**, igual
+    às duas provas, e com o logo legível: o nome de cada cliente aparece na tela, decisão registrada
+    na `DESIGN-GUIDELINES.md` §3. A pendência saiu da §10.
 - ⚠️ **COM ISSO OS QUATRO BLOCOS EM ÓRBITA TÊM MÍDIA**, e a regra do bullet acima ("foto em alguns,
   não em todos") passa a ser contrariada. É decisão do Douglas, tomada com o custo na mesa, e fica
   escrita porque é onde mora o clichê nº 2 do `CLAUDE.md`. Duas coisas seguram a seção, e nenhuma
@@ -822,14 +827,14 @@ Lista completa e organizada em `AUDITORIA-FASE-0.md` §9. Resumo do que trava o 
 | Logos de clientes autorizados, em SVG | `FaixaClientes` |
 | Autorização dos números de caso | `Resultados` |
 | Autorização de imagem nas fotos de captação, inclusive da criança | `Servicos` |
-| Autorização de cada cliente cujo material vire thumbnail | `Servicos` |
 
 **Resolvido na Fase 0, e fora da lista:** fotos da Andressa e da equipe, licença da `asimilates`,
 existência de ícones proprietários, logo e monograma, e preço na página.
 
 **Resolvido depois, e também fora da lista:** WhatsApp e cidade; o **processo real** (08/09, §5.7),
 que saiu da tabela junto com os prazos, porque a Andressa descreveu as quatro etapas e não citou
-prazo; as **sete perguntas do FAQ** (09/09, §5.9); e a **copy do fechamento** (09/09, §5.10).
+prazo; as **sete perguntas do FAQ** (09/09, §5.9); a **copy do fechamento** (09/09, §5.10); e a
+**autorização dos oito clientes** cujas identidades entraram em Identidade Visual (10/09, §5.5).
 
 ✅ **Com o fechamento, nenhuma seção VISÍVEL da página espera copy da Andressa.** O que sobra na
 tabela é dado (domínio) e autorização de terceiros.

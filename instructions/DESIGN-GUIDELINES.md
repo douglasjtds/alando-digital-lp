@@ -284,6 +284,15 @@ como **referência**, e três regras valem juntas:
 3. **Autorização escrita de cada cliente dono do material**, igual aos números de caso da §5.6.
    Sem ela, não entra.
 
+> ✅ **Aplicado em 10/09, e a regra 2 cedeu num ponto só.** Os seis quadros da sequência de
+> Identidade Visual (§8) são recortes das páginas de aplicação (mockup) das apresentações de
+> identidade, com o **logo legível**, ou seja, com o nome de cada cliente na tela. Decisão do
+> Douglas: o logo é a entrega do serviço, e escondê-lo esconderia a prova. O que a regra 2 protegia
+> continua protegido: **nenhum recorte tem texto estratégico**, e o `Brand book` inteiro ficou de
+> fora por ter diagnóstico e análise de concorrentes. A regra 3 foi cumprida: autorização escrita
+> dos clientes, confirmada pelo Douglas em 10/09. O PDF só é lido, pelo
+> `scripts/pagina-pdf.swift`, e o que chega a `public/` é JPEG sem metadado. A regra 1 não mudou.
+
 E um detalhe fácil de esquecer: **imagem exportada de PDF carrega metadados XMP/EXIF** com nome do
 arquivo original, autor e software. Remover é obrigatório (`exiftool -all=`).
 
@@ -504,12 +513,12 @@ defeito que não aparece na tela: a página renderiza o negrito certinho enquant
   faixa vertical deslocada**, as duas fontes de forma do material (§2.2).
 - 4 variações no total, definidas uma vez em `<svg>` oculto e reusadas por `id`. Cada foto com uma
   forma diferente; as que cobrem retrato precisam de borda superior limpa, é onde está a cabeça.
-  > ⚠️ **Desde 09/09 a `crista-serra` aparece duas vezes**, e é a única forma repetida da página.
-  > São quatro máscaras para cinco slots, então a repetição era inevitável, e ela cai no lugar menos
-  > ruim: os **dois slots vagos ocupados pela marca**, "Nossa história" no `Sobre` e "Identidade
-  > Visual" no `Servicos`. Repetir a forma nos dois faz o campo da marca ler como **uma convenção da
-  > página** em vez de duas improvisações para o mesmo problema. Quando as fotos definitivas
-  > chegarem, a repetição some sozinha.
+  > ⚠️ **De 09/09 a 10/09 a `crista-serra` apareceu duas vezes**, uma em cada slot vago ocupado
+  > pela marca ("Nossa história" no `Sobre` e "Identidade Visual" no `Servicos`). Em 10/09 Identidade
+  > Visual ganhou as fotos, e a repetição **mudou de forma em vez de sumir**: a `crista-serra` voltou
+  > a aparecer uma vez só, no `Sobre`, e quem se repete agora é a **`crista-faixa`, nas duas
+  > sequências de quadros** de `Servicos` (Identidade Visual e Captação). É o mesmo componente
+  > aparecendo duas vezes, não duas formas escolhidas para lugares diferentes. Ver §8.
 - Blobs de fundo em `decor` com opacidade **6-12%**, sempre atrás do conteúdo, sempre `aria-hidden`.
 - **Nunca** blob e `border-radius` na mesma imagem. Nunca `rounded-*` em foto.
 
@@ -833,52 +842,67 @@ prova existe para sustentar. A contenção 2 reduz o efeito; ela não o elimina.
 
 ---
 
-### ✅ NÃO É UM TERCEIRO DESVIO: a sequência manual de Identidade Visual (09/09)
+### ⚠️ TERCEIRO DESVIO REGISTRADO: a sequência de Identidade Visual passa sozinha (10/09)
 
-O Douglas viu o campo da marca que ocupa o slot vago de "Nossa história", gostou, e pediu o mesmo
-tratamento em **Identidade Visual**, já preparado para virar uma sequência de várias fotos quando
-elas forem escolhidas. Este bloco existe para que ninguém encontre a segunda pilha de quadros numa
-auditoria e a conte como a terceira exceção.
+**O que é:** no slot lateral de "Identidade Visual", seis identidades criadas pela Alando, uma por
+cliente, se revezam sozinhas no mesmo ritmo da Captação (3,1 s: 2,2 s parado e 0,9 s de troca), com
+botão de pausa. É o mesmo componente, `SequenciaDeQuadros`, em modo automático.
 
-**Ela não é exceção porque não há movimento autônomo nenhum: quem avança é a pessoa**, em dois
-botões ("Anterior" e "Próxima"). O eixo em que a sequência de Captação desvia é o **gatilho**, um
-relógio no lugar da posição do scroll. Aqui não existe gatilho de movimento: existe alguém clicando,
-e clique não é animação. O gesto de transição continua sendo o **Gesto 3**, com a mesma crista, a
-mesma classe `.revelar`, o mesmo `TEMPO.revelacao` e a mesma `CURVA.revelacao`. Nenhum CSS novo,
-nenhum keyframe novo, nenhuma máscara nova, nenhum subpath novo do anime.js.
+**A história, porque ela é o registro.** Em 09/09 o slot nasceu vago e preparado para uma sequência
+MANUAL, e o texto que ficava aqui explicava por que ela não era desvio: sem relógio não há movimento
+autônomo, e clique não é animação. A versão autônoma estava na mesa naquele dia e foi recusada, com o
+custo escrito: seria o terceiro desvio desta §8, e seria o "carrossel de template" que a §2.5 veta.
+Em 10/09, com as fotos na página, o Douglas pediu o timer. O texto de 09/09 foi levado a ele de novo,
+junto com duas alternativas sem desvio nenhum (a troca presa ao scroll, dentro do Gesto 3, e manter
+o manual), e ele escolheu o timer.
 
-**A versão autônoma foi apresentada e recusada**, e o registro importa mais que a decisão. A opção
-de simplesmente reusar o componente de Captação como ele é (troca a cada 3,1 s, botão de pausa)
-estava na mesa com o custo escrito: seria o **terceiro desvio** desta §8, e seria exatamente o
-"carrossel de template" que a §2.5 veta, porque numa seção de identidade visual a autonomia não é
-argumento de nada. O que sustenta o desvio em Captação é a seção ser a que vende imagem em
-movimento, e por isso ele para lá. O Douglas escolheu o avanço manual em 09/09.
+**⚠️ O argumento da Captação NÃO se aplica aqui, e isso precisa estar dito sem enfeite.** O primeiro
+desvio se sustenta porque a seção vende imagem em movimento; o segundo, porque página é uma coisa
+que rola. Identidade Visual não vende nada que só se demonstre no tempo. Este desvio se apoia na
+decisão do Douglas, não num argumento de marca, e fica registrado assim para que um quarto não o
+cite como precedente.
 
-**As três diferenças do modo manual, e cada uma tem motivo:**
+**O desvio fica no mesmo eixo do primeiro, o gatilho, e não passa dele.** O gesto continua sendo o
+**Gesto 3** (mesma crista, mesma classe `.revelar`, mesmo `TEMPO`, mesma `CURVA`). Nenhum CSS novo,
+nenhum tempo novo (um sexto valor no `TEMPO` abriria o vocabulário de vez), nenhum subpath novo do
+anime.js.
 
-1. **Sem relógio, e portanto sem botão de pausa.** A WCAG 2.2.2 pede um jeito de parar o que anda
-   sozinho por mais de cinco segundos. Aqui nada anda sozinho.
-2. **`prefers-reduced-motion: reduce` NÃO desliga o modo manual**, e esta é a diferença mais fácil
-   de errar. Em Captação desligar é o certo, porque o que se desliga é movimento autônomo e sobra a
-   foto em repouso. Aqui desligar **esconderia fotos** de quem pediu menos movimento, que é o pior
-   desfecho segundo a §9 ("estática **e** 100% visível"). Então os botões, o contador e a pilha
-   continuam, e a troca é **seca**, sem a varredura da crista. Verificado no navegador com a
-   preferência ligada: os três quadros continuam alcançáveis.
-3. **"Anterior" fica desabilitado no primeiro quadro**, e é engenharia de bytes, não gosto: o DOM da
-   sequência só cresce e é um prefixo, então dar a volta do 01 para o último montaria todas as fotos
-   de uma vez. "Próxima" volta ao 01 no fim sem custo nenhum, porque o 01 já está no HTML do
-   servidor. O botão desabilitado perde o sublinhado e **mantém a cor** (`tinta-suave`, 5,76:1):
-   apagar o texto para sinalizar "inativo" trocaria um sinal por uma perda de contraste.
+**As contenções são as quatro da Captação, com uma diferença:**
 
-⚠️ **Pendência de acessibilidade registrada, e ela depende das fotos.** Os quadros que não são o de
-repouso são `alt=""` e `aria-hidden`, com o argumento de que dez descrições enfileiradas são ruído.
-Num carrossel que a **pessoa** opera o argumento enfraquece: quem clica em "Próxima" deveria receber
-a descrição do que chegou. A correção é escrever `alt` real para cada foto, e as fotos de Identidade
-Visual ainda não existem.
+1. Só anda com o bloco na tela.
+2. Para com a aba oculta, no hover e no foco.
+3. Botão de pausa visível, abaixo da foto (WCAG 2.2.2).
+4. **`prefers-reduced-motion: reduce` não para no quadro em repouso: vira o modo MANUAL**, com
+   "Anterior" e "Próxima", troca seca e sem relógio. É a diferença para a Captação, decisão do
+   Douglas em 10/09. Lá sobrar o repouso é o certo, porque a foto em repouso já diz o que a seção
+   vende; aqui sobraria uma identidade de seis, e quem pediu menos movimento perderia cinco
+   trabalhos, o pior desfecho segundo a §9 ("estática **e** 100% visível"). O modo de reserva é o
+   manual de 09/09, que continua no componente como o `reduzido` do controle automático. "Anterior"
+   continua desabilitado no primeiro quadro, pela mesma engenharia de bytes (o DOM é um prefixo).
 
-⚠️ **O que este bloco NÃO autoriza:** estender a pilha de quadros para um terceiro slot, nem trocar
-o gatilho de nenhum dos dois. Uma sequência a mais precisa do mesmo tipo de argumento que estes dois
-tiveram.
+**Acessibilidade.** Rodando sozinha, vale a regra da Captação: só o quadro em repouso é descrito, e os
+outros cinco são `alt=""` e `aria-hidden`, porque descrições trocando sozinhas a cada 3,1 s são
+ruído. No modo de reserva **cada quadro tem `alt` próprio**, o quadro na tela é o único fora do
+`aria-hidden`, e uma região `aria-live="polite"` anuncia o que chegou, só depois do primeiro clique.
+
+**As fotos.** Eram oito na manhã de 10/09 (a regra e a autorização estão na §3). O Douglas tirou duas
+na mesma tarde, a caixa estampada de uma médica e o cartaz de um projeto do centro de Indaiatuba, e
+ficaram seis: spa, ateliê, estética, esmalteria, fotografia e ateliê.
+
+⚠️ **Custo registrado, e ele é maior que o do primeiro desvio:**
+
+- Duas das quatro mídias em órbita passam a ter o **mesmo desenho e o mesmo comportamento**
+  (sequência com pilha, contador e pausa, as duas à direita do texto). Até 10/09 eram quatro
+  desenhos para quatro mídias. O que as separa agora é só o conteúdo.
+- Numa tela alta, **as duas podem estar rodando ao mesmo tempo**, e dois carrosséis andando juntos
+  numa seção é exatamente a imagem de template que a §2.5 descreve. **Medido no passe de 10/09:**
+  em 1440×1080, no ponto entre os dois blocos, as duas fotos ficam 35% visíveis (acima do limiar de
+  25%) e os dois contadores trocam **no mesmo instante**, porque as duas sequências entram na tela
+  juntas e usam o mesmo `TEMPO`. Outras alturas de tela não foram medidas. Fica anotado para o
+  Douglas decidir, não corrigido: defasar um dos relógios mexeria no `TEMPO` ou pediria lógica nova.
+
+⚠️ **O que este bloco NÃO autoriza:** um quarto desvio citando este. Uma sequência a mais, ou um
+relógio a mais, precisa de argumento de marca, e este não teve.
 
 ---
 
@@ -978,7 +1002,7 @@ Detalhe completo, com resoluções, EXIF e pesos, em `AUDITORIA-FASE-0.md` §4.
 | `drive-files/Fotos captações/` | **9 fotos do trabalho acontecendo**, iPhone | `Servicos`, `Sobre` | Aprovadas. Só 2 em resolução de trabalho (HEIC). O motivo se repete nas nove |
 | PNG da paleta | Montanha na neblina, floresta de outono | `CtaFinal`, **uma vez só** | É o vocabulário mais copiado que existe hoje. Uma aparição é atmosfera, duas é banco de imagem |
 | PDF, p. 4-15 | Prints de feed de clientes | `Resultados` | Terceiros identificáveis. **Autorização obrigatória** |
-| `drive-files/Identidades visuais/` | Capas de identidade visual de clientes | `Servicos` (thumbnail) | ⚠️ **Referência. Não podem ser publicados.** Regra abaixo |
+| `drive-files/Identidades visuais/` | Apresentações de identidade visual de clientes | `Servicos`, sequência manual de Identidade Visual | **Seis recortes de mockup, um por cliente**, autorizados por escrito (10/09). O resto do material segue referência e não é publicado. Ver §3 |
 | `drive-files/landing pages/` | Captura da landing page de uma cliente | `Servicos` (prova, **em vídeo**) | Entregue pela Alando e **autorizada por escrito**, 03/09. Ver §8, segundo desvio |
 
 ### As três decisões que o acervo define
@@ -1175,16 +1199,18 @@ Intervalos numéricos usam hífen simples ou a palavra "a": `60-72 caracteres`, 
 - [ ] Nenhuma frase de copy que caberia no site de qualquer outra agência
 
 **Movimento**
-- [ ] **Nenhum movimento fora dos três gestos e do momento coreografado**, com as DUAS exceções
+- [ ] **Nenhum movimento fora dos três gestos e do momento coreografado**, com as TRÊS exceções
       registradas na §8, e nenhuma além delas: a sequência de quadros de Captação (02/09, desvia só
-      no gatilho) e o vídeo da prova de Landing Pages (03/09, desvia no gatilho, na mídia e no
-      gesto). As duas param em `Servicos` e as duas vivem no que a seção vende. **Uma terceira
-      precisa de argumento melhor que "já tem duas"**
-- [ ] A segunda pilha de quadros, a de Identidade Visual (09/09), **avança pela pessoa e nunca
-      sozinha**. Ela não entra na conta acima: sem relógio não há movimento autônomo, e clique não é
-      animação. Se um dia ela andar sozinha, virou a terceira exceção
-- [ ] Com `prefers-reduced-motion`, a sequência **manual** continua alcançável (troca seca), e a
-      **automática** para no quadro em repouso. Desligar a manual esconderia fotos
+      no gatilho), o vídeo da prova de Landing Pages (03/09, desvia no gatilho, na mídia e no
+      gesto) e a sequência de Identidade Visual (10/09, desvia só no gatilho, e **sem argumento de
+      marca**: é decisão do Douglas). As três param em `Servicos`. **Uma quarta não pode citar a
+      terceira como precedente**
+- [ ] As duas sequências usam o MESMO `TEMPO` (nenhum sexto valor) e param no hover, no foco, com
+      a aba oculta e no botão de pausa
+- [ ] Com `prefers-reduced-motion`, a de Captação para no quadro em repouso, e a de Identidade
+      Visual vira manual (troca seca, as seis alcançáveis). Parar a de Identidade esconderia fotos
+- [ ] No modo manual de reserva cada quadro tem `alt` próprio, só o quadro na tela fica fora do
+      `aria-hidden`, e o que chegou é anunciado por `aria-live`
 - [ ] O reveal da página é revelação por máscara, **não** `fade + translateY`
 - [ ] A travessia de cor mantém contraste em 0%, 25%, 50%, 75% e 100% do progresso
 - [ ] Faixas se movem só com scroll, nunca em loop autônomo

@@ -19,7 +19,7 @@
  *    paleta e aqueça levemente. Ajuste olhando a página montada, não a foto isolada,
  *    o que decide o valor é a foto ao lado da outra.
  *
- *    ⚠️ **Duas exceções, e as duas são NOMEADAS, não uma abertura geral.** A regra
+ *    ⚠️ **Três exceções, e as três são NOMEADAS, não uma abertura geral.** A regra
  *    existe para domar cor que é RUÍDO, ensaios que brigam entre si por temperatura.
  *    Onde a cor é o ASSUNTO, ela se inverte e passa a destruir o que a foto existe
  *    para mostrar:
@@ -36,7 +36,17 @@
  *                                          146,132,119, um neutro quente que já está
  *                                          dentro da família da paleta.
  *
- *    As cinco restantes continuam tratadas. (Os dois retratos também não levam os
+ *      `servico-identidade.jpg` e os       a sequência de Identidade Visual É o
+ *      `identidade-quadro-*.jpg` (10/09)   trabalho de identidade sendo mostrado: o
+ *                                          bordô da INA, o dourado da Fiori, o kraft
+ *                                          da CR são a entrega. Dessaturar puxaria as
+ *                                          seis marcas para a paleta da Alando, e o
+ *                                          bloco existe para provar que cada uma tem
+ *                                          a sua. É uma família, mas NOMEADA: vale
+ *                                          para estes seis arquivos e para nenhum
+ *                                          outro.
+ *
+ *    As fotos restantes continuam tratadas. (Os dois retratos também não levam os
  *    campos, mas por outro motivo, e não são exceção a nada: eles já vêm de parede
  *    clara com luz quente e não pedem ajuste nenhum.)
  *
@@ -84,6 +94,9 @@ const destino = (nome) => resolve(raiz, "public", nome);
  *   Mexer nas que já estão dentro só degrada a pele.
  * - `qualidade`: o padrão é 82 e ele vale para toda imagem que a pessoa OLHA. Só
  *   desça dele onde a imagem é textura passageira, e diga por quê na linha.
+ * - `pagina` e `centro`: só nas entradas `.pdf`. `pagina` conta a partir de 1, como
+ *   no leitor de PDF; `centro` é a fração da largura da página em que a faixa 9:16
+ *   de altura inteira é centrada. Ver "A entrada PDF", mais abaixo.
  * - Nenhuma imagem deve passar de ~200KB na maior variante. O script imprime o peso.
  */
 const FOTOS = [
@@ -315,6 +328,98 @@ const FOTOS = [
     largura: 1290,
     nota: "Serviços: Estruturação de Perfil, print de perfil. Sem tratamento de cor",
   },
+  /* ── A SEQUÊNCIA de Identidade Visual (10/09) ────────────────────────────────
+   *
+   * Seis identidades que a Alando criou, uma por cliente, no slot que ficou vago de
+   * 09/09 a 10/09. Passa sozinha, no relógio da Captação (DESIGN-GUIDELINES.md §8,
+   * terceiro desvio). O primeiro é o quadro em repouso; os cinco seguintes, os
+   * `quadros` do `content.ts`.
+   *
+   * ── De onde saem, e o que ficou de fora ─────────────────────────────────────
+   *
+   * Das apresentações de identidade em `drive-files/Identidades visuais/`, e só
+   * das páginas de APLICAÇÃO (mockup fotográfico). Elas se comportam como foto:
+   * sangram até a `crista-faixa` e aguentam o parallax do `foto-textura`. Página
+   * de tipografia, paleta ou estudo gráfico tem conteúdo na borda e seria cortada.
+   *
+   * Fora de propósito: o `Brand book (2).pdf` inteiro (diagnóstico, análise de
+   * concorrentes com nome de terceiros; a mesma cliente entra pelo PDF só visual
+   * dela), toda página com rosto, e o tablet da CR Fotografia, que mostra uma
+   * criança na tela. E duas que chegaram a entrar e saíram na mesma tarde, por
+   * decisão do Douglas: a caixa estampada do `Id Visual Juliana` (p. 19) e o
+   * cartaz do `Vem pro Centro` (p. 11).
+   *
+   * ── A ordem alterna claro e escuro ──────────────────────────────────────────
+   *
+   * Mesma regra da sequência de Captação: duas vizinhas nunca são parecidas. Os
+   * dois bordôs (INA e Fiori) ficam separados por quadros claros.
+   *
+   * ── Tamanho ─────────────────────────────────────────────────────────────────
+   *
+   * O repouso sai em 1100 px, como o `servico-video.jpg`, porque é ele que sai no
+   * HTML do servidor. Os cinco ficam em 800 px, com a qualidade PADRÃO de 82 e não
+   * com os 76 da Captação: foram escolhidos um a um para serem OLHADOS, e com
+   * movimento reduzido cada um é aberto por alguém que clicou para ver.
+   *
+   * ⚠️ Material de TERCEIRO com o nome de cada cliente legível no logo. Só entra em
+   * `public/` porque a autorização escrita existe, confirmada pelo Douglas em
+   * 10/09. Mesma linha do `servico-estruturacao.jpg`. */
+  {
+    de: "drive-files/Identidades visuais/Cópia de ALBA ID VISUAL.pdf",
+    pagina: 16,
+    centro: 0.25,
+    para: "images/servico-identidade.jpg",
+    largura: 1100,
+    nota: "Identidade Visual, repouso: spa, nicho em arco. Sem tratamento de cor",
+  },
+  {
+    de: "drive-files/Identidades visuais/Cópia de INA Identidade Visual.pdf",
+    pagina: 12,
+    centro: 0.75,
+    para: "images/identidade-quadro-01.jpg",
+    largura: 800,
+    nota: "Identidade 01: ateliê, caixa bordô",
+  },
+  {
+    de: "drive-files/Identidades visuais/Daiane Soares ID VISUAL.pdf.pdf",
+    pagina: 17,
+    centro: 0.25,
+    para: "images/identidade-quadro-02.jpg",
+    largura: 800,
+    /* A única dos seis abaixo de 82, e o motivo é do arquivo, não do slot: a
+       textura do papel e da pedra veio ampliada pelo Canva, e a 82 os bytes iam
+       para codificar o ruído da ampliação. Saía com 199 KB, colada no teto de
+       200. Detalhe de verdade nessa textura não há para perder. */
+    qualidade: 76,
+    nota: "Identidade 02: estética, cartões sobre pedra",
+  },
+  {
+    de: "drive-files/Identidades visuais/Cópia de Identidade Visual Fiori.pdf",
+    pagina: 25,
+    centro: 0.25,
+    para: "images/identidade-quadro-03.jpg",
+    largura: 800,
+    nota: "Identidade 03: esmalteria, placa de fachada",
+  },
+  {
+    de: "drive-files/Identidades visuais/Cópia de Apresentação CR Fotografia.pdf",
+    pagina: 9,
+    /* 0,315 e não o 0,25 dos vizinhos: a 0,25 a faixa cortava o nome no meio
+       ("Fotograf"). Aqui o símbolo e o fim da palavra ficam com a mesma margem,
+       cerca de 7% de cada lado, fora do alcance da máscara e do parallax. */
+    centro: 0.315,
+    para: "images/identidade-quadro-04.jpg",
+    largura: 800,
+    nota: "Identidade 04: fotografia, cartão sobre envelope",
+  },
+  {
+    de: "drive-files/Identidades visuais/Cópia de Maressa ID Visual.pdf.pdf",
+    pagina: 12,
+    centro: 0.25,
+    para: "images/identidade-quadro-05.jpg",
+    largura: 800,
+    nota: "Identidade 05: ateliê, sacola no sofá",
+  },
   {
     de: "drive-files/Fotos captações/2ED70A8D-1E75-48C5-8957-B161E9931D86_1_105_c.jpeg",
     para: "images/captacao-um.jpg",
@@ -382,12 +487,81 @@ if (pendentes.length > 0) {
  * compilado com libde265.
  */
 const ehHeic = (caminho) => /\.heic$/i.test(caminho);
+const ehPdf = (caminho) => /\.pdf$/i.test(caminho);
+
+/* ── A entrada PDF, e ela é a regra 1 da DESIGN-GUIDELINES.md §3 aplicada ─────
+ *
+ * Os quadros de Identidade Visual saem das apresentações de identidade que a
+ * Alando entregou a cada cliente. O PDF é só LIDO: a página vira um PNG num
+ * `mkdtemp` do `tmpdir()`, o `sharp` recorta, reduz e grava o JPEG, e o
+ * temporário some no `limpar()`. Nenhum PDF chega perto de `public/`, nem de
+ * passagem, e nada é escrito em `drive-files/`.
+ *
+ * Quem renderiza é o PDFKit, pelo `scripts/pagina-pdf.swift`, pelo mesmo motivo
+ * do `sips` acima: o `sharp` que vem com o Next não lê PDF. A amarra ao macOS é a
+ * mesma, e é aceitável pelo mesmo motivo.
+ *
+ * A ESCALA é 3: a página tem 1440×809 pt e sai com 4320×2427 px, então a faixa
+ * 9:16 de altura inteira tem 1365 px de largura, com folga para os 1100 do quadro
+ * em repouso. A nitidez real é a da imagem que o Canva embutiu, e ela foi
+ * conferida a 100% antes da escolha (10/09).
+ *
+ * E os METADADOS saem pelo mesmo caminho de todas as outras: o PNG temporário
+ * não carrega o XMP do Canva, e o JPEG final é escrito sem `withMetadata()`.
+ */
+const ESCALA_DO_PDF = 3;
+
+async function renderizarPagina(caminho, pagina) {
+  if (!Number.isInteger(pagina) || pagina < 1) {
+    throw new Error(
+      `${caminho}: entrada de PDF precisa de \`pagina\`, contada a partir de 1.`,
+    );
+  }
+
+  const pasta = await mkdtemp(join(tmpdir(), "alando-pdf-"));
+  const png = join(pasta, "pagina.png");
+
+  try {
+    await execArquivo("swift", [
+      resolve(raiz, "scripts/pagina-pdf.swift"),
+      caminho,
+      String(pagina),
+      String(ESCALA_DO_PDF),
+      png,
+    ]);
+  } catch (erro) {
+    await rm(pasta, { recursive: true, force: true });
+    console.error(
+      `\n  Não consegui renderizar a página ${pagina} de ${caminho}.\n` +
+        "  Este script depende do `swift` (Xcode Command Line Tools) para PDF.\n",
+    );
+    throw erro;
+  }
+
+  return { caminho: png, limpar: () => rm(pasta, { recursive: true, force: true }) };
+}
 
 /**
- * Devolve `{ caminho, limpar }`. Para tudo que não é HEIC, `caminho` é o próprio
- * original e `limpar` não faz nada.
+ * A faixa 9:16 de altura inteira, centrada em `centro` (fração da largura) e
+ * presa às bordas. O slot é em pé e a página é deitada, e o recorte é essa faixa
+ * e nada mais: nenhuma ampliação, nenhum corte em altura.
  */
-async function decodificar(caminho) {
+async function faixaVertical(caminho, centro) {
+  const { width, height } = await sharp(caminho).metadata();
+  const largura = Math.round((height * 9) / 16);
+  const esquerda = Math.min(
+    width - largura,
+    Math.max(0, Math.round(centro * width - largura / 2)),
+  );
+  return { left: esquerda, top: 0, width: largura, height };
+}
+
+/**
+ * Devolve `{ caminho, limpar }`. Para tudo que não é HEIC nem PDF, `caminho` é o
+ * próprio original e `limpar` não faz nada.
+ */
+async function decodificar(caminho, pagina) {
+  if (ehPdf(caminho)) return renderizarPagina(caminho, pagina);
   if (!ehHeic(caminho)) return { caminho, limpar: async () => {} };
 
   const pasta = await mkdtemp(join(tmpdir(), "alando-heic-"));
@@ -413,16 +587,26 @@ for (const foto of FOTOS) {
   const saida = destino(foto.para);
   await mkdir(dirname(saida), { recursive: true });
 
-  const fonte = await decodificar(origem(foto.de));
+  const fonte = await decodificar(origem(foto.de), foto.pagina);
 
   let size;
   try {
+    const faixa =
+      foto.centro === undefined
+        ? null
+        : await faixaVertical(fonte.caminho, foto.centro);
+
     let pipeline = sharp(fonte.caminho)
       /* Respeita a orientação EXIF antes de qualquer corte: sem isso, foto de celular
          sai deitada. (O TIFF que vem do `sips` já chega em pé, e aí o `.rotate()` é
          no-op: ele lê a orientação, e a do TIFF é 1.) */
-      .rotate()
-      .resize({
+      .rotate();
+
+    /* O `extract` vem ANTES do `resize` de propósito: no `sharp` a ordem das
+       chamadas decide se o recorte é feito na fonte ou na imagem já reduzida. */
+    if (faixa) pipeline = pipeline.extract(faixa);
+
+    pipeline = pipeline.resize({
         width: foto.largura,
         height: foto.altura,
         fit: foto.altura ? "cover" : "inside",

@@ -164,7 +164,8 @@ export const content = {
    *
    * `fotoPendencia` entrou em 09/09 e é o SLOT VAGO: com ela preenchida e `foto`
    * vazia, o serviço mostra o campo da marca com o marcador embaixo, igual a
-   * "Nossa história" no `Sobre`. Hoje só "Identidade Visual" a usa. Ela existe
+   * "Nossa história" no `Sobre`. Desde 10/09 nenhum serviço a usa (Identidade
+   * Visual, que a usou de 09/09 a 10/09, ganhou as fotos), e ela existe
    * nos CINCO pela mesma regra do `fechamento` e da `prova`: chave presente em um
    * só quebra o tipo da união (o `as const` sem `satisfies` do fim deste arquivo)
    * e obriga o componente a `as any`, que foi o que aconteceu na Fase 5B.
@@ -184,27 +185,58 @@ export const content = {
       fechamento:
         "Ideal para marcas que estão começando ou passando por um reposicionamento.",
       destaque: false,
-      /* ── O SLOT VAGO, ocupado pela marca (09/09) ────────────────────────────
-         Pedido do Douglas: o mesmo tratamento que "Nossa história" recebeu no
-         `Sobre`, porque as fotos deste serviço ainda não foram escolhidas.
-         Enquanto `foto` estiver vazia e a pendência preenchida, o slot
-         renderiza o `CampoMarca` com o marcador embaixo.
+      /* ── A SEQUÊNCIA: seis identidades criadas pela Alando (10/09) ─────────
+         O slot ficou vago de 09/09 a 10/09, ocupado pela marca. Desde então
+         mostra identidades de clientes, uma por cliente, recortadas das
+         páginas de aplicação (mockup) das apresentações entregues a cada uma.
+         Eram oito; o Douglas tirou duas na mesma tarde (a caixa estampada de
+         uma médica e o cartaz de um projeto do centro). A fonte e o recorte de
+         cada quadro estão no `processar-fotos.mjs`.
 
-         Quando as fotos chegarem, a troca é SÓ AQUI: preencher `foto`,
-         `fotoAlt` e `quadros`, e esvaziar a pendência. O `Servicos.tsx` decide
-         pela presença dos campos e não muda uma linha.
+         Passa SOZINHA, no relógio da Captação, desde 10/09: é o terceiro
+         desvio da DESIGN-GUIDELINES.md §8, e o comportamento mora na
+         `CONTROLE_DA_SEQUENCIA` do `Servicos.tsx`. Com movimento reduzido
+         vira manual.
 
-         ⚠️ O marcador NÃO cita a autorização de cada cliente, por decisão do
-         Douglas em 09/09, e a pendência continua existindo: a
-         `landing-page-structure.md` §5.5 e a §10 da auditoria listam
-         "autorização de cada cliente cujo material de identidade visual vire
-         thumbnail" como BLOQUEANTE, e é lá que ela é cobrada. O marcador da tela
-         pergunta uma coisa só, que é a que ele resolve: qual foto entra. */
-      foto: "",
-      fotoAlt: "",
-      fotoPendencia:
-        "<<A CONFIRMAR: quais fotos entram em Identidade Visual. Por enquanto o slot é ocupado pela marca>>",
-      quadros: [],
+         ⚠️ Material de terceiro, com o nome de cada cliente legível no logo.
+         Só está aqui porque a autorização escrita existe, confirmada pelo
+         Douglas em 10/09.
+
+         ⚠️ Os `alt` são TEXTO DO PROJETO, não copy da Andressa, mesma
+         convenção do `fotoAlt` de Captação e da prova de Landing Pages. Três
+         regras valem em todos: dizem que é mockup (a placa de fachada não é a
+         loja de verdade), não nomeiam a cliente (a autorização é para publicar
+         o trabalho, não para o nome dela virar legenda no site de outra marca)
+         e só afirmam o segmento que está no próprio material. Rodando sozinha,
+         só o `fotoAlt` é lido, como em Captação; os dos `quadros` são os do
+         modo manual de reserva, em que quem clica em "Próxima" tem que receber
+         a descrição do que chegou. */
+      foto: "/images/servico-identidade.jpg",
+      fotoAlt:
+        "Identidade visual de um spa, em mockup: o símbolo de lótus e o nome da marca em relevo num nicho em arco.",
+      fotoPendencia: "",
+      quadros: [
+        {
+          src: "/images/identidade-quadro-01.jpg",
+          alt: "Identidade visual de um ateliê, em mockup: o monograma em branco numa caixa bordô segurada com as duas mãos.",
+        },
+        {
+          src: "/images/identidade-quadro-02.jpg",
+          alt: "Identidade visual de uma profissional de estética, em mockup: dois cartões de papel texturizado sobre uma pedra, um com o nome e outro com o símbolo.",
+        },
+        {
+          src: "/images/identidade-quadro-03.jpg",
+          alt: "Identidade visual de uma esmalteria, em mockup: a flor dourada do símbolo numa placa bordô de fachada.",
+        },
+        {
+          src: "/images/identidade-quadro-04.jpg",
+          alt: "Identidade visual de uma marca de fotografia, em mockup: o símbolo e o nome num cartão branco sobre um envelope kraft.",
+        },
+        {
+          src: "/images/identidade-quadro-05.jpg",
+          alt: "Identidade visual de um ateliê, em mockup: o monograma numa sacola de papel branca apoiada num sofá de couro.",
+        },
+      ],
       prova: { imagem: "", video: "", alt: "" },
     },
     {
@@ -375,30 +407,33 @@ export const content = {
   },
 
   /**
-   * Os rótulos do controle da sequência de "Identidade Visual", que avança PELA
-   * PESSOA e não sozinha.
+   * Os rótulos do controle da sequência de "Identidade Visual", que desde 10/09
+   * passa sozinha e, com movimento reduzido, vira manual.
    *
    * ⚠️ TEXTO DO PROJETO, não copy da Andressa, igual aos de cima. Entram na
    * lista do relatório da fase.
    *
-   * São um objeto separado do `quadrosRotulos`, e não quatro chaves a mais nele,
-   * por duas razões. A primeira é que os DESCRITIVOS são específicos do slot
-   * ("bastidores de captação" não descreve foto de identidade visual), e um
-   * descritivo genérico deixaria de dizer o que o botão controla, que é a razão
-   * de ele existir. A segunda é que o tipo do `SequenciaDeQuadros` é uma união
-   * discriminada pelo `modo`: o modo automático pede pausar/retomar e o manual
-   * pede anterior/próxima, e um objeto só com as oito chaves aceitaria a
-   * combinação errada sem reclamar.
-   *
-   * Sem WCAG 2.2.2 aqui: nada anda sozinho neste slot, então não há o que pausar.
-   * O que os dois pares de rótulo mantêm é a regra 2.5.3 (Label in Name), com o
-   * visível sendo prefixo do descritivo.
+   * São dois pares porque o slot tem dois modos: `automatico` (pausar/retomar,
+   * a WCAG 2.2.2) e `manual`, o modo de reserva (anterior/próxima). E são um
+   * objeto separado do `quadrosRotulos` porque os DESCRITIVOS são específicos
+   * do slot: "bastidores de captação" não descreve foto de identidade visual, e
+   * um descritivo genérico deixaria de dizer o que o botão controla, que é a
+   * razão de ele existir. Os dois pares mantêm a regra 2.5.3 (Label in Name),
+   * com o visível sendo prefixo do descritivo.
    */
   identidadeQuadrosRotulos: {
-    anterior: "Anterior",
-    proxima: "Próxima",
-    anteriorDescricao: "Ver a foto anterior de identidade visual",
-    proximaDescricao: "Ver a próxima foto de identidade visual",
+    automatico: {
+      pausar: "Pausar",
+      retomar: "Retomar",
+      pausarDescricao: "Pausar a sequência de identidades visuais",
+      retomarDescricao: "Retomar a sequência de identidades visuais",
+    },
+    manual: {
+      anterior: "Anterior",
+      proxima: "Próxima",
+      anteriorDescricao: "Ver a foto anterior de identidade visual",
+      proximaDescricao: "Ver a próxima foto de identidade visual",
+    },
   },
 
   /**
