@@ -83,7 +83,7 @@ export function Manifesto() {
             </p>
           ))}
 
-          <p className="text-center text-superficie-2 text-sm leading-relaxed">
+          <p className="body-lg text-center text-superficie-2">
             {content.manifesto.fecha}
           </p>
         </Revelar>
