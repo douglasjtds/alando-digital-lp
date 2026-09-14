@@ -11,9 +11,10 @@ import { renderizarPendencia } from "@/lib/pendencia";
  * seção `Servicos`. Dois lugares com a mesma regra querem o mesmo componente:
  * duas cópias divergem na terceira vez que alguém mexe numa delas.
  *
- * Desde 10/09 só o `Sobre` o usa, porque Identidade Visual ganhou as fotos. O
- * componente continua no `Servicos` como o estado de qualquer serviço com
- * `fotoPendencia` e sem `foto`.
+ * Identidade Visual ganhou as fotos em 10/09, e em 14/09 "Nossa história" ficou
+ * com a marca SEM o fundo (decisão do Douglas), então hoje nenhum slot da página
+ * o renderiza. O componente continua no `Servicos` como o estado de qualquer
+ * serviço com `fotoPendencia` e sem `foto`: é o que um slot vago novo mostra.
  *
  * ── Por que a marca é EMOLDURADA e não recortada ─────────────────────────────
  *
@@ -38,8 +39,8 @@ import { renderizarPendencia } from "@/lib/pendencia";
  * A `crista-serra` apareceu DUAS vezes na página de 09/09 a 10/09, uma em cada
  * slot vago, e o argumento era que repetir a forma fazia o campo da marca ler
  * como UMA convenção da página, e não como duas improvisações para o mesmo
- * problema. Desde 10/09 ela aparece uma vez só, no `Sobre`, e o argumento volta
- * a valer se outro slot vago nascer.
+ * problema. De 10/09 a 14/09 ela apareceu uma vez só, no `Sobre`, e desde 14/09
+ * não aparece mais: o argumento volta a valer se outro slot vago nascer.
  *
  * ── A legenda de pendência não é decoração de processo ───────────────────────
  *

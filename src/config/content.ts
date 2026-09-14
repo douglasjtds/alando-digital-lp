@@ -539,20 +539,18 @@ export const content = {
    * que estava ali saiu da página, e o slot de "Nossa história" passou a ser
    * ocupado pela marca até ele escolher a foto definitiva.
    *
+   * ✅ Em 14/09 ele escolheu: a MARCA fica, sem o fundo. A pendência fechou, e
+   * `historia.fotoPendencia` (a legenda com o marcador) saiu junto. A marca não
+   * tem chave aqui porque nada nela é texto: o lockup vem do `brand.ts`.
+   *
    * ⚠️ `fotoAlt` é texto DESCRITIVO escrito aqui, não copy da Andressa: `alt`
    * descreve o que a foto mostra e é obrigação de acessibilidade. Ele desceu
    * junto com o retrato, porque `alt` pertence à imagem e não ao slot.
-   *
-   * `historia.fotoPendencia` é a legenda do slot vago. Ela existe pela regra 1 do
-   * CLAUDE.md: placeholder sem marcador é o tipo de coisa que chega em produção
-   * sem ninguém notar. Sai numa linha quando a foto chegar.
    */
   sobre: {
     historia: {
       titulo: "Nossa história",
       palavraItalica: "história",
-      fotoPendencia:
-        "<<A CONFIRMAR: qual foto entra em Nossa história. Por enquanto o slot é ocupado pela marca>>",
       corpo: [
         "A Alando nasceu oficialmente em 2022, mas nossa história com marcas começou em 2017. Ao longo desses anos, percebemos que muitas empresas investiam em conteúdo, mas poucas realmente construíam uma marca.\n\nFoi dessa inquietação que nasceu nossa forma de trabalhar: antes de criar, buscamos entender. Queremos conhecer a essência da marca, seus diferenciais, sua história e como ela deseja ser lembrada.\n\nHoje, esse continua sendo o ponto de partida de cada projeto. **Criamos e gerenciamos marcas de forma artesanal**, com atenção, intenção e cuidado com os detalhes que tornam cada negócio único.",
       ],

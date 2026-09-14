@@ -336,8 +336,9 @@ export function Servicos() {
                       `SequenciaDeQuadros`, e desde 10/09 os DOIS slots estreitos
                       são sequência. O campo da marca (`crista-serra`) continua
                       sendo o estado do slot vago, mas nenhum serviço está nele,
-                      então a `crista-serra` voltou a aparecer uma vez só na
-                      página, no `Sobre`. Quem se repete agora é a
+                      e desde 14/09 o `Sobre` também não (a marca ficou sem o
+                      fundo), então a `crista-serra` não aparece mais na
+                      página. Quem se repete agora é a
                       `crista-faixa`, nas duas sequências, e a repetição é do
                       mesmo componente, não de duas formas escolhidas para
                       lugares diferentes.

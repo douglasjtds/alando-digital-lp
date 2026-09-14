@@ -760,7 +760,13 @@
 }
 
 /* ==========================================================================
-   O CAMPO DA MARCA: o slot de "Nossa história" enquanto não há foto (09/09)
+   O CAMPO DA MARCA: o estado de slot vago (09/09)
+
+   Nasceu para "Nossa história" e emoldurou a marca lá até 14/09, quando o
+   Douglas decidiu que a marca fica e o fundo sai (ver `.marca-historia`, logo
+   abaixo). Hoje é só o estado de um serviço de `Servicos` com `fotoPendencia`
+   e sem `foto`, e nenhum está nele. As medidas abaixo continuam valendo para
+   esse caso.
 
    Terceiro campo emoldurado da página, e o único que não emoldura artefato de
    cliente: aqui dentro fica o lockup vertical da Alando, ocupando o lugar da foto
@@ -834,5 +840,26 @@
   .campo-marca > img {
     width: 56%;
     height: auto;
+  }
+}
+
+/* ==========================================================================
+   A MARCA DE "NOSSA HISTÓRIA", solta sobre o papel (14/09)
+
+   O slot foi o campo da marca acima de 09/09 a 14/09. Em 14/09 o Douglas
+   decidiu que a marca fica e o fundo sai: sai a moldura e sai a caixa 4/5, que
+   sem forma nenhuma para preencher só deixaria ar morto acima e abaixo do
+   lockup no celular.
+
+   Os 56% são a largura que ela já tinha dentro do campo, mantida para a troca
+   ler como "o fundo sumiu" e não como "a marca mudou". Sem máscara em volta, o
+   número deixou de ser teto medido e virou só continuidade.
+   ========================================================================== */
+
+@layer components {
+  .marca-historia {
+    width: 56%;
+    height: auto;
+    margin-inline: auto;
   }
 }

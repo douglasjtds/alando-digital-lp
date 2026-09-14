@@ -519,6 +519,8 @@ defeito que não aparece na tela: a página renderiza o negrito certinho enquant
   > a aparecer uma vez só, no `Sobre`, e quem se repete agora é a **`crista-faixa`, nas duas
   > sequências de quadros** de `Servicos` (Identidade Visual e Captação). É o mesmo componente
   > aparecendo duas vezes, não duas formas escolhidas para lugares diferentes. Ver §8.
+  > **Desde 14/09 a `crista-serra` não aparece mais**: "Nossa história" ficou com a marca sem o
+  > fundo, por decisão do Douglas, e o `CampoMarca` só volta à página se nascer outro slot vago.
 - Blobs de fundo em `decor` com opacidade **6-12%**, sempre atrás do conteúdo, sempre `aria-hidden`.
 - **Nunca** blob e `border-radius` na mesma imagem. Nunca `rounded-*` em foto.
 
@@ -1058,9 +1060,9 @@ diferentes áreas da comunicação"* e *"Somos uma equipe próxima, humana e que
 
 **O que continua verdadeiro, e é o custo:** a afirmação de equipe continua lá, em outras palavras, e
 o retrato da fundadora passou a ser a única imagem de gente na seção. O que caiu foi a contradição
-literal, não o desconforto inteiro. Se a foto definitiva de "Nossa história" for uma de captação, o
-desconforto se resolve sozinho; se for outro retrato da Andressa, ele dobra. Vale relembrar isto na
-hora de escolher.
+literal, não o desconforto inteiro. Em 14/09 "Nossa história" ficou com a marca, e não com uma foto
+(decisão do Douglas), então o desconforto fica exatamente como está: nenhuma foto de captação o
+resolve, e nenhum segundo retrato da Andressa o dobra.
 
 **E o argumento original continua valendo para qualquer volta atrás:** a foto que resolvia era a
 `servico-gestao.jpg`, a única das nove com duas pessoas e nenhum rosto identificável. Ela continua

@@ -511,7 +511,7 @@ estava no movimento **a** e passou para o **b**, que é o que a nomeia em texto.
 
 | Movimento | Imagem | Máscara | Coluna |
 |---|---|---|---|
-| **a) Nossa história** | o **lockup vertical da marca**, num campo emoldurado | `crista-serra` | 5/12, à esquerda |
+| **a) Nossa história** | o **lockup vertical da marca**, solto sobre o `papel` (sem moldura desde 14/09) | nenhuma | 5/12, à esquerda |
 | **b) Quem está por trás** | o retrato da Andressa (`retrato-sobre.jpg`) | `crista-vale` | 4/12, à direita |
 
 ⚠️ **A máscara viajou com a foto, e não é detalhe.** A `crista-serra` estava no movimento b e tem a
@@ -519,9 +519,11 @@ crista no TOPO de propósito, porque ali era foto de captação e "não há cabe
 no slot e passar o retrato por baixo cortaria o alto do rosto. Então o retrato desceu com a
 `crista-vale`, que é a máscara desenhada para ele, e a `crista-serra` subiu para emoldurar a marca.
 
-⚠️ **A foto de "Nossa história" é pendência aberta**, com marcador visível abaixo do campo. O
-lockup ocupa o lugar até o Douglas escolher. `retrato-hero.jpg`, a outra foto da Andressa, está
-livre desde 26/08 e é a candidata mais óbvia; a contrapartida está no parágrafo abaixo.
+✅ **A imagem de "Nossa história" foi decidida em 14/09: é a marca, sem o fundo.** De 09/09 a 14/09
+o lockup ocupou o slot emoldurado pela `crista-serra` (o `CampoMarca`), com marcador de pendência
+embaixo, à espera de uma foto. O Douglas decidiu manter a marca e tirar o formato do fundo: a
+pendência fechou, o marcador saiu, e a `crista-serra` não aparece mais na página. A marca fica na
+mesma largura que tinha dentro do campo (`.marca-historia`, no `globals.css`).
 
 ⚠️ **O parágrafo da equipe, e o que mudou nele.** Este bloco dizia que só o rosto da fundadora aqui
 faz a imagem contradizer o texto ao lado dela, e o argumento era a frase *"nunca foi construída para

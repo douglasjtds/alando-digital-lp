@@ -1,6 +1,6 @@
 import Image from "next/image";
+import { marca } from "@/config/brand";
 import { content } from "@/config/content";
-import { CampoMarca } from "@/components/ui/CampoMarca";
 import { FaixaRepetida } from "@/components/ui/FaixaRepetida";
 import { Revelar } from "@/components/motion/Revelar";
 import { renderizarProsa } from "@/lib/prosa";
@@ -16,7 +16,8 @@ import { renderizarProsa } from "@/lib/prosa";
  * Decisão do Douglas. O retrato da Andressa estava em "Nossa história" e passou
  * para "Quem está por trás da Alando", que é o movimento que a nomeia em texto. A
  * foto de captação que ocupava esse slot SAIU da página, e "Nossa história" ficou
- * com o campo da marca até ele escolher a foto definitiva.
+ * com o campo da marca até ele escolher a foto definitiva. Em 14/09 ele escolheu
+ * a própria marca, sem o fundo (ver "A marca de Nossa história", abaixo).
  *
  * ⚠️ Isto contraria o que a DESIGN-GUIDELINES.md §9 dizia, e o registro importa.
  * A regra de lá ("se esta seção trouxer só o rosto da fundadora, a imagem
@@ -93,16 +94,18 @@ export function Sobre() {
           />
         </Revelar>
 
-        {/* Movimento a: Nossa história. Campo da marca à esquerda, 5/12. */}
+        {/* Movimento a: Nossa história. A marca à esquerda, 5/12. */}
         <Revelar className="grid grid-cols-1 gap-8 md:grid-cols-12 md:gap-12">
           <div className="md:col-span-5">
-            {/* O campo da marca saiu daqui para o `CampoMarca` em 09/09, quando
-                "Identidade Visual" ganhou o mesmo slot vago. O `sizes` continua
-                sendo o desta coluna: a marca ocupa 56% da caixa, e a coluna é
-                5/12 do container. */}
-            <CampoMarca
-              pendencia={content.sobre.historia.fotoPendencia}
+            {/* A marca ocupa 56% da coluna, e a coluna é 5/12 do container: é
+                daí que sai o `sizes`. */}
+            <Image
+              src={marca.lockupVertical.escuro}
+              alt=""
+              width={marca.lockupVertical.largura}
+              height={marca.lockupVertical.altura}
               sizes="(max-width: 768px) 56vw, (max-width: 1200px) 24vw, 17vw"
+              className="marca-historia"
             />
           </div>
 
