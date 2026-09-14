@@ -131,6 +131,18 @@ export const redes = {
 } as const;
 
 /**
+ * O link do crédito de desenvolvimento no rodapé. Definido pelo Douglas em 14/09.
+ *
+ * ⚠️ Fora do `redes` de propósito: `redes` são os perfis da Alando, e o `sameAs`
+ * do JSON-LD lê de lá. O LinkedIn de quem fez o site não é perfil da agência, e
+ * afirmar isso no grafo seria a mesma classe de erro que o `<<A CONFIRMAR>>`
+ * existe para evitar.
+ */
+export const credito = {
+  linkedin: "https://www.linkedin.com/in/douglasjtds/",
+} as const;
+
+/**
  * Onde a Alando fica. Confirmado pelo Douglas em 02/08.
  *
  * Mora aqui pelo mesmo motivo do `whatsapp` e do `redes` acima: a cidade não é

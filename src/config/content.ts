@@ -699,9 +699,13 @@ export const content = {
    * Footer.
    *
    * `nome` é o nome da marca, que o lockup já traz impresso, e `instagram` é o
-   * perfil confirmado. O resto é pendência, incluindo o crédito de
-   * desenvolvimento: colocar nome e link de quem fez o site é decisão da cliente
-   * sobre o rodapé dela, não do desenvolvedor sobre si mesmo.
+   * perfil confirmado.
+   *
+   * `credito` foi definido pelo Douglas em 14/09, literal, e não é copy da
+   * Andressa. `creditoLink` é o trecho que vira link (mesmo padrão do
+   * `tituloPalavraItalica`), e a URL mora em `brand.credito`, fora do `redes`.
+   *
+   * Sem CNPJ, por decisão de 14/09: por enquanto ele não aparece no rodapé.
    *
    * ⚠️ `direitos` é fórmula jurídica padrão de rodapé, não copy da Andressa.
    * Não é dado da cliente (não é prazo, preço nem depoimento), mas também não
@@ -738,9 +742,10 @@ export const content = {
     cidade: local.cidadeUf,
     instagram: "@alandodigital",
     instagramRotulo: "Alando Digital no Instagram",
-    cnpj: "<<A CONFIRMAR: CNPJ, se ela quiser exibir>>",
     direitos: "Todos os direitos reservados.",
-    credito: "<<A CONFIRMAR: crédito do desenvolvimento, nome e link>>",
+    credito: "Desenvolvido por Douglas em nome de Alando Digital",
+    creditoLink: "Douglas",
+    creditoRotulo: "Douglas no LinkedIn",
   },
 } as const;
 

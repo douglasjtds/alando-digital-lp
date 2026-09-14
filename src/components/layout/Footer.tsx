@@ -1,7 +1,8 @@
 import Image from "next/image";
 
-import { marca, larguraDoMonograma, redes } from "@/config/brand";
+import { credito, marca, larguraDoMonograma, redes } from "@/config/brand";
 import { content } from "@/config/content";
+import { partirNoItalico } from "@/lib/italico";
 import { renderizarPendencia } from "@/lib/pendencia";
 
 /**
@@ -22,9 +23,14 @@ import { renderizarPendencia } from "@/lib/pendencia";
  *
  * ── O crédito de desenvolvimento ─────────────────────────────────────────────
  *
- * ⚠️ Marcador de propósito. Se o crédito aparece, com que nome e com que link é
- * decisão da cliente sobre o rodapé dela. Preencher isso sozinho seria assinar
- * um trabalho no site de outra pessoa sem perguntar.
+ * ✅ Definido pelo Douglas em 14/09: "Desenvolvido por Douglas em nome de
+ * Alando Digital", com o nome levando ao LinkedIn dele. O link usa o mesmo
+ * sublinhado do Instagram, porque a página tem um vocabulário de link só; o que
+ * mantém o crédito discreto é o tamanho `caption` e a cor de apoio, não um
+ * estilo à parte.
+ *
+ * O CNPJ saiu por decisão, não por esquecimento: por enquanto ele não aparece.
+ * Se voltar, é uma linha no `content.ts` e um `<p>` na coluna da direita.
  *
  * O ano do copyright sai do relógio do BUILD, não do visitante: a página é
  * estática, e um `new Date()` no cliente custaria hidratação para exibir quatro
@@ -35,6 +41,15 @@ export function Footer() {
   const larguraMonograma = larguraDoMonograma(alturaMonograma);
 
   const ano = new Date().getFullYear();
+
+  /* `partirNoItalico` aqui não italiza nada: é o mesmo corte em
+     [antes, palavra, depois], com fronteira de palavra, que o herói usa. O
+     trecho do meio vira o link. Se a palavra sumir do texto, sai a frase
+     limpa, sem link, em vez de uma frase quebrada. */
+  const partesDoCredito = partirNoItalico(
+    content.footer.credito,
+    content.footer.creditoLink,
+  );
 
   return (
     <footer className="bg-ancora-quente border-t border-decor/20">
@@ -81,10 +96,6 @@ export function Footer() {
             <p className="body text-papel">
               {renderizarPendencia(content.footer.cidade, "escuro")}
             </p>
-
-            <p className="caption text-superficie-2">
-              {renderizarPendencia(content.footer.cnpj, "escuro")}
-            </p>
           </div>
         </div>
 
@@ -94,7 +105,23 @@ export function Footer() {
           </p>
 
           <p className="caption text-superficie-2">
-            {renderizarPendencia(content.footer.credito, "escuro")}
+            {partesDoCredito ? (
+              <>
+                {partesDoCredito[0]}
+                <a
+                  href={credito.linkedin}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label={content.footer.creditoRotulo}
+                  className="underline decoration-acento underline-offset-4 transition-colors hover:decoration-superficie-2"
+                >
+                  {partesDoCredito[1]}
+                </a>
+                {partesDoCredito[2]}
+              </>
+            ) : (
+              content.footer.credito
+            )}
           </p>
         </div>
       </div>
