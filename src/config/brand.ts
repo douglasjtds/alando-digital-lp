@@ -165,20 +165,19 @@ export const local = {
 } as const;
 
 /**
- * O domínio final.
+ * O domínio final, confirmado em 15/09.
  *
- * ⚠️ VAZIO DE PROPÓSITO, e a string vazia é o sinal: enquanto ela estiver assim,
- * `lib/site-url.ts` cai para a URL da Vercel ou para o localhost, marca
- * `canonicalPendente` e a página inteira pede `noindex`.
+ * ⚠️ Preenchida, esta linha LIGA A INDEXAÇÃO: `lib/site-url.ts` deixa de marcar
+ * `canonicalPendente`, o `layout.tsx` para de pedir `noindex` e o `robots.ts`
+ * libera o site e anuncia o sitemap. Esvaziar a string volta tudo para o estado
+ * provisório (URL da Vercel ou localhost, `noindex`).
  *
- * Preview de Vercel indexado compete com o domínio real no índice do Google e é
- * trabalhoso de tirar depois. `<<A CONFIRMAR: domínio final>>`
- *
- * **Ligar a indexação junto com o domínio é o esquecimento mais comum do deploy**
- * (landing-page-structure.md §7). Preencher esta linha é o que liga.
+ * Sem `www` e sem barra final. O domínio primário na Vercel tem de ser este mesmo,
+ * com o `www` redirecionando para cá: se os dois divergirem, o canonical aponta
+ * para uma URL que responde com redirect.
  */
 export const site = {
-  url: "",
+  url: "https://alandodigital.com.br",
 } as const;
 
 export const marca = {
