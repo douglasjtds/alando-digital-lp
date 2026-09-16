@@ -716,7 +716,11 @@ trabalhoso de tirar do índice depois.
 
 **Lembrar de ligar a indexação junto com o domínio.** É o esquecimento mais comum do deploy.
 
-`<<A CONFIRMAR: domínio final>>`
+**Domínio confirmado em 15/09: `https://alandodigital.com.br`**, sem `www` e sem barra final, em
+`brand.site.url`. O primário na Vercel tem de ser este mesmo, com o `www` redirecionando para cá, e
+a **propriedade do Search Console tem de usar exatamente este host**: prefixo de URL é comparação
+exata, e uma propriedade com `www` fica quase vazia, porque os dados vão para a URL canônica. Ver o
+comentário de `site` em `config/brand.ts` e o passo 5 da `fase-9-deploy.md`.
 
 ### Dados estruturados: um `@graph`
 
@@ -824,7 +828,6 @@ Lista completa e organizada em `AUDITORIA-FASE-0.md` §9. Resumo do que trava o 
 | Falta | Trava |
 |---|---|
 | Número de WhatsApp | **Toda a conversão.** Botões ficam desabilitados |
-| Domínio | `metadataBase`, canonical, indexação |
 | Cidade | `title`, `description`, footer, JSON-LD, busca local |
 | Logos de clientes autorizados, em SVG | `FaixaClientes` |
 | Autorização dos números de caso | `Resultados` |
@@ -833,13 +836,16 @@ Lista completa e organizada em `AUDITORIA-FASE-0.md` §9. Resumo do que trava o 
 **Resolvido na Fase 0, e fora da lista:** fotos da Andressa e da equipe, licença da `asimilates`,
 existência de ícones proprietários, logo e monograma, e preço na página.
 
-**Resolvido depois, e também fora da lista:** WhatsApp e cidade; o **processo real** (08/09, §5.7),
+**Resolvido depois, e também fora da lista:** WhatsApp e cidade; o **domínio** (15/09), que liberou
+`metadataBase`, canonical e indexação, e define o host da propriedade do Search Console; o
+**processo real** (08/09, §5.7),
 que saiu da tabela junto com os prazos, porque a Andressa descreveu as quatro etapas e não citou
 prazo; as **sete perguntas do FAQ** (09/09, §5.9); a **copy do fechamento** (09/09, §5.10); e a
 **autorização dos oito clientes** cujas identidades entraram em Identidade Visual (10/09, §5.5).
 
-✅ **Com o fechamento, nenhuma seção VISÍVEL da página espera copy da Andressa.** O que sobra na
-tabela é dado (domínio) e autorização de terceiros.
+✅ **Com o fechamento, nenhuma seção VISÍVEL da página espera copy da Andressa.** O que sobra é
+autorização de terceiros. As linhas de WhatsApp e cidade continuam na tabela por inércia: o
+parágrafo acima já as dá por resolvidas.
 
 ⚠️ Sobra **uma** pendência de copy no `content.ts`, e ela não é independente: a linha de
 enquadramento de `Resultados` (*"a linha que enquadra os números como história de um cliente, não

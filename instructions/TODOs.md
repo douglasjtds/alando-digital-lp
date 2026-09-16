@@ -76,7 +76,6 @@ Sem estas, algumas fases não fecham. Lista completa em `AUDITORIA-FASE-0.md` §
 | Pendência | Trava |
 |---|---|
 | Número de WhatsApp | Fase 4 e a conversão inteira |
-| Domínio | Fase 6, Fase 9 |
 | Cidade | Fase 4, Fase 6 |
 | Autorização dos clientes para thumbnails de portfólio | Fase 3, Fase 5B |
 | Autorização de imagem nas fotos de captação, inclusive da criança | Fase 3, Fase 5B |
@@ -84,6 +83,9 @@ Sem estas, algumas fases não fecham. Lista completa em `AUDITORIA-FASE-0.md` §
 
 **Resolvido na Fase 0:** fotos da Andressa e da equipe, licença da `asimilates`, existência de
 ícones proprietários, logo e monograma, e preço na página.
+
+**Resolvido depois:** o **domínio** (15/09, `https://alandodigital.com.br`, sem `www`), que ligou a
+indexação e define o host da propriedade do Search Console no passo 5 da Fase 9.
 
 
 Fases 5 a 8 podem rodar com os marcadores no lugar. **A Fase 9 não.**

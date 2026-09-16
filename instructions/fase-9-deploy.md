@@ -23,22 +23,44 @@ Prepare o projeto para produção.
    Rode o build de produção e corrija todo warning.
 
 4. VERCEL
-   Deploy apontando para a main. Instruções de DNS para <<A CONFIRMAR: domínio>>.
+   Deploy apontando para a main. Instruções de DNS para alandodigital.com.br.
+   O domínio primário é SEM www, com o www redirecionando para ele: se os dois
+   divergirem, o canonical aponta para uma URL que responde com redirect.
    >>> LIGUE A INDEXAÇÃO junto com o domínio. É o esquecimento mais comum do deploy:
    >>> a página fica no ar com noindex e ninguém percebe por semanas.
+   >>> NÃO defina NEXT_PUBLIC_SITE_URL na Vercel. Ela vem ANTES do brand.site.url na
+   >>> cascata do lib/site-url.ts (linhas 35-42): definida com o valor errado, com www
+   >>> ou com barra final, ela troca o canonical em silêncio, sem ninguém tocar em src/.
    Adicione Vercel Analytics.
 
-5. CHECKLIST FINAL
+5. SEARCH CONSOLE
+   Propriedade do tipo PREFIXO DE URL, e o prefixo é https://alandodigital.com.br,
+   SEM www.
+   >>> Uma propriedade com www fica quase vazia: o Google atribui impressões e cliques
+   >>> à URL canônica, que é a sem www, e recusa o sitemap.xml como fora do escopo dela.
+   >>> A verificação até PASSA com www, porque o redirect é seguido, e é isso que engana.
+   Verificação por TAG HTML: pegue o token no GSC e me passe. Ele entra em
+   metadata.verification.google no layout.tsx, junto do resto da metadata.
+   Não use o método "Arquivo HTML", que o GSC recomenda primeiro: o token no layout.tsx
+   fica versionado e revisável ao lado dos outros campos, enquanto um .html solto em
+   public/ é um arquivo que ninguém lembra de onde veio seis meses depois.
+   Verificada a propriedade, envie sitemap.xml no menu Sitemaps.
+   Dê acesso de PROPRIETÁRIO ao Gmail da Andressa em Configurações > Usuários e
+   permissões. Se um dia vocês se separarem, os dados históricos ficam com ela.
+
+6. CHECKLIST FINAL
    [ ] Preview de link real no WhatsApp, MANDE PARA VOCÊ MESMO. É o canal onde a página
        mais circula, e og:image errado só aparece assim
    [ ] Preview no Instagram
    [ ] Favicon e apple-touch-icon
    [ ] JSON-LD validado no Rich Results Test com a URL final
    [ ] robots liberado e canonical apontando para o domínio real
+   [ ] Propriedade no Search Console criada SEM www, verificada, sitemap enviado
+   [ ] Andressa com acesso de proprietária no Search Console
    [ ] Todos os CTAs abrindo a conversa com a mensagem certa, testados no celular
    [ ] Lighthouse mobile: me mostre as quatro pontuações
 
-6. ENTREGA À CLIENTE
+7. ENTREGA À CLIENTE
    Me prepare um resumo curto para a Andressa com:
    - a decisão tipográfica e POR QUE (se houve substituição de fonte, ela vai abrir o site
      ao lado do manual e comparar, descobrir a diferença sozinha é muito pior do que ser
