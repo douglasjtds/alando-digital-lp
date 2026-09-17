@@ -178,6 +178,18 @@ export const local = {
  */
 export const site = {
   url: "https://alandodigital.com.br",
+  /**
+   * O token da propriedade do Search Console, verificação por TAG HTML.
+   *
+   * Fica ao lado da `url` porque anda com ela: o token é de UMA propriedade, e a
+   * propriedade é o host acima, sem `www`. Trocar de domínio invalida os dois.
+   *
+   * A verificação por tag foi escolhida em vez do método "Arquivo HTML", que o GSC
+   * oferece primeiro: aqui o token fica versionado e revisável ao lado dos outros
+   * campos de metadata, e não é um `.html` solto em `public/` que ninguém sabe de
+   * onde veio seis meses depois.
+   */
+  verificacaoGoogle: "1g8x59ekKFpoSjxGvL-CLvXoj6x9w78Hqm_5EUYv5jY",
 } as const;
 
 export const marca = {

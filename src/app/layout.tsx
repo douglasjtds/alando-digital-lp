@@ -2,7 +2,7 @@ import type { Metadata, Viewport } from "next";
 import { Montserrat, Playfair_Display } from "next/font/google";
 
 import { OrganicClipPaths } from "@/components/ui/OrganicClipPaths";
-import { og } from "@/config/brand";
+import { og, site } from "@/config/brand";
 import { content } from "@/config/content";
 import { canonicalPendente, siteUrl } from "@/lib/site-url";
 
@@ -130,6 +130,7 @@ export const metadata: Metadata = {
   robots: canonicalPendente
     ? { index: false, follow: false }
     : { index: true, follow: true },
+  verification: { google: site.verificacaoGoogle },
 };
 
 export default function RootLayout({
