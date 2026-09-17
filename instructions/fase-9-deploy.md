@@ -33,6 +33,20 @@ Prepare o projeto para produção.
    >>> ou com barra final, ela troca o canonical em silêncio, sem ninguém tocar em src/.
    Adicione Vercel Analytics.
 
+4b. TAG MANAGER (entrou em 17/09, pedido da pessoa de tráfego pago)
+   Contêiner GTM-5CCX9PLF, instalado por @next/third-parties no layout.tsx.
+   Na Vercel: NEXT_PUBLIC_GTM_ID=GTM-5CCX9PLF, marcando SÓ o escopo Production.
+   >>> Sem Preview e sem Development: preview disparando as tags da campanha suja
+   >>> os dados que a pessoa do tráfego usa para decidir onde gastar a verba.
+   >>> E o contrário é pior: ESQUECER a variável deixa a campanha rodando sem
+   >>> medição nenhuma, e nada acusa erro no build. Mesma classe do "subiu com
+   >>> noindex" do passo 4.
+   A conferência NÃO é no build local, que por definição não carrega: abra a URL
+   real, painel de rede, e veja o gtm.js?id=GTM-5CCX9PLF sendo baixado.
+   Depois, com o modo Preview do contêiner aberto, clique num CTA e confirme o
+   evento `cta_whatsapp` chegando com o event_label da origem.
+   Consentimento LGPD ficou de fora por decisão do Douglas, está no TODOs.md.
+
 5. SEARCH CONSOLE
    Propriedade do tipo PREFIXO DE URL, e o prefixo é https://alandodigital.com.br,
    SEM www.
@@ -58,6 +72,7 @@ Prepare o projeto para produção.
    [ ] Propriedade no Search Console criada SEM www, verificada, sitemap enviado
    [ ] Andressa com acesso de proprietária no Search Console
    [ ] Todos os CTAs abrindo a conversa com a mensagem certa, testados no celular
+   [ ] gtm.js carregando na URL real e o cta_whatsapp chegando no Preview do contêiner
    [ ] Lighthouse mobile: me mostre as quatro pontuações
 
 7. ENTREGA À CLIENTE

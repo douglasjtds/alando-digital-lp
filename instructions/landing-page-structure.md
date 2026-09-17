@@ -690,8 +690,25 @@ e `aria-label` explícito. **Um CTA por seção.**
 ### Analytics
 
 `trackCtaWhatsapp(origem)` dispara `cta_whatsapp` com a origem. Convive com Vercel Analytics
-(`window.va`), GA4 (`gtag`) e GTM (`dataLayer`) sem instalar nada. Custo: zero KB até alguém
-escolher um provedor.
+(`window.va`) e GA4 (`gtag`) sem instalar nada.
+
+**O GTM está instalado desde 17/09**, a pedido da pessoa de tráfego pago, que precisava taguear a
+campanha de teste. Contêiner `GTM-5CCX9PLF`, por `@next/third-parties`, em `afterInteractive` para
+não competir com o LCP do herói. Três regras que vêm com ele:
+
+1. **O ID vem de `NEXT_PUBLIC_GTM_ID`, não do `brand.ts`.** Sem a variável o componente não
+   renderiza, então preview da Vercel e build local não disparam tag nenhuma. Na Vercel, a variável
+   existe **só no escopo Production**.
+2. **`pushEvent(event, payload?)` do `lib/analytics.ts` é a porta única do `dataLayer`.** Nenhum
+   componente empurra evento direto. Ele garante a fila (`window.dataLayer ?? []`), então clique
+   que acontece depois da hidratação e antes do `gtm.js` chegar é enfileirado, não perdido.
+   Verificado com o GTM bloqueado na rede.
+3. **O `<noscript>` do snippet do Google ficou de fora**, de propósito: ver o comentário do
+   `layout.tsx`.
+
+Consentimento LGPD, Consent Mode v2 e política de privacidade **não** entraram com ele. São
+pendência da Andressa, registrada no `TODOs.md`. A §2.4 recusa banner de terceiro, e um componente
+nosso não contraria isso.
 
 ---
 

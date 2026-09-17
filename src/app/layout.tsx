@@ -1,5 +1,7 @@
+import { GoogleTagManager } from "@next/third-parties/google";
 import type { Metadata, Viewport } from "next";
 import { Montserrat, Playfair_Display } from "next/font/google";
+import Script from "next/script";
 
 import { OrganicClipPaths } from "@/components/ui/OrganicClipPaths";
 import { og, site } from "@/config/brand";
@@ -133,6 +135,45 @@ export const metadata: Metadata = {
   verification: { google: site.verificacaoGoogle },
 };
 
+/**
+ * O contêiner do Google Tag Manager, e os três pontos dele que não são óbvios.
+ *
+ * ── 1. O ID vem do AMBIENTE, e não do `brand.ts` ─────────────────────────────
+ *
+ * É a diferença entre ele e o `verificacaoGoogle`, que mora no `brand.ts` logo
+ * acima. O token do Search Console vale para UM host e anda junto com a `url`,
+ * então versionar faz sentido. O ID do GTM vale para um AMBIENTE: preview da
+ * Vercel e build local disparando as tags da campanha sujariam os dados que a
+ * pessoa do tráfego usa para decidir onde gastar a verba da Andressa.
+ *
+ * Sem a variável, nada é renderizado: nenhum script, nenhuma requisição.
+ *
+ * ⚠️ O preço dessa escolha é que **esquecer `NEXT_PUBLIC_GTM_ID` na Vercel
+ * deixa a campanha rodando sem medição nenhuma, e nada acusa erro**, mesma
+ * classe do "subiu com noindex" que a Fase 9 avisa. Não dá para conferir isso
+ * no build local, justamente porque local não carrega: a conferência é abrir a
+ * URL real e ver o `gtm.js` no painel de rede.
+ *
+ * ── 2. A fila do `dataLayer` nasce ANTES da hidratação ───────────────────────
+ *
+ * O `GoogleTagManager` carrega em `afterInteractive`, que é o que mantém o
+ * `gtm.js` fora do caminho do LCP do herói. A consequência é uma janela, do
+ * primeiro pixel pintado até o contêiner subir, em que um clique no CTA não
+ * teria para onde ir.
+ *
+ * O inline de `beforeInteractive` fecha essa janela por 40 bytes: cria o array,
+ * o clique entra na fila e o GTM processa tudo o que estiver lá quando chegar.
+ * Não baixa nada e não bloqueia nada.
+ *
+ * ── 3. O `<noscript>` do snippet do Google fica de fora, de propósito ────────
+ *
+ * Ele existe para contar visita de quem está sem JavaScript, e essa pessoa não
+ * dispara evento de CTA nem carrega pixel de anúncio: o iframe mediria pouco
+ * mais que a própria existência dela. Se a pessoa do tráfego pedir, é uma linha
+ * no começo do `<body>`.
+ */
+const gtmId = process.env.NEXT_PUBLIC_GTM_ID?.trim();
+
 export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
@@ -153,6 +194,15 @@ export default function RootLayout({
             rotas. Fora do fluxo, `aria-hidden`, custo de render zero. */}
         <OrganicClipPaths />
         {children}
+
+        {gtmId ? (
+          <>
+            <Script id="datalayer-fila" strategy="beforeInteractive">
+              {`window.dataLayer = window.dataLayer || [];`}
+            </Script>
+            <GoogleTagManager gtmId={gtmId} />
+          </>
+        ) : null}
       </body>
     </html>
   );

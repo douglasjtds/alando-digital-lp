@@ -87,6 +87,25 @@ Sem estas, algumas fases não fecham. Lista completa em `AUDITORIA-FASE-0.md` §
 **Resolvido depois:** o **domínio** (15/09, `https://alandodigital.com.br`, sem `www`), que ligou a
 indexação e define o host da propriedade do Search Console no passo 5 da Fase 9.
 
+### Aberto em 17/09: consentimento de cookies (LGPD)
+
+O Google Tag Manager entrou em 17/09 para a campanha de teste de tráfego pago. Ele não grava cookie
+sozinho, mas é por ele que entram os pixels de anúncio (Meta, Google Ads, GA4), e esses gravam.
+Hoje a página **não** pede consentimento e **não** tem política de privacidade.
+
+**Decisão do Douglas em 17/09: instalar primeiro, decidir o consentimento depois**, porque a
+campanha não esperava. Fica pendente, e quem decide se vale a pena é a Andressa:
+
+| O que envolve | Observação |
+|---|---|
+| Aviso de consentimento | Componente nosso, sem biblioteca. A §2.4 recusa banner de terceiro, não o aviso em si |
+| Consent Mode v2, `denied` por padrão | Configurado no GTM e no site, para o contêiner só gravar cookie depois do aceite |
+| Página de política de privacidade | Rota nova, a primeira além de `/` e `/styleguide`, o que a §2.4 hoje também recusa |
+| Copy dos dois | Passa pela `marketing-writer`, como toda copy |
+
+Enquanto isso não existir, **quem responde pelo tratamento dos dados é a Alando**, não quem
+desenvolveu a página. Isso foi dito por escrito ao Douglas, e ele leva à Andressa.
+
 
 Fases 5 a 8 podem rodar com os marcadores no lugar. **A Fase 9 não.**
 
